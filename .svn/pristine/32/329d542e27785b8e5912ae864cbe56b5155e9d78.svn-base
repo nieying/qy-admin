@@ -1,0 +1,127 @@
+import React, { Component } from "react";
+import ReactEcharts from "echarts-for-react";
+import { jsNum } from '@utils/constants'
+
+
+class ClassBarChart extends Component {
+
+    constructor(props) {
+        super(props);
+        this.option = {
+            tooltip: {
+                show: true,
+                trigger: 'item',
+            },
+            legend: {
+                show: true,
+                right: jsNum(60),
+                itemWidth: jsNum(14),
+                itemHeight: jsNum(10)
+            },
+            grid: {
+                right: jsNum(60),
+            },
+            xAxis: {
+                type: 'category',
+                offset: jsNum(15),
+                axisLabel: {
+                    color: "rgba(0,0,0,0.65)",
+                    fontSize: jsNum(16)
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "#D9D9D9",
+                        width: jsNum(1)
+                    }
+                },
+            },
+            yAxis: {
+                type: "value",
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    color: "rgba(0,0,0,0.65)",
+                    fontSize: jsNum(16)
+                },
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        type: "dashed",
+                        color: "#D9D9D9",
+                        width: jsNum(1),
+                    }
+                }
+            },
+            series: [
+                {
+                    name: '未测',
+                    type: 'bar',
+                    barWidth: jsNum(20),
+                    itemStyle: {
+                        normal: {
+                            color: '#57AEFF'
+                        }
+                    },
+                },
+                {
+                    name: '屈光正常',
+                    type: 'bar',
+                    barWidth: jsNum(20),
+                    itemStyle: {
+                        normal: {
+                            color: '#36CBCB'
+                        }
+                    },
+                },
+                {
+                    name: '屈光不正',
+                    type: 'bar',
+                    barWidth: jsNum(20),
+                    itemStyle: {
+                        normal: {
+                            color: '#FAD337'
+                        }
+                    },
+                }
+            ]
+        };
+
+    }
+
+
+    componentDidMount() {
+        let myChart = this.echarts.getEchartsInstance();
+        myChart.setOption({
+            xAxis: {
+                data: ["一年级", "二年级", "三年级", "四年级", "五年级", "六年级"],
+            },
+            series: [{
+                data: [25, 25, 25, 25, 25, 23],
+            }, {
+                data: [23, 23, 23, 23, 23, 34],
+            }, {
+                data: [15, 15, 15, 15, 15, 54],
+
+            }]
+        });
+    }
+
+    render() {
+        return (
+            <div className="class-bar">
+                <ReactEcharts
+                    option={this.option}
+                    ref={e => {
+                        this.echarts = e;
+                    }}
+                />
+            </div>
+        );
+    }
+}
+
+export default ClassBarChart;

@@ -1,0 +1,65 @@
+@import '@styles/_mixin.scss';
+
+.page-layout {
+    .header {
+        background: #3750FF;
+        height: 64px;
+        @include flex-between;
+        color: white;
+        font-size: 14px;
+
+        .left {
+            img {
+                width: 1.2rem;
+                height: 0.4rem;
+            }
+        }
+
+        div.right {
+            display: flex;
+
+            div {
+                margin: 0 15px;
+            }
+
+            .device {
+                span {
+                    cursor: pointer;
+                    color: #FFDE00;
+                }
+            }
+
+            .quit {
+                cursor: pointer;
+            }
+        }
+    }
+
+
+    .ant-layout-sider {
+        flex: 0 0 256px !important;
+        max-width: 256px !important;
+        min-width: 256px !important;
+        width: 256px !important;
+    }
+
+    .ant-menu-dark {
+        background: #0B0B34;
+
+
+    }
+
+    .ant-menu {
+        .ant-menu-item {
+            height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ant-menu-item-selected {
+            background: rgba(55, 81, 255, 0.1);
+        }
+    }
+
+
+}

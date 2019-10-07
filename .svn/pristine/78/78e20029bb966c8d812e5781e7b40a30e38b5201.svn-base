@@ -1,0 +1,5 @@
+.ant-table-thead>tr>th,
+.ant-table-thead>tr,
+.ant-table-tbody>tr {
+    text-align: center !important;
+}

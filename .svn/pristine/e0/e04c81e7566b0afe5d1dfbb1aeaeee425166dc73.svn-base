@@ -1,0 +1,120 @@
+import React, { Component } from "react";
+import { PageHeader, Card, Row, Col, Icon, Input } from 'antd'
+
+import './index.scss'
+
+var IconVision = require("@images/icon-vision.png");
+var IconYiqi = require("@images/icon-yiqi.png");
+var IconMac = require("@images/icon-mac.png");
+var IconCalendar = require("@images/icon-calendar.png");
+
+class Page1 extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [
+                {
+                    title: '体能训练室一',
+                    isEdit: false,
+                    checkPeople: 200,
+                    checkNum: 540,
+                    detector: 'H54-4',
+                    detectorNo: 'fc4534234569',
+                    date: '2019.10.11',
+                },
+                {
+                    title: '体能训练室二',
+                    isEdit: false,
+                    checkPeople: 200,
+                    checkNum: 540,
+                    detector: 'H54-4',
+                    detectorNo: 'fc4534234569',
+                    date: '2019.10.11',
+                },
+                {
+                    title: '体能训练室三',
+                    isEdit: false,
+                    checkPeople: 200,
+                    checkNum: 540,
+                    detector: 'H54-4',
+                    detectorNo: 'fc4534234569',
+                    date: '2019.10.11',
+                },
+            ],
+            showEidt: false,
+        }
+    }
+
+    showEidt = (item, index) => {
+        this.setData('isEdit', true, index)
+    }
+
+    handleInput = (e, index) => {
+        this.setData('title', e.target.value, index)
+    }
+
+    saveTitle = (e, index) => {
+        this.setData('isEdit', false, index)
+    }
+
+    setData(key, value, index) {
+        const { data } = this.state;
+        data.forEach((d, i) => {
+            if (index === i) {
+                d[key] = value;
+            }
+        })
+        this.setState({ data })
+    }
+
+    render() {
+        const routes = [
+            {
+                path: '/home',
+                breadcrumbName: '首页',
+            },
+            {
+                path: '/student/look',
+                breadcrumbName: '设备列表',
+            }
+        ];
+        const { data } = this.state;
+
+        return (
+            <div className="page-device">
+                <PageHeader title="设备列表" breadcrumb={{ routes }} />
+                <div className="warpper">
+                    <Row>
+                        {
+                            data.map((d, index) =>
+                                <Col span={8} key={index}>
+                                    <Card title={d.title} bordered={false} extra={!d.isEdit && <Icon type="edit" onClick={() => { this.showEidt(d, index) }} />} >
+                                        {
+                                            d.isEdit && <Input value={d.title}
+                                                onChange={(e) => { this.handleInput(e, index) }}
+                                                onPressEnter={(e) => { this.saveTitle(e, index) }}
+                                            />
+                                        }
+                                        <div className="left">
+                                            <p>检测人数(人)</p>
+                                            <div>{d.checkPeople}</div>
+                                            <p><img src={IconVision} alt="" />  视力检测仪</p>
+                                            <p><img src={IconYiqi} alt="" />{d.detector}</p>
+                                        </div>
+                                        <div className="right">
+                                            <p>检测次数(次)</p>
+                                            <div>{d.checkNum}</div>
+                                            <p><img src={IconMac} alt="" />{d.detectorNo}</p>
+                                            <p><img src={IconCalendar} alt="" />{d.date}</p>
+                                        </div>
+                                    </Card>
+                                </Col>)
+                        }
+                    </Row>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default Page1;
