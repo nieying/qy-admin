@@ -14,7 +14,8 @@ class Add extends React.Component {
   componentDidMount() {
     const { editItem } = this.props;
     this.props.form.setFieldsValue({
-      name: editItem.name
+      name: editItem.name,
+      languageId: editItem.languageId
     });
   }
 
@@ -47,7 +48,7 @@ class Add extends React.Component {
     this.props.handleCancel();
     this.props.getData();
   };
-  
+
   render() {
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     const { editItem } = this.props;
@@ -64,7 +65,7 @@ class Add extends React.Component {
               rules: [{ required: true, message: "请输入方言" }]
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="单元图标">
+          {/* <Form.Item label="单元图标">
             {getFieldDecorator("pic", {
               rules: [{ required: true, message: "请上传图片" }]
             })(<UploadImg setValue={value => {
@@ -72,15 +73,16 @@ class Add extends React.Component {
                 type: value
               });
             }}/>)}
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label="所属方言">
-            {getFieldDecorator("type", {
+            {getFieldDecorator("languageId", {
               rules: [{ required: true, message: "请选择" }]
             })(
               <SelectDialect
+                defaultValue={editItem.languageId}
                 setValue={value => {
                   setFieldsValue({
-                    type: value
+                    languageId: value
                   });
                 }}
               />

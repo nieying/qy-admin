@@ -1,8 +1,6 @@
 import React from "react";
-import SelectDialectType from "@components/SelectDialectType";
-import { Modal, Form, Select, Input, message } from "antd";
-import { createDialect, updateDialect } from "@api/index";
-const { Option } = Select;
+import { Modal, Form, Input, message } from "antd";
+import { createDialectType, updateDialectType } from "@api";
 
 @Form.create()
 class Add extends React.Component {
@@ -31,12 +29,12 @@ class Add extends React.Component {
   update = values => {
     const { editItem } = this.props;
     values.id = editItem.id;
-    updateDialect(values).then(res => {
+    updateDialectType(values).then(res => {
       this.succCallback();
     });
   };
   add = values => {
-    createDialect(values).then(res => {
+    createDialectType(values).then(res => {
       this.succCallback();
     });
   };
@@ -49,7 +47,7 @@ class Add extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator, setFieldsValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     const { editItem } = this.props;
     return (
       <Modal
@@ -59,24 +57,10 @@ class Add extends React.Component {
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          <Form.Item label="方言">
+          <Form.Item label="名称">
             {getFieldDecorator("name", {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
-          </Form.Item>
-          <Form.Item label="归类">
-            {getFieldDecorator("classId", {
-              rules: [{ required: true, message: "请选择" }]
-            })(
-              <SelectDialectType
-                defaultValue={editItem.classId}
-                setValue={value => {
-                  setFieldsValue({
-                    classId: value
-                  });
-                }}
-              />
-            )}
           </Form.Item>
         </Form>
       </Modal>

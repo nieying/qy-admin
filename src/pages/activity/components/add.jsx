@@ -1,7 +1,12 @@
 import React from "react";
-import { Modal, Form, Select, Input } from "antd";
+import moment from "moment";
+import { Modal, Form, Select, Input, DatePicker, message } from "antd";
+import { createActivity, updateActivity } from "@api/index";
+
 const { Option } = Select;
 const { TextArea } = Input;
+const { RangePicker } = DatePicker;
+const dateFormat = "YYYY-MM-DD";
 
 @Form.create()
 class Add extends React.Component {
@@ -10,21 +15,49 @@ class Add extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const { editItem } = this.props;
+    this.props.form.setFieldsValue({
+      name: editItem.name
+    });
+  }
+
   handleOk = e => {
+    const { editItem } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        editItem && editItem.id ? this.update(values) : this.add(values);
       }
     });
   };
 
+  update = values => {
+    const { editItem } = this.props;
+    values.id = editItem.id;
+    updateActivity(values).then(res => {
+      this.succCallback();
+    });
+  };
+  add = values => {
+    createActivity(values).then(res => {
+      this.succCallback();
+    });
+  };
+
+  succCallback = () => {
+    const { editItem } = this.props;
+    message.success(editItem && editItem.id ? "编辑成功" : "添加成功");
+    this.props.handleCancel();
+    this.props.getData();
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
-
+    const { editItem } = this.props;
     return (
       <Modal
-        title="新增"
+        title={editItem && editItem.id ? "编辑" : "修改"}
         visible={true}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
@@ -35,14 +68,9 @@ class Add extends React.Component {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="活动内容">
-            {getFieldDecorator("desc", {
-              rules: [{ required: true, message: "请输入" }]
-            })(<TextArea rows={2} placeholder="请输入"></TextArea>)}
-          </Form.Item>
-          <Form.Item label="活动类型">
+          <Form.Item label="活动类别">
             {getFieldDecorator("type", {
-              rules: [{ required: true, message: "请选择" }]
+              rules: [{ required: true, message: "请选择" }]
             })(
               <Select placeholder="请选择">
                 <Option value="普通活动">普通活动</Option>
@@ -50,11 +78,24 @@ class Add extends React.Component {
               </Select>
             )}
           </Form.Item>
-          {/* <Form.Item label="活动报名入口">
-            {getFieldDecorator("type", {
+          <Form.Item label="活动时间">
+            {getFieldDecorator("time", {
+              rules: [{ required: true, message: "请选择" }]
+            })(
+              <RangePicker
+                defaultValue={[
+                  // moment("2015-01-01", dateFormat),
+                  // moment("2015-01-01", dateFormat)
+                ]}
+                format={dateFormat}
+              />
+            )}
+          </Form.Item>
+          <Form.Item label="活动详情">
+            {getFieldDecorator("detail", {
               rules: [{ required: true, message: "请输入" }]
-            })(<TextArea rows={2} placeholder="请输入"></TextArea>)}
-          </Form.Item> */}
+            })(<TextArea />)}
+          </Form.Item>
         </Form>
       </Modal>
     );

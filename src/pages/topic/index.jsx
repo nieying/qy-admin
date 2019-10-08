@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import {
   PageHeader,
   Row,
@@ -11,7 +12,8 @@ import {
   message,
   Select
 } from "antd";
-import AddModal from "./components/add";
+import AddModal from "./components/Add";
+import AddAnswer from "./components/AddAnswer";
 import { getSubject, deleteSubject } from "@api/index";
 const { Option } = Select;
 class Subject extends React.Component {
@@ -20,6 +22,7 @@ class Subject extends React.Component {
     this.state = {
       loading: false,
       visible: false,
+      showAnswer: false,
       name: "",
       queryInfo: {
         type: "1"
@@ -32,13 +35,30 @@ class Subject extends React.Component {
         current: 1,
         pageSize: 10
       },
-      editItem: {}
+      editItem: {},
+      topicId: ""
     };
     this.columns = [
+      {
+        title: "序号",
+        width: 60,
+        key: "index",
+        render: (text, record, index) => `${index + 1}`
+      },
       {
         title: "题目名称",
         dataIndex: "title",
         key: "title"
+      },
+      {
+        title: "创建时间",
+        key: "addTime",
+        render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
+      },
+      {
+        title: "修改时间",
+        key: "updateTime",
+        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
       },
       {
         title: "操作",
@@ -48,12 +68,22 @@ class Subject extends React.Component {
             <Button
               type="link"
               onClick={() => {
+                this.showAnswerModal(record);
+              }}
+            >
+              新增答案
+            </Button>
+            <Divider type="vertical" />
+            <Button
+              type="link"
+              onClick={() => {
                 this.showModal(record);
               }}
             >
               编辑
             </Button>
             <Divider type="vertical" />
+
             <Button
               type="link"
               onClick={() => {
@@ -131,13 +161,21 @@ class Subject extends React.Component {
       }
     });
   };
+  showAnswerModal = record => {
+    this.setState({ showAnswer: true, topicId: record.id });
+  };
+  hideAnswerModal = () => {
+    this.setState({ showAnswer: false });
+  };
   render() {
     const {
       loading,
       visible,
+      showAnswer,
       dataObj,
       pagination,
       editItem,
+      topicId,
       queryInfo
     } = this.state;
     return (
@@ -194,6 +232,13 @@ class Subject extends React.Component {
           <AddModal
             handleCancel={this.handleCancel}
             editItem={editItem}
+            getData={this.getData}
+          />
+        )}
+        {showAnswer && (
+          <AddAnswer
+            handleCancel={this.hideAnswerModal}
+            topicId={topicId}
             getData={this.getData}
           />
         )}

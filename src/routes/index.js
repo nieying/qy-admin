@@ -4,6 +4,7 @@ import { Switch } from "react-router-dom";
 
 import PrivateRoute from "@routes/privateRoute";
 
+import DialectType from '@pages/dialectType';
 import Dialect from '@pages/dialect';
 import Topic from '@pages/topic'
 import Achieve from '@pages/achieve';
@@ -24,7 +25,8 @@ class Index extends Component {
     render() {
         return (
             <Switch>
-                <PrivateRoute exact path="/dialect" component={Dialect} />
+                <PrivateRoute exact path="/dialect/type" component={DialectType} />
+                <PrivateRoute exact path="/dialect/list" component={Dialect} />
                 <PrivateRoute exact path="/unit" component={Unit} />
                 <PrivateRoute exact path="/course" component={Course} />
                 <PrivateRoute exact path="/topic" component={Topic} />

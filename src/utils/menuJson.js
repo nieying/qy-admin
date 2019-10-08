@@ -3,7 +3,10 @@ export const menuJson = [
     key: "/dialect",
     title: "方言管理",
     icon: "highlight",
-    component: "Dialect"
+    subs: [
+      { key: "/dialect/type", title: "方言分类", component: "DialectType" },
+      { key: "/dialect/list", title: "方言列表", component: "Dialect" }
+    ]
   },
   {
     key: "/unit",

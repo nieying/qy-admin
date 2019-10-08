@@ -58,7 +58,7 @@ class Add extends React.Component {
     const { topicType } = this.state;
     return (
       <Modal
-        title={editItem && editItem.id ? "编辑" : "修改"}
+        title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}

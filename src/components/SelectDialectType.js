@@ -1,6 +1,6 @@
 import React from "react";
 import { Select } from "antd";
-import { getDialect } from "@api/index";
+import { getDialectType } from "@api/index";
 const { Option } = Select;
 
 class SelectDialect extends React.Component {
@@ -12,7 +12,7 @@ class SelectDialect extends React.Component {
     };
   }
   componentWillMount() {
-    getDialect().then(res => {
+    getDialectType().then(res => {
       this.setState({ options: res.list });
     });
   }
@@ -27,9 +27,9 @@ class SelectDialect extends React.Component {
     return (
       <Select
         showSearch
-        defaultValue={defaultValue}
+        initialValue={defaultValue}
         mode={mode ? "multiple" : ""}
-        placeholder="请输入"
+        placeholder="请选择"
         optionFilterProp="children"
         onChange={this.onChange}
         filterOption={(input, option) =>

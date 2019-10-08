@@ -12,9 +12,9 @@ import {
   message
 } from "antd";
 import AddModal from "./components/add";
-import { getCourse, deleteCourse } from "@api/index";
+import { getDialectType, deleteDialectType } from "@api";
 
-class Course extends React.Component {
+class DialectType extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,14 +39,9 @@ class Course extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: "课程名称",
+        title: "名称",
         dataIndex: "name",
         key: "name"
-      },
-      {
-        title: "所属单元",
-        dataIndex: "type",
-        key: "type"
       },
       {
         title: "创建时间",
@@ -102,7 +97,7 @@ class Course extends React.Component {
       limit: pagination.pageSize
     };
     this.setState({ loading: true });
-    getCourse(params).then(res => {
+    getDialectType(params).then(res => {
       this.setState({
         loading: false,
         dataObj: {
@@ -142,7 +137,7 @@ class Course extends React.Component {
       okText: "确认",
       cancelText: "取消",
       onOk: () => {
-        deleteCourse({ id: record.id }).then(res => {
+        deleteDialectType({ id: record.id }).then(res => {
           message.success("删除成功！");
           this.getData();
         });
@@ -154,7 +149,7 @@ class Course extends React.Component {
     return (
       <div className="page-dialect">
         <PageHeader
-          title="课程管理"
+          title="方言分类"
           extra={[
             <Button key="1" type="primary" onClick={this.showModal}>
               新增
@@ -164,7 +159,7 @@ class Course extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>课程名称：</label>
+              <label>名称：</label>
               <Input
                 placeholder="请输入"
                 allowClear
@@ -205,4 +200,4 @@ class Course extends React.Component {
   }
 }
 
-export default Course;
+export default DialectType;

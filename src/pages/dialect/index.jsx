@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import {
   PageHeader,
   Row,
@@ -32,14 +33,30 @@ class Dialect extends React.Component {
     };
     this.columns = [
       {
+        title: "序号",
+        width: 60,
+        key: "index",
+        render: (text, record, index) => `${index + 1}`
+      },
+      {
         title: "方言",
         dataIndex: "name",
         key: "name"
       },
       {
         title: "方言归类",
-        dataIndex: "type",
-        key: "type"
+        dataIndex: "classId",
+        key: "classId"
+      },
+      {
+        title: "创建时间",
+        key: "addTime",
+        render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
+      },
+      {
+        title: "修改时间",
+        key: "updateTime",
+        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
       },
       {
         title: "操作",

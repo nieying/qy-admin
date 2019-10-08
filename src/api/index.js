@@ -18,6 +18,19 @@ export const uploadFile = data => {
   return axios.post("/storage/create", data);
 };
 
+/** 方言分类 */
+export const getDialectType = params => {
+  return axios.get("/languageClass/list", { params });
+};
+export const createDialectType = data => {
+  return axios.post("/languageClass/create", data);
+};
+export const updateDialectType = data => {
+  return axios.post("/languageClass/update", data);
+};
+export const deleteDialectType = data => {
+  return axios.post("/languageClass/delete", data);
+};
 /** 方言管理 */
 export const getDialect = params => {
   return axios.get("/language/list", { params });
@@ -108,4 +121,21 @@ export const updateAdmin = data => {
 };
 export const deleteAdmin = data => {
   return axios.post("/admin/delete", data);
+};
+
+/** 活动管理*/
+export const getActivity = params => {
+  return axios.get("/activity/list", { params });
+};
+export const readActivity = params => {
+  return axios.post("/activity/info", { params });
+};
+export const createActivity = data => {
+  return axios.post("/activity/create", data);
+};
+export const updateActivity = data => {
+  return axios.post("/activity/update", data);
+};
+export const deleteActivity = data => {
+  return axios.post("/activity/delete", data);
 };
