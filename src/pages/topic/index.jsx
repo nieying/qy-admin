@@ -14,6 +14,8 @@ import {
 } from "antd";
 import AddModal from "./components/Add";
 import AddAnswer from "./components/AddAnswer";
+import SelectTopicType from "@components/SelectTopicType";
+
 import { getSubject, deleteSubject } from "@api/index";
 const { Option } = Select;
 class Subject extends React.Component {
@@ -49,6 +51,26 @@ class Subject extends React.Component {
         title: "题目名称",
         dataIndex: "title",
         key: "title"
+      },
+      {
+        title: "题目类型",
+        dataIndex: "type",
+        key: "type"
+      },
+      {
+        title: "所属方言",
+        dataIndex: "languageId",
+        key: "languageId"
+      },
+      {
+        title: "所属单元",
+        dataIndex: "unitId",
+        key: "unitId"
+      },
+      {
+        title: "所属课程",
+        dataIndex: "courseId",
+        key: "courseId"
       },
       {
         title: "创建时间",
@@ -192,11 +214,12 @@ class Subject extends React.Component {
           <Row gutter={30} className="search-condition">
             <Col span={6}>
               <label>题目类型：</label>
-              <Select placeholder="请选择" defaultValue={queryInfo.type}>
-                <Option value="1">听力题</Option>
-                <Option value="2">伪音标题</Option>
-                <Option value="3">看图题</Option>
-              </Select>
+              <SelectTopicType
+                value={queryInfo.type}
+                setValue={value => {
+                  this.setState({ queryInfo: { type: value } });
+                }}
+              />
             </Col>
             <Col span={6}>
               <label>单元名称：</label>

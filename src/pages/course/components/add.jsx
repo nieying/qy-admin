@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Form, Input, message } from "antd";
 import { createCourse, updateCourse } from "@api/index";
+import SelectDialect from "@components/SelectDialect";
 import SelectUnit from "@components/SelectUnit";
 
 @Form.create()
@@ -12,9 +13,13 @@ class Add extends React.Component {
 
   componentDidMount() {
     const { editItem } = this.props;
-    this.props.form.setFieldsValue({
-      name: editItem.name
-    });
+    if (editItem && editItem.id) {
+      this.props.form.setFieldsValue({
+        name: editItem.name,
+        languageId: editItem.languageId.toString(),
+        unitId: editItem.unitId.toString()
+      });
+    }
   }
 
   handleOk = e => {
@@ -63,14 +68,27 @@ class Add extends React.Component {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
           </Form.Item>
+          <Form.Item label="所属方言">
+            {getFieldDecorator("languageId", {
+              rules: [{ required: true, message: "请选择" }]
+            })(
+              <SelectDialect
+                setValue={value => {
+                  setFieldsValue({
+                    languageId: value
+                  });
+                }}
+              />
+            )}
+          </Form.Item>
           <Form.Item label="所属单元">
-            {getFieldDecorator("type", {
+            {getFieldDecorator("unitId", {
               rules: [{ required: true, message: "请选择" }]
             })(
               <SelectUnit
                 setValue={value => {
                   setFieldsValue({
-                    type: value
+                    unitId: value
                   });
                 }}
               />

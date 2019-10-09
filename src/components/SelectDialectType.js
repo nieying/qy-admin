@@ -8,7 +8,7 @@ class SelectDialect extends React.Component {
     super(props);
     this.state = {
       options: [],
-      defaultValue: props.defaultValue || ""
+      defaultValue: props.value || ""
     };
   }
   componentWillMount() {

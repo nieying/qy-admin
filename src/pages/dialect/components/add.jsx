@@ -14,7 +14,8 @@ class Add extends React.Component {
   componentDidMount() {
     const { editItem } = this.props;
     this.props.form.setFieldsValue({
-      name: editItem.name
+      name: editItem.name,
+      classId: editItem.classId
     });
   }
 
@@ -69,7 +70,6 @@ class Add extends React.Component {
               rules: [{ required: true, message: "请选择" }]
             })(
               <SelectDialectType
-                defaultValue={editItem.classId}
                 setValue={value => {
                   setFieldsValue({
                     classId: value

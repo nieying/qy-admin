@@ -12,7 +12,8 @@ const axiosConfigure = () => {
           "X-Admin-Token": localStorage.getItem("token")
         };
       }
-      config.url = `https://api.deyushiyuan.cn/litemall/admin${config.url}`;
+      // config.url = `https://api.deyushiyuan.cn/litemall/admin${config.url}`;
+      config.url = `http://oms.deyushiyuan.cn/litemall/admin${config.url}`;
       //配置发送请求的信息
       // let { accessToken, appId } = localStorage;
       // let timestamp = Date.parse(new Date());

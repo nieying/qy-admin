@@ -7,7 +7,8 @@ class SelectUnit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: []
+      options: [],
+      defaultValue: props.value || ""
     };
   }
   componentWillMount() {
@@ -21,13 +22,14 @@ class SelectUnit extends React.Component {
   };
 
   render() {
-    const { options } = this.state;
+    const { options, defaultValue } = this.state;
     const { mode } = this.props;
     return (
       <Select
         showSearch
+        defaultValue={defaultValue}
         mode={mode ? "multiple" : ""}
-        placeholder="???"
+        placeholder="请选择"
         optionFilterProp="children"
         onChange={this.onChange}
         filterOption={(input, option) =>
@@ -36,7 +38,7 @@ class SelectUnit extends React.Component {
       >
         {options.map((o, i) => {
           return (
-            <Option key={i} value={o.name}>
+            <Option key={i} value={o.id}>
               {o.name}
             </Option>
           );

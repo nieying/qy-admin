@@ -2,24 +2,31 @@ import React from "react";
 import { Modal, Form, Input, message, Select } from "antd";
 import { createSubject, updateSubject } from "@api/index";
 import UploadImg from "@components/UploadImg";
+import SelectTopicType from "@components/SelectTopicType";
 import UploadFile from "@components/UploadFile";
 import SelectDialect from "@components/SelectDialect";
+import SelectUnit from "@components/SelectUnit";
+import SelectCourse from "@components/SelectCourse";
 
 const { Option } = Select;
 @Form.create()
 class Add extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      topicType: "1"
-    };
+    this.state = {};
   }
 
   componentDidMount() {
     const { editItem } = this.props;
-    this.props.form.setFieldsValue({
-      name: editItem.name
-    });
+    if (editItem && editItem.id) {
+      this.props.form.setFieldsValue({
+        type: 1,
+        name: editItem.name,
+        languageId: editItem.languageId,
+        unitId: editItem.unitId,
+        courseId: editItem.courseId
+      });
+    }
   }
 
   handleOk = e => {
@@ -53,9 +60,13 @@ class Add extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator, setFieldsValue } = this.props.form;
+    const {
+      getFieldDecorator,
+      setFieldsValue,
+      getFieldValue
+    } = this.props.form;
     const { editItem } = this.props;
-    const { topicType } = this.state;
+    const topicType = getFieldValue("type");
     return (
       <Modal
         title={editItem && editItem.id ? "编辑" : "新增"}
@@ -68,30 +79,55 @@ class Add extends React.Component {
             {getFieldDecorator("type", {
               rules: [{ required: true, message: "请选择" }]
             })(
-              <Select placeholder="请选择" onChange={this.handleChangeType}>
-                <Option value="1">听力题</Option>
-                <Option value="2">伪音标题</Option>
-                <Option value="3">看图题</Option>
-              </Select>
+              <SelectTopicType
+                setValue={value => {
+                  setFieldsValue({
+                    type: value
+                  });
+                }}
+              />
+            )}
+          </Form.Item>
+          <Form.Item label="所属方言">
+            {getFieldDecorator("languageId", {
+              rules: [{ required: true, message: "请选择" }]
+            })(
+              <SelectDialect
+                setValue={value => {
+                  setFieldsValue({
+                    languageId: value
+                  });
+                }}
+              />
             )}
           </Form.Item>
           <Form.Item label="所属单元">
-            {getFieldDecorator("unit", {
+            {getFieldDecorator("unitId", {
               rules: [{ required: true, message: "请选择" }]
             })(
-              <Select placeholder="请选择">
-                <Option value="1">1</Option>
-                <Option value="2">2</Option>
-                <Option value="3">3</Option>
-              </Select>
+              <SelectUnit
+                setValue={value => {
+                  setFieldsValue({
+                    unitId: value
+                  });
+                }}
+              />
             )}
           </Form.Item>
-          <Form.Item label="方言">
-            {getFieldDecorator("dialect", {
-              rules: [{ required: true, message: "请输入" }]
-            })(<SelectDialect />)}
+          <Form.Item label="所属单元">
+            {getFieldDecorator("unitId", {
+              rules: [{ required: true, message: "请选择" }]
+            })(
+              <SelectCourse
+                setValue={value => {
+                  setFieldsValue({
+                    unitId: value
+                  });
+                }}
+              />
+            )}
           </Form.Item>
-          <Form.Item label="难度级别">
+          {/* <Form.Item label="难度级别">
             {getFieldDecorator("level", {
               rules: [{ required: true, message: "请选择" }]
             })(
@@ -101,12 +137,14 @@ class Add extends React.Component {
                 <Option value="3">3</Option>
               </Select>
             )}
-          </Form.Item>
-          <Form.Item label="文本题干">
-            {getFieldDecorator("title", {
-              rules: [{ required: true, message: "请输入" }]
-            })(<Input placeholder="请输入" />)}
-          </Form.Item>
+          </Form.Item> */}
+          {parseInt(topicType) !== 3 && (
+            <Form.Item label="文本题干">
+              {getFieldDecorator("title", {
+                rules: [{ required: true, message: "请输入" }]
+              })(<Input placeholder="请输入" />)}
+            </Form.Item>
+          )}
           {parseInt(topicType) === 1 && (
             <Form.Item label="语音上传">
               {getFieldDecorator("video", {
@@ -121,31 +159,6 @@ class Add extends React.Component {
               })(<UploadImg />)}
             </Form.Item>
           )}
-          <Form.Item label="答题选项A">
-            {getFieldDecorator("A", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<Input placeholder="请输入" />)}
-          </Form.Item>
-          <Form.Item label="答题选项B">
-            {getFieldDecorator("B", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<Input placeholder="请输入" />)}
-          </Form.Item>
-          <Form.Item label="答题选项C">
-            {getFieldDecorator("C", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<Input placeholder="请输入" />)}
-          </Form.Item>
-          <Form.Item label="答题选项D">
-            {getFieldDecorator("D", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<Input placeholder="请输入" />)}
-          </Form.Item>
-          <Form.Item label="正确答案">
-            {getFieldDecorator("correctAnswer", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<Input placeholder="请输入" />)}
-          </Form.Item>
         </Form>
       </Modal>
     );

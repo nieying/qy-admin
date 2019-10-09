@@ -79,7 +79,6 @@ class Add extends React.Component {
               rules: [{ required: true, message: "请选择" }]
             })(
               <SelectDialect
-                defaultValue={editItem.languageId}
                 setValue={value => {
                   setFieldsValue({
                     languageId: value

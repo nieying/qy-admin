@@ -44,9 +44,14 @@ class Course extends React.Component {
         key: "name"
       },
       {
+        title: "所属方言",
+        dataIndex: "languageId",
+        key: "languageId"
+      },
+      {
         title: "所属单元",
-        dataIndex: "type",
-        key: "type"
+        dataIndex: "unitId",
+        key: "unitId"
       },
       {
         title: "创建时间",
