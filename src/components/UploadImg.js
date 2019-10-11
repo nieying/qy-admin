@@ -57,7 +57,7 @@ class Avatar extends React.Component {
     const { imageUrl } = this.state;
     return (
       <Upload
-        name="avatar"
+        name="file"
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
