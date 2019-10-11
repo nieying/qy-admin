@@ -1,8 +1,7 @@
 import React from "react";
 import { Modal, Form, Input, message } from "antd";
-import { createAdmin, updateAdmin } from "@api/index";
-import UploadImg from "@components/UploadImg";
-import SelectMenu from "@components/SelectMenu";
+import { createNotes, updateNotes } from "@api/index";
+const { TextArea } = Input;
 
 @Form.create()
 class Add extends React.Component {
@@ -14,10 +13,8 @@ class Add extends React.Component {
   componentDidMount() {
     const { editItem } = this.props;
     this.props.form.setFieldsValue({
-      avatar: editItem.avatar,
-      username: editItem.username,
-      password: editItem.password,
-      roleIds: editItem.roleIds
+      key: editItem.key,
+      content: editItem.content
     });
   }
 
@@ -34,12 +31,12 @@ class Add extends React.Component {
   update = values => {
     const { editItem } = this.props;
     values.id = editItem.id;
-    updateAdmin(values).then(res => {
+    updateNotes(values).then(res => {
       this.succCallback();
     });
   };
   add = values => {
-    createAdmin(values).then(res => {
+    createNotes(values).then(res => {
       this.succCallback();
     });
   };
@@ -62,41 +59,16 @@ class Add extends React.Component {
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          <Form.Item label="管理员头像">
-            {getFieldDecorator("avatar", {
-              rules: [{ message: "请输入" }]
-            })(
-              <UploadImg
-                setValue={value => {
-                  setFieldsValue({
-                    avatar: value
-                  });
-                }}
-              />
-            )}
-          </Form.Item>
-          <Form.Item label="管理员名称">
-            {getFieldDecorator("username", {
+          <Form.Item label="注释关键字">
+            {getFieldDecorator("key", {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="管理员密码">
-            {getFieldDecorator("password", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label="菜单权限">
-            {getFieldDecorator("roleIds", {
+          <Form.Item label="注释内容">
+            {getFieldDecorator("content", {
               rules: [{ required: true, message: "请选择" }]
             })(
-              <SelectMenu
-                mode={true}
-                setValue={value => {
-                  setFieldsValue({
-                    roleIds: value
-                  });
-                }}
-              />
+              <TextArea />
             )}
           </Form.Item>
         </Form>

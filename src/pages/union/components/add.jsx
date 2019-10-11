@@ -1,11 +1,10 @@
 import React from "react";
-import moment from "moment";
-import { Modal, Form, Select, Input, DatePicker, message } from "antd";
-import { createActivity, updateActivity } from "@api/index";
+import SelectDialectType from "@components/SelectDialectType";
+import { Modal, Form, Input, message } from "antd";
+import { createOrganize, updateOrganize } from "@api/index";
+import UploadImg from "@components/UploadImg";
 
-const { Option } = Select;
 const { TextArea } = Input;
-const dateFormat = "YYYY-MM-DD";
 
 @Form.create()
 class Add extends React.Component {
@@ -17,11 +16,11 @@ class Add extends React.Component {
   componentDidMount() {
     const { editItem } = this.props;
     this.props.form.setFieldsValue({
-      title: editItem.title,
-      type: editItem.type,
-      startTime: moment(editItem.startTime),
-      endTime: moment(editItem.endTime),
-      content: editItem.content
+      avatar: editItem.avatar,
+      name: editItem.name,
+      leaderId: editItem.leaderId,
+      remark: editItem.remark,
+      attribute: editItem.attribute
     });
   }
 
@@ -38,12 +37,12 @@ class Add extends React.Component {
   update = values => {
     const { editItem } = this.props;
     values.id = editItem.id;
-    updateActivity(values).then(res => {
+    updateOrganize(values).then(res => {
       this.succCallback();
     });
   };
   add = values => {
-    createActivity(values).then(res => {
+    createOrganize(values).then(res => {
       this.succCallback();
     });
   };
@@ -56,7 +55,7 @@ class Add extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, setFieldsValue } = this.props.form;
     const { editItem } = this.props;
     return (
       <Modal
@@ -66,33 +65,44 @@ class Add extends React.Component {
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          <Form.Item label="活动名称">
-            {getFieldDecorator("title", {
+          <Form.Item label="协会图标">
+            {getFieldDecorator("avatar", {
+              rules: [{ message: "请输入" }]
+            })(
+              <UploadImg
+                setValue={value => {
+                  setFieldsValue({
+                    avatar: value
+                  });
+                }}
+              />
+            )}
+          </Form.Item>
+          <Form.Item label="协会名称">
+            {getFieldDecorator("name", {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="活动类别">
-            {getFieldDecorator("type", {
+          <Form.Item label="会长名称">
+            {getFieldDecorator("leaderId", {
               rules: [{ required: true, message: "请选择" }]
             })(
-              <Select placeholder="请选择">
-                <Option value="普通活动">普通活动</Option>
-                <Option value="协会活动">协会活动</Option>
-              </Select>
+              <SelectDialectType
+                setValue={value => {
+                  setFieldsValue({
+                    leaderId: value
+                  });
+                }}
+              />
             )}
           </Form.Item>
-          <Form.Item label="活动开始时间">
-            {getFieldDecorator("startTime", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<DatePicker format={dateFormat} />)}
+          <Form.Item label="协会描述">
+            {getFieldDecorator("remark", {
+              rules: [{ required: true, message: "请输入" }]
+            })(<TextArea />)}
           </Form.Item>
-          <Form.Item label="活动结束时间">
-            {getFieldDecorator("endTime", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<DatePicker format={dateFormat} />)}
-          </Form.Item>
-          <Form.Item label="活动详情">
-            {getFieldDecorator("detail", {
+          <Form.Item label="协会属性">
+            {getFieldDecorator("attribute", {
               rules: [{ required: true, message: "请输入" }]
             })(<TextArea />)}
           </Form.Item>

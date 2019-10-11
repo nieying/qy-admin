@@ -1,19 +1,22 @@
 import React from "react";
 import { Select } from "antd";
-import { getDialect } from "@api/index";
+// import { getDialect } from "@api/index";
+import { menuJson } from "@utils/menuJson.js";
+
 const { Option } = Select;
 
 class SelectDialect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: []
+      options: menuJson,
+      defaultValue: props.value || ""
     };
   }
   componentWillMount() {
-    getDialect().then(res => {
-      this.setState({ options: res.list });
-    });
+    // getDialect().then(res => {
+    //   this.setState({ options: res.list });
+    // });
   }
 
   onChange = value => {
@@ -21,11 +24,12 @@ class SelectDialect extends React.Component {
   };
 
   render() {
-    const { options } = this.state;
+    const { options, defaultValue } = this.state;
     const { mode } = this.props;
     return (
       <Select
         showSearch
+        defaultValue={defaultValue}
         mode={mode ? "multiple" : ""}
         placeholder="请选择"
         optionFilterProp="children"
@@ -36,8 +40,8 @@ class SelectDialect extends React.Component {
       >
         {options.map((o, i) => {
           return (
-            <Option key={i} value={o.name}>
-              {o.name}
+            <Option key={i} value={o.title}>
+              {o.title}
             </Option>
           );
         })}

@@ -139,3 +139,46 @@ export const updateActivity = data => {
 export const deleteActivity = data => {
   return axios.post("/activity/delete", data);
 };
+/** 反馈管理*/
+export const getFeedback = params => {
+  return axios.get("/feedback/list", { params });
+};
+
+/** 注释管理*/
+export const getNotes = params => {
+  return axios.get("/notes/list", { params });
+};
+export const createNotes = data => {
+  return axios.post("/notes/create", data);
+};
+export const updateNotes = data => {
+  return axios.post("/notes/update", data);
+};
+export const deleteNotes = data => {
+  return axios.post("/notes/delete", data);
+};
+
+/** 协会管理*/
+export const getOrganize = params => {
+  return axios.get("/organize/list", { params });
+};
+export const createOrganize = data => {
+  return axios.post("/organize/create", data);
+};
+export const updateOrganize = data => {
+  return axios.post("/organize/update", data);
+};
+export const deleteOrganize = data => {
+  return axios.post("/organize/delete", data);
+};
+
+/** 用户-会员管理*/
+export const getUsers = params => {
+  return axios.get("/user/list", { params });
+};
+export const getVipUsers = params => {
+  return axios.get("/user/vip/list", { params });
+};
+
+
+

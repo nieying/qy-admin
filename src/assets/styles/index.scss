@@ -63,7 +63,7 @@ p {
 		align-items: center;
 
 		label {
-			width: 140px;
+			width: 130px;
 		}
 
 		.ant-select {
@@ -101,6 +101,10 @@ p {
 			margin-left: 8px;
 		}
 	}
+}
 
-
+.avatar {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
 }

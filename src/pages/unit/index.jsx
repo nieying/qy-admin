@@ -12,6 +12,7 @@ import {
   message
 } from "antd";
 import AddModal from "./components/add";
+import SelectDialect from "@components/SelectDialect";
 import { getUnit, deleteUnit } from "@api/index";
 
 class Unit extends React.Component {
@@ -21,6 +22,7 @@ class Unit extends React.Component {
       loading: false,
       visible: false,
       name: "",
+      languageId: "",
       dataObj: {
         total: 0,
         list: []
@@ -39,7 +41,7 @@ class Unit extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: "名称",
+        title: "单元名称",
         dataIndex: "name",
         key: "name"
       },
@@ -95,9 +97,10 @@ class Unit extends React.Component {
   };
   //   获取数据
   getData = () => {
-    const { name, pagination } = this.state;
+    const { name, languageId, pagination } = this.state;
     const params = {
       name,
+      languageId,
       page: pagination.current,
       limit: pagination.pageSize
     };
@@ -169,6 +172,16 @@ class Unit extends React.Component {
                 placeholder="请输入"
                 allowClear
                 onChange={this.setNameCodition}
+              />
+            </Col>
+            <Col span={6}>
+              <label>所属方言：</label>
+              <SelectDialect
+                setValue={value => {
+                  this.setState({
+                    languageId: value
+                  });
+                }}
               />
             </Col>
             <Col span={6} className="search-opts">

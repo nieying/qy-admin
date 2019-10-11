@@ -39,7 +39,7 @@ class Dialect extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: "方言",
+        title: "方言名称",
         dataIndex: "name",
         key: "name"
       },
@@ -164,7 +164,7 @@ class Dialect extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>方言：</label>
+              <label>方言名称：</label>
               <Input
                 placeholder="请输入"
                 allowClear

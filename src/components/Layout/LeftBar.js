@@ -106,14 +106,12 @@ class LeftBar extends Component {
   };
 
   render() {
-    const { collapsed, theme, openKeys, selectedKeys } = this.state;
+    const { theme, openKeys, selectedKeys } = this.state;
     return (
-      <Sider collapsed={collapsed} onCollapse={this.onCollapse}>
         <Menu
           theme={theme}
           onOpenChange={this.onOpenChange}
           onClick={({ key }) => this.setState({ selectedKeys: [key] })}
-          style={{ height: "100%" }}
           openKeys={openKeys}
           selectedKeys={selectedKeys}
           mode="inline"
@@ -124,7 +122,6 @@ class LeftBar extends Component {
               : this.rendMenuItem(menu);
           })}
         </Menu>
-      </Sider>
     );
   }
 }

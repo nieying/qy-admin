@@ -19,7 +19,7 @@ class Advert extends React.Component {
     this.state = {
       loading: false,
       visible: false,
-      name: "",
+      title: "",
       dataObj: {
         total: 0,
         list: []
@@ -33,8 +33,8 @@ class Advert extends React.Component {
     this.columns = [
       {
         title: "方言",
-        dataIndex: "name",
-        key: "name"
+        dataIndex: "title",
+        key: "title"
       },
       {
         title: "方言归类",
@@ -78,9 +78,9 @@ class Advert extends React.Component {
   };
   //   获取数据
   getData = () => {
-    const { name, pagination } = this.state;
+    const { title, pagination } = this.state;
     const params = {
-      name,
+      title,
       page: pagination.current,
       limit: pagination.pageSize
     };
@@ -110,18 +110,18 @@ class Advert extends React.Component {
   };
   //   重置
   reset = () => {
-    this.setState({ name: "" }, () => {
+    this.setState({ title: "" }, () => {
       this.getData();
     });
   };
   // 设置查询
   setNameCodition = e => {
-    this.setState({ name: e.target.value });
+    this.setState({ title: e.target.value });
   };
   // 删除
   del = record => {
     Modal.confirm({
-      content: `确定删除${record.name}吗？`,
+      content: `确定删除${record.title}吗？`,
       okText: "确认",
       cancelText: "取消",
       onOk: () => {

@@ -7,3 +7,14 @@
 .ant-table-tbody>tr {
 	text-align: center !important;
 }
+
+.ant-table-thead>tr>th,
+.ant-table-tbody>tr>td {
+	padding: 8px 10px !important;
+}
+
+.ant-page-header {
+	height: 60px;
+	display: flex;
+	align-items: center;
+}

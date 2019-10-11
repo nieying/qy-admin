@@ -18,12 +18,12 @@ module.exports = override(
         modifyVars: { '@primary-color': '#1890FF' },
     }),
 
-    addPostcssPlugins([require('postcss-pxtorem')({
-        rootValue: 100,
-        propList: ['*']
-        // propList: ['*', '!border*', '!font-size*', '!letter-spacing'],
-        // propWhiteList: []
-    }),]),
+    // addPostcssPlugins([require('postcss-pxtorem')({
+    //     rootValue: 100,
+    //     propList: ['*']
+    //     // propList: ['*', '!border*', '!font-size*', '!letter-spacing'],
+    //     // propWhiteList: []
+    // }),]),
 
     rewireAliases.aliasesOptions({
         '@components': path.resolve(__dirname, `${paths.appSrc}/components/`),

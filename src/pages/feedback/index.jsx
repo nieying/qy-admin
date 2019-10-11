@@ -1,32 +1,42 @@
 import React from "react";
-import { PageHeader, Row, Col, Input, Button, Table } from "antd";
+import moment from "moment";
+import {
+  PageHeader,
+  Row,
+  Col,
+  Input,
+  Button,
+  Table,
+  Divider,
+  Modal,
+  message
+} from "antd";
+import { getUsers } from "@api/index";
 
-class Feedback extends React.Component {
+class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      params: {
-        name: ""
+      loading: false,
+      visible: false,
+      name: "",
+      dataObj: {
+        total: 0,
+        list: []
       },
-      data: [
-        {
-          key: "1",
-          name: "John Brown",
-          type: 32
-        },
-        {
-          key: "2",
-          name: "Jim Green",
-          type: 42
-        },
-        {
-          key: "3",
-          name: "Joe Black",
-          type: 32
-        }
-      ]
+      pagination: {
+        current: 1,
+        pageSize: 2
+      },
+      editItem: {}
     };
     this.columns = [
+      {
+        title: "序号",
+        width: 60,
+        key: "index",
+        render: (text, record, index) => `${index + 1}`
+      },
       {
         title: "反馈人",
         dataIndex: "name",
@@ -34,60 +44,117 @@ class Feedback extends React.Component {
       },
       {
         title: "反馈内容",
-        dataIndex: "type",
-        key: "type"
+        dataIndex: "content",
+        key: "content"
       },
       {
-        title: "操作",
-        key: "action",
-        render: (text, record) => (
-          <span>
-            <Button type="link">删除</Button>
-          </span>
-        )
+        title: "创建时间",
+        key: "addTime",
+        render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
+      },
+      {
+        title: "修改时间",
+        key: "updateTime",
+        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
       }
+      // {
+      //   title: "操作",
+      //   key: "action",
+      //   render: (text, record) => (
+      //     <span>
+      //       <Button
+      //         type="link"
+      //         onClick={() => {
+      //           this.showModal(record);
+      //         }}
+      //       >
+      //         编辑
+      //       </Button>
+      //       <Divider type="vertical" />
+      //       <Button
+      //         type="link"
+      //         onClick={() => {
+      //           this.del(record);
+      //         }}
+      //       >
+      //         删除
+      //       </Button>
+      //     </span>
+      //   )
+      // }
     ];
   }
-
   componentDidMount() {
     this.getData();
   }
-
-  //   获取数据
-  getData = () => {
-    // todo
-  };
-
-  //   重置
-  reset = () => {
-    this.setState({
-      params: {}
+  changePagination = pagination => {
+    this.setState({ pagination }, () => {
+      this.getData();
     });
   };
-
-  //  导入
-  onImport = () => {};
-
-  //  导出
-  onExport = () => {};
-
+  //   获取数据
+  getData = () => {
+    const { name, pagination } = this.state;
+    const params = {
+      name,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    this.setState({ loading: true });
+    getUsers(params).then(res => {
+      this.setState({
+        loading: false,
+        dataObj: {
+          total: res.total,
+          list: res.list
+        }
+      });
+    });
+  };
+  // //   显示弹框
+  // showModal = record => {
+  //   this.setState({
+  //     visible: true,
+  //     editItem: record && record
+  //   });
+  // };
+  // //   隐藏弹框
+  // handleCancel = () => {
+  //   this.setState({
+  //     visible: false
+  //   });
+  // };
+  //   重置
+  reset = () => {
+    this.setState({ name: "" }, () => {
+      this.getData();
+    });
+  };
+  // 设置查询
+  setNameCodition = e => {
+    this.setState({ name: e.target.value });
+  };
   render() {
-    const { data } = this.state;
+    const { loading, visible, dataObj, pagination, editItem } = this.state;
     return (
       <div className="page-dialect">
         <PageHeader
           title="反馈管理"
           extra={[
-            <Button key="2" type="primary" onClick={this.onExport}>
-              导出
+            <Button key="1" type="primary" onClick={this.showModal}>
+              新增
             </Button>
           ]}
         />
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>反馈人：</label>
-              <Input placeholder="请输入" />
+              <label>反馈内容：</label>
+              <Input
+                placeholder="请输入"
+                allowClear
+                onChange={this.setNameCodition}
+              />
             </Col>
             <Col span={6} className="search-opts">
               <Button type="primary" onClick={this.getData}>
@@ -96,11 +163,24 @@ class Feedback extends React.Component {
               <Button onClick={this.reset}>重置</Button>
             </Col>
           </Row>
-          <Table columns={this.columns} dataSource={data} />
+          <Table
+            loading={loading}
+            columns={this.columns}
+            dataSource={dataObj.list}
+            pagination={{
+              total: dataObj.total,
+              pageSize: pagination.pageSize,
+              showTotal: function() {
+                return "共 " + dataObj.total + " 条数据";
+              }
+            }}
+            onChange={this.changePagination}
+            rowKey={record => record.id}
+          />
         </div>
       </div>
     );
   }
 }
 
-export default Feedback;
+export default User;

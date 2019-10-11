@@ -36,7 +36,7 @@ class Admin extends React.Component {
         dataIndex: "avatar",
         key: "avatar",
         render: (text, record) => {
-          return <img src={record.avatar} width="50" height="50" alt="" />;
+          return <img src={record.avatar} className="avatar" alt="" />;
         }
       },
       {
@@ -160,7 +160,7 @@ class Admin extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>名称：</label>
+              <label>管理员名称：</label>
               <Input
                 placeholder="请输入"
                 allowClear

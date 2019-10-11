@@ -35,18 +35,11 @@ export const menuJson = [
     //   { key: "/subject/picture", title: "看图题", component: "Picture" }
     // ]
   },
-
   {
-    key: "/achieve",
-    title: "成就管理",
-    icon: "code-sandbox",
-    component: "Achieve"
-  },
-  {
-    key: "/union",
-    title: "协会管理",
-    icon: "interaction",
-    component: "Union"
+    key: "/notes",
+    title: "注释管理",
+    icon: "number",
+    component: "Notes"
   },
   {
     key: "/vip",
@@ -61,10 +54,16 @@ export const menuJson = [
     component: "User"
   },
   {
-    key: "/remark",
-    title: "注释管理",
-    icon: "number",
-    component: "Remark"
+    key: "/role",
+    title: "角色管理",
+    icon: "usergroup-add",
+    component: "Role"
+  },
+  {
+    key: "/union",
+    title: "协会管理",
+    icon: "interaction",
+    component: "Union"
   },
   {
     key: "/activity",
@@ -74,13 +73,13 @@ export const menuJson = [
   },
   {
     key: "/feedback",
-    title: "反馈信息管理",
+    title: "反馈管理",
     icon: "message",
     component: "Feedback"
   },
   {
     key: "/ad",
-    title: "广告页管理",
+    title: "广告管理",
     icon: "wallet",
     component: "Ad"
   },
@@ -91,9 +90,10 @@ export const menuJson = [
     component: "StartUp"
   },
   {
-    key: "/role",
-    title: "角色管理",
-    icon: "usergroup-add",
-    component: "Role"
-  }
+    key: "/achieve",
+    title: "成就管理",
+    icon: "code-sandbox",
+    component: "Achieve"
+  },
+
 ];

@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import { Layout, Icon, Menu } from "antd";
+import { Layout, Icon, Modal } from "antd";
 import { withRouter } from "react-router-dom";
-import Header from "./Header";
 import LeftBar from "./LeftBar.js";
 import Routes from "@routes/index";
+import { logout } from "@api/index";
 
 import './index.scss'
 
-const { Content, Sider } = Layout;
+const logoImg = require("@images/logo.png");
+const { Content, Sider, Header } = Layout;
 
 @withRouter
 class LayoutIndex extends Component {
@@ -24,13 +25,50 @@ class LayoutIndex extends Component {
             collapsed: !this.state.collapsed,
         });
     };
+    quit = () => {
+        Modal.confirm({
+            content: "确定退出系统吗？",
+            okText: "确认",
+            cancelText: "取消",
+            onOk: () => {
+                logout().then(res => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("adminInfo");
+                    this.props.history.push("/login");
+                });
+            }
+        });
+    };
     componentWillMount() { }
     render() {
+        const { collapsed } = this.state;
+        const adminInfo = JSON.parse(localStorage.getItem("adminInfo"));
         return (
-            <Layout className="page-layout">
-                <Header />
-                <Layout>
+            <Layout>
+                <Sider trigger={null} collapsible collapsed={collapsed}>
+                    <div className="logo" >
+                    </div>
                     <LeftBar />
+                </Sider>
+                <Layout >
+                    <Header >
+                        <div className="left">
+                            <Icon
+                                className="trigger"
+                                type={collapsed ? 'menu-unfold' : 'menu-fold'}
+                                onClick={this.toggle}
+                            />
+                        </div>
+                        <div className="right">
+                            <div className="admin-avatar">
+                                <img src={adminInfo.avatar} alt="" />
+                            </div>
+                            <div className="name">{adminInfo.nickName}</div>
+                            <div className="quit" onClick={this.quit}>
+                                退出 <Icon type="export" />
+                            </div>
+                        </div>
+                    </Header>
                     <Content>
                         <Routes />
                     </Content>

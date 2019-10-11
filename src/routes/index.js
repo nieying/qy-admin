@@ -12,7 +12,7 @@ import Activity from '@pages/activity';
 import Ad from '@pages/ad';
 import Course from '@pages/course';
 import Feedback from '@pages/feedback';
-import Remark from '@pages/remark';
+import Notes from '@pages/notes';
 import StartUp from '@pages/startUp';
 import Union from '@pages/union';
 import Unit from '@pages/unit';
@@ -34,13 +34,13 @@ class Index extends Component {
                 <PrivateRoute exact path="/activity" component={Activity} />
                 <PrivateRoute exact path="/ad" component={Ad} />
                 <PrivateRoute exact path="/feedback" component={Feedback} />
-                <PrivateRoute exact path="/remark" component={Remark} />
+                <PrivateRoute exact path="/notes" component={Notes} />
                 <PrivateRoute exact path="/startUp" component={StartUp} />
                 <PrivateRoute exact path="/union" component={Union} />
                 <PrivateRoute exact path="/user" component={User} />
                 <PrivateRoute exact path="/vip" component={Vip} />
                 <PrivateRoute exact path="/role" component={Role} />
-                <Redirect exact from="" to="/subject/listen" />
+                <Redirect exact from="" to="/dialect/type" />
             </Switch>
         );
     }
