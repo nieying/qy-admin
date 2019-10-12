@@ -1,21 +1,20 @@
 import React from "react";
 import { Select } from "antd";
-// import { getDialect } from "@api/index";
-
+import { getOrganize } from "@api/index";
 const { Option } = Select;
 
-class SelectDialect extends React.Component {
+class SelectUnion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: JSON.parse(localStorage.getItem('menus')) || [],
+      options: [],
       defaultValue: props.value || ""
     };
   }
   componentWillMount() {
-    // getDialect().then(res => {
-    //   this.setState({ options: res.list });
-    // });
+    getOrganize().then(res => {
+      this.setState({ options: res.list });
+    });
   }
 
   onChange = value => {
@@ -40,7 +39,7 @@ class SelectDialect extends React.Component {
         {options.map((o, i) => {
           return (
             <Option key={i} value={o.id}>
-              {o.title}
+              {o.name}
             </Option>
           );
         })}
@@ -48,4 +47,4 @@ class SelectDialect extends React.Component {
     );
   }
 }
-export default SelectDialect;
+export default SelectUnion;

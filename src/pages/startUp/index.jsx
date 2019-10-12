@@ -1,90 +1,163 @@
 import React from "react";
-import { PageHeader, Row, Col, Input, Button, Table, Divider } from "antd";
+import moment from "moment";
+import {
+  PageHeader,
+  Row,
+  Col,
+  Input,
+  Button,
+  Table,
+  Divider,
+  Modal,
+  message
+} from "antd";
 import AddModal from "./components/add";
+import { getStartup, deleteStartup } from "@api/index";
 
-class Dialect extends React.Component {
+class Startup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      params: {
-        name: ""
-      },
+      loading: false,
       visible: false,
-      data: [
-        {
-          key: "1",
-          name: "John Brown",
-          type: 32
-        },
-        {
-          key: "2",
-          name: "Jim Green",
-          type: 42
-        },
-        {
-          key: "3",
-          name: "Joe Black",
-          type: 32
-        }
-      ]
+      title: "",
+      dataObj: {
+        total: 0,
+        list: []
+      },
+      pagination: {
+        current: 1,
+        pageSize: 2
+      },
+      editItem: {}
     };
     this.columns = [
       {
-        title: "协会名",
-        dataIndex: "name",
-        key: "name"
+        title: "序号",
+        width: 60,
+        key: "index",
+        render: (text, record, index) => `${index + 1}`
       },
       {
-        title: "会徽图标",
-        dataIndex: "type",
-        key: "type"
+        title: "图片",
+        key: "imgUrl",
+        render: (text, record) => (
+          <img src={record.imgUrl} alt="" className="avatar"></img>
+        )
+      },
+      {
+        title: "名称",
+        dataIndex: "title",
+        key: "title"
+      },
+      {
+        title: "协会名称",
+        dataIndex: "organizeName",
+        key: "organizeName"
+      },
+      {
+        title: "创建时间",
+        key: "addTime",
+        render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
+      },
+      {
+        title: "修改时间",
+        key: "updateTime",
+        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
       },
       {
         title: "操作",
         key: "action",
         render: (text, record) => (
           <span>
-            <Button type="link">编辑</Button>
+            <Button
+              type="link"
+              onClick={() => {
+                this.showModal(record);
+              }}
+            >
+              编辑
+            </Button>
             <Divider type="vertical" />
-            <Button type="link">删除</Button>
+            <Button
+              type="link"
+              onClick={() => {
+                this.del(record);
+              }}
+            >
+              删除
+            </Button>
           </span>
         )
       }
     ];
   }
-
   componentDidMount() {
     this.getData();
   }
-
-  //   获取数据
-  getData = () => {
-    // todo
-  };
-
-  //   显示弹框
-  showModal = () => {
-    this.setState({
-      visible: true
+  changePagination = pagination => {
+    this.setState({ pagination }, () => {
+      this.getData();
     });
   };
-
+  //   获取数据
+  getData = () => {
+    const { title, pagination } = this.state;
+    const params = {
+      name: title,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    this.setState({ loading: true });
+    getStartup(params).then(res => {
+      this.setState({
+        loading: false,
+        dataObj: {
+          total: res.total,
+          list: res.list
+        }
+      });
+    });
+  };
+  //   显示弹框
+  showModal = record => {
+    this.setState({
+      visible: true,
+      editItem: record && record
+    });
+  };
   //   隐藏弹框
   handleCancel = () => {
     this.setState({
       visible: false
     });
   };
-
   //   重置
   reset = () => {
-    this.setState({
-      params: {}
+    this.setState({ title: "" }, () => {
+      this.getData();
     });
   };
-
+  // 设置查询
+  setNameCodition = e => {
+    this.setState({ title: e.target.value });
+  };
+  // 删除
+  del = record => {
+    Modal.confirm({
+      content: `确定删除${record.title}吗？`,
+      okText: "确认",
+      cancelText: "取消",
+      onOk: () => {
+        deleteStartup({ id: record.id }).then(res => {
+          message.success("删除成功！");
+          this.getData();
+        });
+      }
+    });
+  };
   render() {
-    const { visible, data } = this.state;
+    const { loading, visible, dataObj, pagination, editItem } = this.state;
     return (
       <div className="page-dialect">
         <PageHeader
@@ -98,8 +171,12 @@ class Dialect extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>协会名：</label>
-              <Input placeholder="请输入" />
+              <label>方言名称：</label>
+              <Input
+                placeholder="请输入"
+                allowClear
+                onChange={this.setNameCodition}
+              />
             </Col>
             <Col span={6} className="search-opts">
               <Button type="primary" onClick={this.getData}>
@@ -108,12 +185,31 @@ class Dialect extends React.Component {
               <Button onClick={this.reset}>重置</Button>
             </Col>
           </Row>
-          <Table columns={this.columns} dataSource={data} />
+          <Table
+            loading={loading}
+            columns={this.columns}
+            dataSource={dataObj.list}
+            pagination={{
+              total: dataObj.total,
+              pageSize: pagination.pageSize,
+              showTotal: function() {
+                return "共 " + dataObj.total + " 条数据";
+              }
+            }}
+            onChange={this.changePagination}
+            rowKey={record => record.id}
+          />
         </div>
-        {visible && <AddModal handleCancel={this.handleCancel} />}
+        {visible && (
+          <AddModal
+            handleCancel={this.handleCancel}
+            editItem={editItem}
+            getData={this.getData}
+          />
+        )}
       </div>
     );
   }
 }
 
-export default Dialect;
+export default Startup;

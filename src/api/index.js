@@ -5,8 +5,8 @@ export const login = data => {
   return axios.post("/auth/login", data);
 };
 // 获取登入用户信息
-export const adminInfo = data => {
-  return axios.post("/auth/info", data);
+export const adminInfo = params => {
+  return axios.get("/auth/info", {params});
 };
 // 退出
 export const logout = data => {
@@ -170,6 +170,19 @@ export const updateOrganize = data => {
 };
 export const deleteOrganize = data => {
   return axios.post("/organize/delete", data);
+};
+/** 启动页管理*/
+export const getStartup = params => {
+  return axios.get("/startup/list", { params });
+};
+export const createStartup = data => {
+  return axios.post("/startup/create", data);
+};
+export const updateStartup = data => {
+  return axios.post("/startup/update", data);
+};
+export const deleteStartup = data => {
+  return axios.post("/startup/delete", data);
 };
 
 /** 用户-会员管理*/

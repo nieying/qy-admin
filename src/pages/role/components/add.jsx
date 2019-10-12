@@ -64,7 +64,7 @@ class Add extends React.Component {
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           <Form.Item label="管理员头像">
             {getFieldDecorator("avatar", {
-              rules: [{ message: "请输入" }]
+              rules: [{ required: true, message: "请输入" }]
             })(
               <UploadImg
                 setValue={value => {

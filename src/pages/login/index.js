@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
-import { login } from "@api/index";
+import { login, adminInfo } from "@api/index";
 import "./index.scss";
 
 @Form.create()
@@ -19,11 +19,19 @@ class Login extends Component {
         login(values).then(res => {
           localStorage.setItem("token", res.token);
           localStorage.setItem("adminInfo", JSON.stringify(res.adminInfo));
+          localStorage.setItem("menus", JSON.stringify(res.menus));
+          // this.getAdminInfo();
           this.props.history.push("/dialect");
         });
       }
     });
   };
+
+  // getAdminInfo = () => {
+  //   adminInfo().then(res => {
+  //     console.log('get admin info res', res)
+  //   })
+  // }
 
   render() {
     const { getFieldDecorator } = this.props.form;

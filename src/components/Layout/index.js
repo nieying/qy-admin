@@ -34,6 +34,7 @@ class LayoutIndex extends Component {
                 logout().then(res => {
                     localStorage.removeItem("token");
                     localStorage.removeItem("adminInfo");
+                    localStorage.removeItem("menus");
                     this.props.history.push("/login");
                 });
             }

@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Layout, Menu, Icon } from "antd";
-import { menuJson } from "@utils/menuJson.js";
-
-const { Sider } = Layout;
+import { Menu, Icon } from "antd";
 
 @withRouter
 class LeftBar extends Component {
@@ -107,21 +104,22 @@ class LeftBar extends Component {
 
   render() {
     const { theme, openKeys, selectedKeys } = this.state;
+    const menus = JSON.parse(localStorage.getItem('menus'))
     return (
-        <Menu
-          theme={theme}
-          onOpenChange={this.onOpenChange}
-          onClick={({ key }) => this.setState({ selectedKeys: [key] })}
-          openKeys={openKeys}
-          selectedKeys={selectedKeys}
-          mode="inline"
-        >
-          {menuJson.map(menu => {
-            return menu.subs && menu.subs.length > 0
-              ? this.rendSubMenuItem(menu)
-              : this.rendMenuItem(menu);
-          })}
-        </Menu>
+      <Menu
+        theme={theme}
+        onOpenChange={this.onOpenChange}
+        onClick={({ key }) => this.setState({ selectedKeys: [key] })}
+        openKeys={openKeys}
+        selectedKeys={selectedKeys}
+        mode="inline"
+      >
+        {menus.map(menu => {
+          return menu.subs && menu.subs.length > 0
+            ? this.rendSubMenuItem(menu)
+            : this.rendMenuItem(menu);
+        })}
+      </Menu>
     );
   }
 }

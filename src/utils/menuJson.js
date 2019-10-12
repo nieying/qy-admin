@@ -25,15 +25,6 @@ export const menuJson = [
     title: "题目管理",
     icon: "container",
     component: "Topic"
-    // subs: [
-    //   { key: "/subject/listen", title: "听力题", component: "Listen" },
-    //   {
-    //     key: "/subject/security",
-    //     title: "防伪标题",
-    //     component: "Security"
-    //   },
-    //   { key: "/subject/picture", title: "看图题", component: "Picture" }
-    // ]
   },
   {
     key: "/notes",
