@@ -39,19 +39,26 @@ class Course extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: "课程名称",
+        title: "单元名称",
         dataIndex: "name",
         key: "name"
       },
       {
-        title: "所属方言",
-        dataIndex: "languageId",
-        key: "languageId"
+        title: "图标",
+        key: "avatar",
+        render: (text, record) => (
+          <img src={record.avatar} alt="" className="avatar"></img>
+        )
       },
+      // {
+      //   title: "所属方言",
+      //   dataIndex: "languageName",
+      //   key: "languageName"
+      // },
       {
-        title: "所属单元",
-        dataIndex: "unitId",
-        key: "unitId"
+        title: "所属课程",
+        dataIndex: "unitName",
+        key: "unitName"
       },
       {
         title: "创建时间",
@@ -159,7 +166,7 @@ class Course extends React.Component {
     return (
       <div className="page-dialect">
         <PageHeader
-          title="课程管理"
+          title="单元管理"
           extra={[
             <Button key="1" type="primary" onClick={this.showModal}>
               新增
@@ -169,7 +176,7 @@ class Course extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>课程名称：</label>
+              <label>单元名称：</label>
               <Input
                 placeholder="请输入"
                 allowClear

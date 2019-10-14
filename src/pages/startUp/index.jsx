@@ -9,10 +9,11 @@ import {
   Table,
   Divider,
   Modal,
-  message
+  message,
+  Switch
 } from "antd";
 import AddModal from "./components/add";
-import { getStartup, deleteStartup } from "@api/index";
+import { getStartup, updateStartup, deleteStartup } from "@api/index";
 
 class Startup extends React.Component {
   constructor(props) {
@@ -66,6 +67,20 @@ class Startup extends React.Component {
         render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
       },
       {
+        title: "是否启用",
+        key: "state",
+        render: (text, record) => (
+          <Switch
+            checkedChildren="启用"
+            unCheckedChildren="禁用"
+            defaultChecked={record.state ? true : false}
+            onChange={e => {
+              this.handleState(e, record);
+            }}
+          />
+        )
+      },
+      {
         title: "操作",
         key: "action",
         render: (text, record) => (
@@ -117,6 +132,12 @@ class Startup extends React.Component {
           list: res.list
         }
       });
+    });
+  };
+  // 启用禁用
+  handleState = (state, record) => {
+    updateStartup({ id: record.id, state: state ? 1 : 0 }).then(res => {
+      res && message.success(state ? "启用成功！" : "禁用成功");
     });
   };
   //   显示弹框

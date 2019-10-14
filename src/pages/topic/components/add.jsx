@@ -114,7 +114,7 @@ class Add extends React.Component {
               />
             )}
           </Form.Item>
-          <Form.Item label="所属单元">
+          <Form.Item label="所属课程">
             {getFieldDecorator("unitId", {
               rules: [{ required: true, message: "请选择" }]
             })(

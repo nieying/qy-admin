@@ -18,6 +18,20 @@ export const uploadFile = data => {
   return axios.post("/storage/create", data);
 };
 
+// 菜单权限
+export const getMenu = params => {
+  return axios.get("/menu/names", { params });
+};
+// export const createMenu = data => {
+//   return axios.post("/languageClass/create", data);
+// };
+// export const updateMenu = data => {
+//   return axios.post("/languageClass/update", data);
+// };
+// export const deleteMenu = data => {
+//   return axios.post("/languageClass/delete", data);
+// };
+
 /** 方言分类 */
 export const getDialectType = params => {
   return axios.get("/languageClass/list", { params });
@@ -72,16 +86,16 @@ export const deleteCourse = data => {
 };
 /** 广告管理 */
 export const getAdvert = params => {
-  return axios.get("/advert/list", { params });
+  return axios.get("/ad/list", { params });
 };
 export const createAdvert = data => {
-  return axios.post("/advert/create", data);
+  return axios.post("/ad/create", data);
 };
 export const updateAdvert = data => {
-  return axios.post("/advert/update", data);
+  return axios.post("/ad/update", data);
 };
 export const deleteAdvert = data => {
-  return axios.post("/advert/delete", data);
+  return axios.post("/ad/delete", data);
 };
 /** 题目管理 */
 export const getSubject = params => {

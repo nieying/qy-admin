@@ -12,7 +12,7 @@ import {
   message,
   Select
 } from "antd";
-import AddModal from "./components/Add";
+import AddModal from "./components/add";
 import AddAnswer from "./components/AddAnswer";
 import SelectTopicType from "@components/SelectTopicType";
 
@@ -59,18 +59,18 @@ class Subject extends React.Component {
       },
       {
         title: "所属方言",
-        dataIndex: "languageId",
-        key: "languageId"
+        dataIndex: "languageName",
+        key: "languageName"
       },
       {
         title: "所属单元",
-        dataIndex: "unitId",
-        key: "unitId"
+        dataIndex: "unitName",
+        key: "unitName"
       },
       {
         title: "所属课程",
-        dataIndex: "courseId",
-        key: "courseId"
+        dataIndex: "courseName",
+        key: "courseName"
       },
       {
         title: "创建时间",

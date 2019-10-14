@@ -17,11 +17,13 @@ class Login extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         login(values).then(res => {
-          localStorage.setItem("token", res.token);
-          localStorage.setItem("adminInfo", JSON.stringify(res.adminInfo));
-          localStorage.setItem("menus", JSON.stringify(res.menus));
-          // this.getAdminInfo();
-          this.props.history.push("/dialect");
+          if (res) {
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("adminInfo", JSON.stringify(res.adminInfo));
+            localStorage.setItem("menus", JSON.stringify(res.menus));
+            // this.getAdminInfo();
+            this.props.history.push("/dialect");
+          }
         });
       }
     });

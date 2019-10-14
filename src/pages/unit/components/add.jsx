@@ -14,6 +14,7 @@ class Add extends React.Component {
   componentDidMount() {
     const { editItem } = this.props;
     this.props.form.setFieldsValue({
+      avatar: editItem.avatar,
       name: editItem.name,
       languageId: editItem.languageId
     });
@@ -60,20 +61,24 @@ class Add extends React.Component {
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          <Form.Item label="单元名称">
+          <Form.Item label="课程图标">
+            {getFieldDecorator("avatar", {
+              rules: [{ required: true, message: "请上传图片" }]
+            })(
+              <UploadImg
+                setValue={value => {
+                  setFieldsValue({
+                    avatar: value
+                  });
+                }}
+              />
+            )}
+          </Form.Item>
+          <Form.Item label="课程名称">
             {getFieldDecorator("name", {
-              rules: [{ required: true, message: "请输入方言" }]
+              rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
           </Form.Item>
-          {/* <Form.Item label="单元图标">
-            {getFieldDecorator("pic", {
-              rules: [{ required: true, message: "请上传图片" }]
-            })(<UploadImg setValue={value => {
-              setFieldsValue({
-                type: value
-              });
-            }}/>)}
-          </Form.Item> */}
           <Form.Item label="所属方言">
             {getFieldDecorator("languageId", {
               rules: [{ required: true, message: "请选择" }]

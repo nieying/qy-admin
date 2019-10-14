@@ -161,12 +161,12 @@ class Activity extends React.Component {
         <PageHeader
           title="活动管理"
           extra={[
-            <Button key="1" type="primary">
-              导入
-            </Button>,
-            <Button key="2" type="primary">
-              导出
-            </Button>,
+            // <Button key="1" type="primary">
+            //   导入
+            // </Button>,
+            // <Button key="2" type="primary">
+            //   导出
+            // </Button>,
             <Button key="3" type="primary" onClick={this.showModal}>
               新增
             </Button>

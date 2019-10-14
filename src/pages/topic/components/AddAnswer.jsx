@@ -78,11 +78,6 @@ class AddAnswer extends React.Component {
               rules: [{ required: true, message: "请选择" }]
             })(<Input placeholder="请输入" />)}
           </Form.Item>
-          <Form.Item label="正确答案">
-            {getFieldDecorator("correctAnswer", {
-              rules: [{ required: true, message: "请选择" }]
-            })(<Input placeholder="请输入" />)}
-          </Form.Item>
         </Form>
       </Modal>
     );

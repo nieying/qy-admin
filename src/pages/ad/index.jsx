@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import {
   PageHeader,
   Row,
@@ -8,10 +9,11 @@ import {
   Table,
   Divider,
   Modal,
-  message
+  message,
+  Switch
 } from "antd";
 import AddModal from "./components/add";
-import { getAdvert, deleteAdvert } from "@api/index";
+import { getAdvert, updateAdvert, deleteAdvert } from "@api/index";
 
 class Advert extends React.Component {
   constructor(props) {
@@ -32,14 +34,51 @@ class Advert extends React.Component {
     };
     this.columns = [
       {
-        title: "方言",
+        title: "序号",
+        width: 60,
+        key: "index",
+        render: (text, record, index) => `${index + 1}`
+      },
+      {
+        title: "广告图片",
+        key: "imgUrl",
+        render: (text, record) => (
+          <img src={record.imgUrl} alt="" className="avatar"></img>
+        )
+      },
+      {
+        title: "广告标题",
         dataIndex: "title",
         key: "title"
       },
       {
-        title: "方言归类",
+        title: "广告内容",
         dataIndex: "type",
         key: "type"
+      },
+      {
+        title: "创建时间",
+        key: "addTime",
+        render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
+      },
+      {
+        title: "修改时间",
+        key: "updateTime",
+        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
+      },
+      {
+        title: "是否启用",
+        key: "state",
+        render: (text, record) => (
+          <Switch
+            checkedChildren="启用"
+            unCheckedChildren="禁用"
+            defaultChecked={record.state ? true : false}
+            onChange={e => {
+              this.handleState(e, record);
+            }}
+          />
+        )
       },
       {
         title: "操作",
@@ -86,13 +125,20 @@ class Advert extends React.Component {
     };
     this.setState({ loading: true });
     getAdvert(params).then(res => {
-      this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
+    });
+  };
+  // 启用禁用
+  handleState = (state, record) => {
+    updateAdvert({ id: record.id, state: state ? 1 : 0 }).then(res => {
+      res && message.success(state ? "启用成功！" : "禁用成功");
     });
   };
   //   显示弹框

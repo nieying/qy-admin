@@ -13,12 +13,14 @@ class Add extends React.Component {
 
   componentDidMount() {
     const { editItem } = this.props;
-    this.props.form.setFieldsValue({
-      avatar: editItem.avatar,
-      username: editItem.username,
-      password: editItem.password,
-      roleIds: editItem.roleIds
-    });
+    if (editItem) {
+      this.props.form.setFieldsValue({
+        avatar: editItem.avatar,
+        username: editItem.username,
+        password: '******',
+        menus: []
+      });
+    }
   }
 
   handleOk = e => {
@@ -35,20 +37,22 @@ class Add extends React.Component {
     const { editItem } = this.props;
     values.id = editItem.id;
     updateAdmin(values).then(res => {
-      this.succCallback();
+      this.succCallback(res);
     });
   };
   add = values => {
     createAdmin(values).then(res => {
-      this.succCallback();
+      this.succCallback(res);
     });
   };
 
-  succCallback = () => {
-    const { editItem } = this.props;
-    message.success(editItem && editItem.id ? "编辑成功" : "添加成功");
-    this.props.handleCancel();
-    this.props.getData();
+  succCallback = res => {
+    if (res) {
+      const { editItem } = this.props;
+      message.success(editItem && editItem.id ? "编辑成功" : "添加成功");
+      this.props.handleCancel();
+      this.props.getData();
+    }
   };
 
   render() {
@@ -86,14 +90,14 @@ class Add extends React.Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item label="菜单权限">
-            {getFieldDecorator("roleIds", {
+            {getFieldDecorator("menus", {
               rules: [{ required: true, message: "请选择" }]
             })(
               <SelectMenu
                 mode={true}
                 setValue={value => {
                   setFieldsValue({
-                    roleIds: value
+                    menus: value
                   });
                 }}
               />

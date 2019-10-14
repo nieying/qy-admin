@@ -1,6 +1,6 @@
 import React from "react";
 import { Select } from "antd";
-// import { getDialect } from "@api/index";
+import { getMenu } from "@api/index";
 
 const { Option } = Select;
 
@@ -8,14 +8,14 @@ class SelectDialect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: JSON.parse(localStorage.getItem('menus')) || [],
+      options: [],
       defaultValue: props.value || ""
     };
   }
   componentWillMount() {
-    // getDialect().then(res => {
-    //   this.setState({ options: res.list });
-    // });
+    getMenu().then(res => {
+      this.setState({ options: res });
+    });
   }
 
   onChange = value => {

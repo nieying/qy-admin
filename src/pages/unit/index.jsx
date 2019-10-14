@@ -41,14 +41,21 @@ class Unit extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: "单元名称",
+        title: "图标",
+        key: "avatar",
+        render: (text, record) => (
+          <img src={record.avatar} alt="" className="avatar"></img>
+        )
+      },
+      {
+        title: "课程名称",
         dataIndex: "name",
         key: "name"
       },
       {
         title: "所属方言",
-        dataIndex: "languageId",
-        key: "languageId"
+        dataIndex: "languageName",
+        key: "languageName"
       },
       {
         title: "创建时间",
@@ -157,7 +164,7 @@ class Unit extends React.Component {
     return (
       <div className="page-dialect">
         <PageHeader
-          title="单元管理"
+          title="课程管理"
           extra={[
             <Button key="1" type="primary" onClick={this.showModal}>
               新增
@@ -167,7 +174,7 @@ class Unit extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>单元名称：</label>
+              <label>课程名称：</label>
               <Input
                 placeholder="请输入"
                 allowClear

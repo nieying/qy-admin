@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, Form, Input, message } from "antd";
 import { createCourse, updateCourse } from "@api/index";
-import SelectDialect from "@components/SelectDialect";
 import SelectUnit from "@components/SelectUnit";
+import UploadImg from "@components/UploadImg";
 
 @Form.create()
 class Add extends React.Component {
@@ -15,6 +15,7 @@ class Add extends React.Component {
     const { editItem } = this.props;
     if (editItem && editItem.id) {
       this.props.form.setFieldsValue({
+        avatar: editItem.avatar,
         name: editItem.name,
         languageId: editItem.languageId.toString(),
         unitId: editItem.unitId.toString()
@@ -63,32 +64,32 @@ class Add extends React.Component {
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          <Form.Item label="课程名称">
-            {getFieldDecorator("name", {
-              rules: [{ required: true, message: "请输入" }]
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label="所属方言">
-            {getFieldDecorator("languageId", {
-              rules: [{ required: true, message: "请选择" }]
+        <Form.Item label="单元图标">
+            {getFieldDecorator("avatar", {
+              rules: [{ required: true, message: "请上传图片" }]
             })(
-              <SelectDialect
+              <UploadImg
                 setValue={value => {
                   setFieldsValue({
-                    languageId: value
+                    avatar: value
                   });
                 }}
               />
             )}
           </Form.Item>
-          <Form.Item label="所属单元">
-            {getFieldDecorator("unitId", {
+          <Form.Item label="单元名称">
+            {getFieldDecorator("name", {
+              rules: [{ required: true, message: "请输入" }]
+            })(<Input />)}
+          </Form.Item>
+          <Form.Item label="所属课程">
+            {getFieldDecorator("languageId", {
               rules: [{ required: true, message: "请选择" }]
             })(
               <SelectUnit
                 setValue={value => {
                   setFieldsValue({
-                    unitId: value
+                    languageId: value
                   });
                 }}
               />

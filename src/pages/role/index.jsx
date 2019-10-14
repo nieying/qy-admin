@@ -45,11 +45,6 @@ class Admin extends React.Component {
         key: "username"
       },
       {
-        title: "密码",
-        dataIndex: "password",
-        key: "password"
-      },
-      {
         title: "菜单权限",
         dataIndex: "menu",
         key: "menu"

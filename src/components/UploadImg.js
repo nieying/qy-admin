@@ -1,6 +1,8 @@
 import React from "react";
 import { Upload, Icon, message } from "antd";
 
+const url = 'https://api.deyushiyuan.cn/litemall/admin/storage/create'
+// const url = 'http://192.168.123.218:8083/admin/storage/create'
 function getBase64(img, callback) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
@@ -61,7 +63,7 @@ class Avatar extends React.Component {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        action="https://api.deyushiyuan.cn/litemall/admin/storage/create"
+        action={url}
         headers={{
           "X-Admin-Token": localStorage.getItem("token")
         }}

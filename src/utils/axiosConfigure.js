@@ -2,19 +2,19 @@ import axios from "axios";
 import qs from "qs";
 import { message } from "antd";
 import { createHashHistory } from "history";
-const history = createHashHistory()
+const history = createHashHistory();
 
 const axiosConfigure = () => {
   // 拦截request,设置全局请求为ajax请求
   axios.interceptors.request.use(
-    function (config) {
+    function(config) {
       if (localStorage.getItem("token")) {
         config.headers = {
           "X-Admin-Token": localStorage.getItem("token")
         };
       }
-      // config.url = `https://api.deyushiyuan.cn/litemall/admin${config.url}`;
-      config.url = `http://api.deyushiyuan.cn/litemall/admin${config.url}`;
+      config.url = `https://api.deyushiyuan.cn/litemall/admin${config.url}`;
+      // config.url = `http://192.168.123.218:8083/admin${config.url}`;
       //配置发送请求的信息
       // let { accessToken, appId } = localStorage;
       // let timestamp = Date.parse(new Date());
@@ -30,7 +30,7 @@ const axiosConfigure = () => {
       // }
       return config;
     },
-    function (error) {
+    function(error) {
       return Promise.reject(error);
     }
   );
@@ -42,7 +42,12 @@ const axiosConfigure = () => {
       if (data.errno === 0) {
         return Promise.resolve(data.data);
       } else {
-        message.error(data.errmsg);
+        if (data.errno === 501 || data.errno === 502) {
+          message.error(data.errmsg);
+          history.push("/login");
+        } else {
+          message.error(data.errmsg);
+        }
       }
     },
     err => {
@@ -51,8 +56,7 @@ const axiosConfigure = () => {
       //     message.error.error('网络异常，请稍后再试', 4);
       // }
       message.error(err.message);
-      history.push('/login')
-
+      history.push("/login");
       return Promise.reject(err);
     }
   );
