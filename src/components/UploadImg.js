@@ -24,10 +24,14 @@ function beforeUpload(file) {
 class Avatar extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       imageUrl: props.value || '',
       loading: false
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ imageUrl: nextProps && nextProps.value });
   }
 
   handleChange = info => {
@@ -73,8 +77,8 @@ class Avatar extends React.Component {
         {imageUrl ? (
           <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
         ) : (
-          uploadButton
-        )}
+            uploadButton
+          )}
       </Upload>
     );
   }

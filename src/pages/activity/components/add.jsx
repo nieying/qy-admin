@@ -1,34 +1,58 @@
 import React from "react";
 import moment from "moment";
+import BraftEditor from "braft-editor";
+import "braft-editor/dist/index.css";
+import UploadImg from "@components/UploadImg";
+
 import { Modal, Form, Select, Input, DatePicker, message } from "antd";
-import { createActivity, updateActivity } from "@api/index";
+import { readActivity, createActivity, updateActivity } from "@api/index";
 
 const { Option } = Select;
-const { TextArea } = Input;
 const dateFormat = "YYYY-MM-DD";
 
 @Form.create()
 class Add extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      editorState: ""
+    };
   }
+
+  componentWillMount() {}
 
   componentDidMount() {
     const { editItem } = this.props;
-    this.props.form.setFieldsValue({
-      title: editItem.title,
-      type: editItem.type,
-      startTime: moment(editItem.startTime),
-      endTime: moment(editItem.endTime),
-      content: editItem.content
-    });
+    if (editItem && editItem.id) {
+      readActivity({ id: editItem.id }).then(res => {
+        res && this.setFormData(res);
+      });
+    }
   }
+  setFormData = res => {
+    this.props.form.setFieldsValue({
+      imgUrl: res.imgUrl,
+      title: res.title,
+      type: res.type,
+      startTime: moment(res.startTime),
+      endTime: moment(res.endTime),
+      content: BraftEditor.createEditorState(res.content)
+    });
+  };
+
+  handleEditorChange = editorState => {
+    this.setState({ editorState });
+  };
 
   handleOk = e => {
     const { editItem } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      values.content = values.content.toHTML();
+      values.actDate = moment(values.startTime).format("YYYY-MM-DD");
+      values.link = "https://jeff.cn/qyAdmin";
+      values.startTime = moment(values.startTime).format("YYYY-MM-DD HH:mm:ss");
+      values.endTime = moment(values.endTime).format("YYYY-MM-DD HH:mm:ss");
       if (!err) {
         editItem && editItem.id ? this.update(values) : this.add(values);
       }
@@ -39,16 +63,16 @@ class Add extends React.Component {
     const { editItem } = this.props;
     values.id = editItem.id;
     updateActivity(values).then(res => {
-      this.succCallback();
+      this.succCallback(res);
     });
   };
   add = values => {
     createActivity(values).then(res => {
-      this.succCallback();
+      this.succCallback(res);
     });
   };
 
-  succCallback = () => {
+  succCallback = res => {
     const { editItem } = this.props;
     message.success(editItem && editItem.id ? "编辑成功" : "添加成功");
     this.props.handleCancel();
@@ -56,16 +80,31 @@ class Add extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, setFieldsValue } = this.props.form;
     const { editItem } = this.props;
     return (
       <Modal
+        width="80%"
+        centered
         title={editItem && editItem.id ? "编辑" : "修改"}
         visible={true}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >
-        <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+        <Form labelCol={{ span: 3 }} wrapperCol={{ span: 20 }}>
+          <Form.Item label="图片">
+            {getFieldDecorator("imgUrl", {
+              rules: [{ required: true, message: "请输入" }]
+            })(
+              <UploadImg
+                setValue={value => {
+                  setFieldsValue({
+                    imgUrl: value
+                  });
+                }}
+              />
+            )}
+          </Form.Item>
           <Form.Item label="活动名称">
             {getFieldDecorator("title", {
               rules: [{ required: true, message: "请输入" }]
@@ -76,8 +115,8 @@ class Add extends React.Component {
               rules: [{ required: true, message: "请选择" }]
             })(
               <Select placeholder="请选择">
-                <Option value="普通活动">普通活动</Option>
-                <Option value="协会活动">协会活动</Option>
+                <Option value="official">官方活动</Option>
+                <Option value="society">协会活动</Option>
               </Select>
             )}
           </Form.Item>
@@ -92,9 +131,14 @@ class Add extends React.Component {
             })(<DatePicker format={dateFormat} />)}
           </Form.Item>
           <Form.Item label="活动详情">
-            {getFieldDecorator("detail", {
+            {getFieldDecorator("content", {
               rules: [{ required: true, message: "请输入" }]
-            })(<TextArea />)}
+            })(
+              <BraftEditor
+                onChange={this.handleEditorChange}
+                // onSave={this.submitContent}
+              />
+            )}
           </Form.Item>
         </Form>
       </Modal>

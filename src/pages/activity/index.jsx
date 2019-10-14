@@ -40,12 +40,10 @@ class Activity extends React.Component {
       {
         title: "活动类别",
         dataIndex: "type",
-        key: "type"
-      },
-      {
-        title: "活动详情",
-        dataIndex: "detail",
-        key: "detail"
+        key: 'type',
+        render: (text, record) => (
+          <span>{record.type === 'official' ? '官方活动' : '协会活动'}</span>
+        )
       },
       {
         title: "开始时间",

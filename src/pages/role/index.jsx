@@ -46,8 +46,11 @@ class Admin extends React.Component {
       },
       {
         title: "菜单权限",
-        dataIndex: "menu",
-        key: "menu"
+        dataIndex: "menus",
+        key: "menus",
+        render: (text, record) => {
+          return this.renderMenus(record);
+        }
       },
       {
         title: "操作",
@@ -76,6 +79,13 @@ class Admin extends React.Component {
       }
     ];
   }
+  renderMenus = record => {
+    let menusTitle = [];
+    record.menus.forEach(item => {
+      menusTitle.push(item.title);
+    });
+    return <span>{menusTitle.toString()}</span>;
+  };
   componentDidMount() {
     this.getData();
   }
@@ -105,6 +115,13 @@ class Admin extends React.Component {
   };
   //   显示弹框
   showModal = record => {
+    let menusIds = [];
+    if (record) {
+      record.menus.map(item => {
+        menusIds.push(item.id);
+      });
+    }
+    record.menusIds = menusIds;
     this.setState({
       visible: true,
       editItem: record && record

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, message, Select } from "antd";
+import { Modal, Form, Input, message } from "antd";
 import { createSubject, updateSubject } from "@api/index";
 import UploadImg from "@components/UploadImg";
 import SelectTopicType from "@components/SelectTopicType";
@@ -8,7 +8,6 @@ import SelectDialect from "@components/SelectDialect";
 import SelectUnit from "@components/SelectUnit";
 import SelectCourse from "@components/SelectCourse";
 
-const { Option } = Select;
 @Form.create()
 class Add extends React.Component {
   constructor(props) {

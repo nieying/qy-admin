@@ -101,6 +101,9 @@ export const deleteAdvert = data => {
 export const getSubject = params => {
   return axios.get("/subject/list", { params });
 };
+export const getSubjectInfo = params => {
+  return axios.get("/subject/Info", { params });
+};
 export const createSubject = data => {
   return axios.post("/subject/create", data);
 };
@@ -142,7 +145,7 @@ export const getActivity = params => {
   return axios.get("/activity/list", { params });
 };
 export const readActivity = params => {
-  return axios.post("/activity/info", { params });
+  return axios.get("/activity/info", { params });
 };
 export const createActivity = data => {
   return axios.post("/activity/create", data);

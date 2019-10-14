@@ -9,15 +9,13 @@ import {
   Table,
   Divider,
   Modal,
-  message,
-  Select
+  message
 } from "antd";
 import AddModal from "./components/add";
 import AddAnswer from "./components/AddAnswer";
 import SelectTopicType from "@components/SelectTopicType";
 
 import { getSubject, deleteSubject } from "@api/index";
-const { Option } = Select;
 class Subject extends React.Component {
   constructor(props) {
     super(props);
@@ -93,7 +91,7 @@ class Subject extends React.Component {
                 this.showAnswerModal(record);
               }}
             >
-              新增答案
+              答题选项
             </Button>
             <Divider type="vertical" />
             <Button

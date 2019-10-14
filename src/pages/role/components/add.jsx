@@ -18,7 +18,7 @@ class Add extends React.Component {
         avatar: editItem.avatar,
         username: editItem.username,
         password: '******',
-        menus: []
+        menus: editItem.menusIds || []
       });
     }
   }
