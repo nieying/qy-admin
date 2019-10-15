@@ -29,7 +29,7 @@ class Unit extends React.Component {
       },
       pagination: {
         current: 1,
-        pageSize: 2
+        pageSize: 10
       },
       editItem: {}
     };
@@ -48,7 +48,7 @@ class Unit extends React.Component {
         )
       },
       {
-        title: "课程名称",
+        title: "单元名称",
         dataIndex: "name",
         key: "name"
       },
@@ -164,7 +164,7 @@ class Unit extends React.Component {
     return (
       <div className="page-dialect">
         <PageHeader
-          title="课程管理"
+          title="单元名称"
           extra={[
             <Button key="1" type="primary" onClick={this.showModal}>
               新增
@@ -174,7 +174,7 @@ class Unit extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>课程名称：</label>
+              <label>单元名称：</label>
               <Input
                 placeholder="请输入"
                 allowClear

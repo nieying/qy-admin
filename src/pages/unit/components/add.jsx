@@ -74,7 +74,7 @@ class Add extends React.Component {
               />
             )}
           </Form.Item>
-          <Form.Item label="课程名称">
+          <Form.Item label="单元名称">
             {getFieldDecorator("name", {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}

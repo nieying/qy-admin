@@ -17,7 +17,7 @@ class User extends React.Component {
       },
       pagination: {
         current: 1,
-        pageSize: 2
+        pageSize: 10
       },
       editItem: {}
     };

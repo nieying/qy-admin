@@ -6,7 +6,6 @@ import SelectTopicType from "@components/SelectTopicType";
 import UploadFile from "@components/UploadFile";
 import SelectDialect from "@components/SelectDialect";
 import SelectUnit from "@components/SelectUnit";
-import SelectCourse from "@components/SelectCourse";
 
 @Form.create()
 class Add extends React.Component {
@@ -105,19 +104,6 @@ class Add extends React.Component {
               rules: [{ required: true, message: "请选择" }]
             })(
               <SelectUnit
-                setValue={value => {
-                  setFieldsValue({
-                    unitId: value
-                  });
-                }}
-              />
-            )}
-          </Form.Item>
-          <Form.Item label="所属课程">
-            {getFieldDecorator("unitId", {
-              rules: [{ required: true, message: "请选择" }]
-            })(
-              <SelectCourse
                 setValue={value => {
                   setFieldsValue({
                     unitId: value

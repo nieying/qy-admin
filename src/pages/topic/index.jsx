@@ -66,11 +66,6 @@ class Subject extends React.Component {
         key: "unitName"
       },
       {
-        title: "所属课程",
-        dataIndex: "courseName",
-        key: "courseName"
-      },
-      {
         title: "创建时间",
         key: "addTime",
         render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")

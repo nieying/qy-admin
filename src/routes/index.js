@@ -10,7 +10,7 @@ import Topic from '@pages/topic'
 import Achieve from '@pages/achieve';
 import Activity from '@pages/activity';
 import Ad from '@pages/ad';
-import Course from '@pages/course';
+// import Course from '@pages/course';
 import Feedback from '@pages/feedback';
 import Notes from '@pages/notes';
 import StartUp from '@pages/startUp';
@@ -28,7 +28,7 @@ class Index extends Component {
                 <PrivateRoute exact path="/dialect/type" component={DialectType} />
                 <PrivateRoute exact path="/dialect/list" component={Dialect} />
                 <PrivateRoute exact path="/unit" component={Unit} />
-                <PrivateRoute exact path="/course" component={Course} />
+                {/* <PrivateRoute exact path="/course" component={Course} /> */}
                 <PrivateRoute exact path="/topic" component={Topic} />
                 <PrivateRoute exact path="/achieve" component={Achieve} />
                 <PrivateRoute exact path="/activity" component={Activity} />

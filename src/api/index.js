@@ -71,19 +71,6 @@ export const updateUnit = data => {
 export const deleteUnit = data => {
   return axios.post("/unit/delete", data);
 };
-/** 课程管理 */
-export const getCourse = params => {
-  return axios.get("/course/list", { params });
-};
-export const createCourse = data => {
-  return axios.post("/course/create", data);
-};
-export const updateCourse = data => {
-  return axios.post("/course/update", data);
-};
-export const deleteCourse = data => {
-  return axios.post("/course/delete", data);
-};
 /** 广告管理 */
 export const getAdvert = params => {
   return axios.get("/ad/list", { params });
