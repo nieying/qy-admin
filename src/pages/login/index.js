@@ -22,7 +22,8 @@ class Login extends Component {
             localStorage.setItem("adminInfo", JSON.stringify(res.adminInfo));
             localStorage.setItem("menus", JSON.stringify(res.menus));
             // this.getAdminInfo();
-            this.props.history.push("/dialect");
+            const route = localStorage.getItem('prevPage') || '/dialect'
+            this.props.history.push(route);
           }
         });
       }

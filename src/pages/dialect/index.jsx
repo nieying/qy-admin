@@ -45,8 +45,8 @@ class Dialect extends React.Component {
       },
       {
         title: "方言归类",
-        dataIndex: "classId",
-        key: "classId"
+        dataIndex: "className",
+        key: "className"
       },
       {
         title: "创建时间",

@@ -92,9 +92,9 @@ class LeftBar extends Component {
           </span>
         }
       >
-        {menu.subs &&
-          menu.subs.map(item => {
-            return item.subs && item.subs.length > 0
+        {menu.childList &&
+          menu.childList.map(item => {
+            return item.childList && item.childList.length > 0
               ? this.rendSubMenuItem(item)
               : this.rendMenuItem(item);
           })}
@@ -115,7 +115,7 @@ class LeftBar extends Component {
         mode="inline"
       >
         {menus.map(menu => {
-          return menu.subs && menu.subs.length > 0
+          return menu.childList && menu.childList.length > 0
             ? this.rendSubMenuItem(menu)
             : this.rendMenuItem(menu);
         })}

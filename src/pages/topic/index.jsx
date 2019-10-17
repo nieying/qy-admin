@@ -254,7 +254,7 @@ class Subject extends React.Component {
         {showAnswer && (
           <AddAnswer
             handleCancel={this.hideAnswerModal}
-            topicId={topicId}
+            id={topicId}
             getData={this.getData}
           />
         )}

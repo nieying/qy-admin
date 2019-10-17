@@ -18,11 +18,15 @@ class Add extends React.Component {
     const { editItem } = this.props;
     if (editItem && editItem.id) {
       this.props.form.setFieldsValue({
-        type: 1,
-        name: editItem.name,
+        type: editItem.type,
         languageId: editItem.languageId,
+        title: editItem.title,
         unitId: editItem.unitId,
-        courseId: editItem.courseId
+        filePath: editItem.filePath,
+      });
+    } else {
+      this.props.form.setFieldsValue({
+        type: 1
       });
     }
   }
@@ -75,7 +79,7 @@ class Add extends React.Component {
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           <Form.Item label="题目类型">
             {getFieldDecorator("type", {
-              rules: [{ required: true, message: "请选择" }]
+              rules: [{ required: true, message: "请选择" }]
             })(
               <SelectTopicType
                 setValue={value => {
@@ -88,7 +92,7 @@ class Add extends React.Component {
           </Form.Item>
           <Form.Item label="所属方言">
             {getFieldDecorator("languageId", {
-              rules: [{ required: true, message: "请选择" }]
+              rules: [{ required: true, message: "请选择" }]
             })(
               <SelectDialect
                 setValue={value => {
@@ -101,7 +105,7 @@ class Add extends React.Component {
           </Form.Item>
           <Form.Item label="所属单元">
             {getFieldDecorator("unitId", {
-              rules: [{ required: true, message: "请选择" }]
+              rules: [{ required: true, message: "请选择" }]
             })(
               <SelectUnit
                 setValue={value => {
@@ -114,9 +118,9 @@ class Add extends React.Component {
           </Form.Item>
           {/* <Form.Item label="难度级别">
             {getFieldDecorator("level", {
-              rules: [{ required: true, message: "请选择" }]
+              rules: [{ required: true, message: "请选择" }]
             })(
-              <Select placeholder="请选择">
+              <Select placeholder="请选择">
                 <Option value="1">1</Option>
                 <Option value="2">2</Option>
                 <Option value="3">3</Option>
@@ -126,21 +130,21 @@ class Add extends React.Component {
           {parseInt(topicType) !== 3 && (
             <Form.Item label="文本题干">
               {getFieldDecorator("title", {
-                rules: [{ required: true, message: "请输入" }]
+                rules: [{ required: true, message: "请输入" }]
               })(<Input placeholder="请输入" />)}
             </Form.Item>
           )}
           {parseInt(topicType) === 1 && (
             <Form.Item label="语音上传">
-              {getFieldDecorator("video", {
-                rules: [{ required: true, message: "请选择" }]
+              {getFieldDecorator("filePath", {
+                rules: [{ required: true, message: "请选择" }]
               })(<UploadFile />)}
             </Form.Item>
           )}
           {parseInt(topicType) === 3 && (
             <Form.Item label="图片上传">
-              {getFieldDecorator("pic", {
-                rules: [{ required: true, message: "请选择" }]
+              {getFieldDecorator("filePath", {
+                rules: [{ required: true, message: "请选择" }]
               })(<UploadImg />)}
             </Form.Item>
           )}

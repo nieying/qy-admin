@@ -7,7 +7,7 @@ const history = createHashHistory();
 const axiosConfigure = () => {
   // 拦截request,设置全局请求为ajax请求
   axios.interceptors.request.use(
-    function(config) {
+    function (config) {
       if (localStorage.getItem("token")) {
         config.headers = {
           "X-Admin-Token": localStorage.getItem("token")
@@ -30,7 +30,7 @@ const axiosConfigure = () => {
       // }
       return config;
     },
-    function(error) {
+    function (error) {
       return Promise.reject(error);
     }
   );
@@ -38,15 +38,15 @@ const axiosConfigure = () => {
   // 拦截响应response，并做一些错误处理
   axios.interceptors.response.use(
     response => {
-      const data = response.data;
-      if (data.errno === 0) {
-        return Promise.resolve(data.data);
+      const res = response.data;
+      if (res.errno === 0) {
+        return Promise.resolve(res.data ? res.data : res);
       } else {
-        if (data.errno === 501 || data.errno === 502) {
-          message.error(data.errmsg);
+        if (res.errno === 501 || res.errno === 502) {
+          message.error(res.errmsg);
           history.push("/login");
         } else {
-          message.error(data.errmsg);
+          message.error(res.errmsg);
         }
       }
     },

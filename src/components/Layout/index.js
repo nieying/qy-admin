@@ -35,6 +35,7 @@ class LayoutIndex extends Component {
                     localStorage.removeItem("token");
                     localStorage.removeItem("adminInfo");
                     localStorage.removeItem("menus");
+                    localStorage.setItem('prevPage', this.props.history.location.pathname)
                     this.props.history.push("/login");
                 });
             }

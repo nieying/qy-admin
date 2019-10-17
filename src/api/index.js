@@ -6,7 +6,7 @@ export const login = data => {
 };
 // 获取登入用户信息
 export const adminInfo = params => {
-  return axios.get("/auth/info", {params});
+  return axios.get("/auth/info", { params });
 };
 // 退出
 export const logout = data => {
@@ -100,8 +100,8 @@ export const updateSubject = data => {
 export const deleteSubject = data => {
   return axios.post("/subject/delete", data);
 };
-export const createAnswer = data => {
-  return axios.post("/subject/answer/create", data);
+export const getAnswer = params => {
+  return axios.get("/subject/answer/list", { params });
 };
 export const updateAnswer = data => {
   return axios.post("/subject/answer/update", data);
