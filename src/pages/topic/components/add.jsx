@@ -22,11 +22,11 @@ class Add extends React.Component {
         languageId: editItem.languageId,
         title: editItem.title,
         unitId: editItem.unitId,
-        filePath: editItem.filePath,
+        filePath: editItem.filePath
       });
     } else {
       this.props.form.setFieldsValue({
-        type: 1
+        type: "normal"
       });
     }
   }
@@ -69,6 +69,7 @@ class Add extends React.Component {
     } = this.props.form;
     const { editItem } = this.props;
     const topicType = getFieldValue("type");
+    const languageId = getFieldValue("languageId");
     return (
       <Modal
         title={editItem && editItem.id ? "编辑" : "新增"}
@@ -103,19 +104,22 @@ class Add extends React.Component {
               />
             )}
           </Form.Item>
-          <Form.Item label="所属单元">
-            {getFieldDecorator("unitId", {
-              rules: [{ required: true, message: "请选择" }]
-            })(
-              <SelectUnit
-                setValue={value => {
-                  setFieldsValue({
-                    unitId: value
-                  });
-                }}
-              />
-            )}
-          </Form.Item>
+          {languageId && (
+            <Form.Item label="所属单元">
+              {getFieldDecorator("unitId", {
+                rules: [{ required: true, message: "请选择" }]
+              })(
+                <SelectUnit
+                  languageId={languageId}
+                  setValue={value => {
+                    setFieldsValue({
+                      unitId: value
+                    });
+                  }}
+                />
+              )}
+            </Form.Item>
+          )}
           {/* <Form.Item label="难度级别">
             {getFieldDecorator("level", {
               rules: [{ required: true, message: "请选择" }]
@@ -127,21 +131,21 @@ class Add extends React.Component {
               </Select>
             )}
           </Form.Item> */}
-          {parseInt(topicType) !== 3 && (
+          {topicType !== "map" && (
             <Form.Item label="文本题干">
               {getFieldDecorator("title", {
                 rules: [{ required: true, message: "请输入" }]
               })(<Input placeholder="请输入" />)}
             </Form.Item>
           )}
-          {parseInt(topicType) === 1 && (
+          {topicType === "auto" && (
             <Form.Item label="语音上传">
               {getFieldDecorator("filePath", {
                 rules: [{ required: true, message: "请选择" }]
               })(<UploadFile />)}
             </Form.Item>
           )}
-          {parseInt(topicType) === 3 && (
+          {topicType === "map" && (
             <Form.Item label="图片上传">
               {getFieldDecorator("filePath", {
                 rules: [{ required: true, message: "请选择" }]

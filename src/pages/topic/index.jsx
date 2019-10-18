@@ -14,6 +14,7 @@ import {
 import AddModal from "./components/add";
 import AddAnswer from "./components/AddAnswer";
 import SelectTopicType from "@components/SelectTopicType";
+import SelectUnit from "@components/SelectUnit";
 
 import { getSubject, deleteSubject } from "@api/index";
 class Subject extends React.Component {
@@ -23,10 +24,9 @@ class Subject extends React.Component {
       loading: false,
       visible: false,
       showAnswer: false,
+      unitId: "",
       name: "",
-      queryInfo: {
-        type: "1"
-      },
+      type: "normal",
       dataObj: {
         total: 0,
         list: []
@@ -122,8 +122,10 @@ class Subject extends React.Component {
   };
   //   获取数据
   getData = () => {
-    const { name, pagination } = this.state;
+    const { unitId, type, name, pagination } = this.state;
     const params = {
+      unitId,
+      type,
       name,
       page: pagination.current,
       limit: pagination.pageSize
@@ -154,7 +156,7 @@ class Subject extends React.Component {
   };
   //   重置
   reset = () => {
-    this.setState({ name: "" }, () => {
+    this.setState({ name: "", unitId: "" }, () => {
       this.getData();
     });
   };
@@ -165,7 +167,7 @@ class Subject extends React.Component {
   // 删除
   del = record => {
     Modal.confirm({
-      content: `确定删除${record.name}吗？`,
+      content: `确定删除${record.title}吗？`,
       okText: "确认",
       cancelText: "取消",
       onOk: () => {
@@ -191,7 +193,9 @@ class Subject extends React.Component {
       pagination,
       editItem,
       topicId,
-      queryInfo
+      name,
+      type,
+      unitId
     } = this.state;
     return (
       <div className="page-dialect">
@@ -208,18 +212,28 @@ class Subject extends React.Component {
             <Col span={6}>
               <label>题目类型：</label>
               <SelectTopicType
-                value={queryInfo.type}
+                value={type}
                 setValue={value => {
-                  this.setState({ queryInfo: { type: value } });
+                  this.setState({ type: value });
+                }}
+              />
+            </Col>
+            <Col span={6}>
+              <label>题目名称：</label>
+              <Input
+                value={name}
+                onChange={e => {
+                  this.setState({ name: e.target.value });
                 }}
               />
             </Col>
             <Col span={6}>
               <label>单元名称：</label>
-              <Input
-                placeholder="请输入"
-                allowClear
-                onChange={this.setNameCodition}
+              <SelectUnit
+                value={unitId}
+                setValue={value => {
+                  this.setState({ unitId: value });
+                }}
               />
             </Col>
             <Col span={6} className="search-opts">

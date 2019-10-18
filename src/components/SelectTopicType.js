@@ -6,12 +6,12 @@ class SelectTopicType extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // normal:普通，auto:语言，notes:注释，map:看图题
+      //normal:文字题（伪音标题），auto:听力题，picture:选图题，map:看图题
       options: [
+        { id: 'normal', name: "伪音标题" },
         { id: 'auto', name: "听力题" },
-        { id: 'notes', name: "伪音标题" },
         { id: 'map', name: "看图题" },
-        { id: 'normal', name: "选图题" }
+        { id: 'picture', name: "选图题" }
       ],
       defaultValue: props.value || ""
     };

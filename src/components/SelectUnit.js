@@ -8,6 +8,7 @@ class SelectUnit extends React.Component {
     super(props);
     this.state = {
       options: [],
+      languageId: props.languageId || "",
       defaultValue: props.value || ""
     };
   }
@@ -27,6 +28,7 @@ class SelectUnit extends React.Component {
     return (
       <Select
         showSearch
+        allowClear={true}
         defaultValue={defaultValue}
         mode={mode ? "multiple" : ""}
         placeholder="请选择"
