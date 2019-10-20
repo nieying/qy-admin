@@ -1,5 +1,5 @@
 import React from "react";
-import SelectDialectType from "@components/SelectDialectType";
+import SelectUser from "@components/SelectUser";
 import { Modal, Form, Input, message } from "antd";
 import { createOrganize, updateOrganize } from "@api/index";
 import UploadImg from "@components/UploadImg";
@@ -87,7 +87,7 @@ class Add extends React.Component {
             {getFieldDecorator("leaderId", {
               rules: [{ required: true, message: "请选择" }]
             })(
-              <SelectDialectType
+              <SelectUser
                 setValue={value => {
                   setFieldsValue({
                     leaderId: value
