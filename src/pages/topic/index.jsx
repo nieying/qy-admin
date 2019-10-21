@@ -14,7 +14,7 @@ import {
 import AddModal from "./components/add";
 import AddAnswer from "./components/AddAnswer";
 import SelectTopicType from "@components/SelectTopicType";
-import SelectUnit from "@components/SelectUnit";
+// import SelectUnit from "@components/SelectUnit";
 
 import { getSubject, deleteSubject } from "@api/index";
 class Subject extends React.Component {
@@ -35,8 +35,8 @@ class Subject extends React.Component {
         current: 1,
         pageSize: 10
       },
-      editItem: {},
-      topicId: ""
+      topicId: "",
+      topicType: ""
     };
     this.columns = [
       {
@@ -145,7 +145,7 @@ class Subject extends React.Component {
   showModal = record => {
     this.setState({
       visible: true,
-      editItem: record && record
+      topicId: record && record.id
     });
   };
   //   隐藏弹框
@@ -179,7 +179,11 @@ class Subject extends React.Component {
     });
   };
   showAnswerModal = record => {
-    this.setState({ showAnswer: true, topicId: record.id });
+    this.setState({
+      showAnswer: true,
+      topicId: record.id,
+      topicType: record.type
+    });
   };
   hideAnswerModal = () => {
     this.setState({ showAnswer: false });
@@ -191,11 +195,10 @@ class Subject extends React.Component {
       showAnswer,
       dataObj,
       pagination,
-      editItem,
       topicId,
       name,
       type,
-      unitId
+      topicType
     } = this.state;
     return (
       <div className="page-dialect">
@@ -227,7 +230,7 @@ class Subject extends React.Component {
                 }}
               />
             </Col>
-            <Col span={6}>
+            {/* <Col span={6}>
               <label>单元名称：</label>
               <SelectUnit
                 value={unitId}
@@ -235,7 +238,7 @@ class Subject extends React.Component {
                   this.setState({ unitId: value });
                 }}
               />
-            </Col>
+            </Col> */}
             <Col span={6} className="search-opts">
               <Button type="primary" onClick={this.getData}>
                 查询
@@ -261,7 +264,7 @@ class Subject extends React.Component {
         {visible && (
           <AddModal
             handleCancel={this.handleCancel}
-            editItem={editItem}
+            id={topicId}
             getData={this.getData}
           />
         )}
@@ -269,6 +272,7 @@ class Subject extends React.Component {
           <AddAnswer
             handleCancel={this.hideAnswerModal}
             id={topicId}
+            topicType={topicType}
             getData={this.getData}
           />
         )}

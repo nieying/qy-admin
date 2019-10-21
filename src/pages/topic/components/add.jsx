@@ -1,29 +1,25 @@
 import React from "react";
-import { Modal, Form, Input, message } from "antd";
-import { createSubject, updateSubject } from "@api/index";
+import { Modal, Form, Input, message, Button, Icon } from "antd";
+import { createSubject, updateSubject, getSubjectInfo } from "@api/index";
 import UploadImg from "@components/UploadImg";
 import SelectTopicType from "@components/SelectTopicType";
 import UploadFile from "@components/UploadFile";
 import SelectDialect from "@components/SelectDialect";
 import SelectUnit from "@components/SelectUnit";
+import { formatFormData } from "@utils/constants";
 
 @Form.create()
 class Add extends React.Component {
   constructor(props) {
     super(props);
+    this.keys = [];
     this.state = {};
   }
 
   componentDidMount() {
-    const { editItem } = this.props;
-    if (editItem && editItem.id) {
-      this.props.form.setFieldsValue({
-        type: editItem.type,
-        languageId: editItem.languageId,
-        title: editItem.title,
-        unitId: editItem.unitId,
-        filePath: editItem.filePath
-      });
+    const { id } = this.props;
+    if (id) {
+      this.getSubjectDetail(id);
     } else {
       this.props.form.setFieldsValue({
         type: "normal"
@@ -31,12 +27,38 @@ class Add extends React.Component {
     }
   }
 
+  // 获取题目详情
+  getSubjectDetail = id => {
+    getSubjectInfo({ id: id }).then(res => {
+      const formObj = {};
+      let notes = JSON.parse(res.notes);
+      this.keys = notes;
+      notes.forEach((item, index) => {
+        formObj[`key_${index}`] = item.key;
+        formObj[`value_${index}`] = item.value;
+      });
+      this.props.form.setFieldsValue({
+        type: res.type,
+        languageId: res.languageId,
+        title: res.title,
+        unitId: res.unitId,
+        filePath: res.filePath,
+        ...formObj
+      });
+    });
+  };
+
   handleOk = e => {
     const { editItem } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      if (values.type === "normal") {
+        const notes = JSON.stringify(formatFormData(values));
+        values.notes = notes;
+      }
+      console.log("values===>", values);
       if (!err) {
-        editItem && editItem.id ? this.update(values) : this.add(values);
+        editItem && editItem.id ? this.update(values) : this.create(values);
       }
     });
   };
@@ -48,7 +70,7 @@ class Add extends React.Component {
       this.succCallback();
     });
   };
-  add = values => {
+  create = values => {
     createSubject(values).then(res => {
       this.succCallback();
     });
@@ -61,6 +83,81 @@ class Add extends React.Component {
     this.props.getData();
   };
 
+  remove = k => {
+    const { form } = this.props;
+    const keys = form.getFieldValue("keys");
+    if (keys.length === 1) {
+      return;
+    }
+
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k)
+    });
+  };
+
+  add = () => {
+    const { form } = this.props;
+    const keys = form.getFieldValue("keys");
+    const addKey = [];
+    const nextKeys = keys.concat(addKey);
+    form.setFieldsValue({
+      keys: nextKeys
+    });
+  };
+
+  rendFormItem = () => {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 }
+      }
+    };
+    getFieldDecorator("keys", { initialValue: this.keys });
+    let keys = getFieldValue("keys");
+    return (
+      keys &&
+      keys.map((k, index) => (
+        <div style={{ display: "flex" }} key={index}>
+          <Form.Item
+            {...formItemLayout}
+            label={`关键字${index + 1}:`}
+            required={false}
+            style={{ flex: 1 }}
+          >
+            {getFieldDecorator(`key_${index}`, {
+              rules: [{ required: true, message: "请输入" }]
+            })(<Input placeholder="请输入" />)}
+          </Form.Item>
+          <Form.Item
+            {...formItemLayout}
+            label={`注释${index + 1}:`}
+            required={false}
+            style={{ flex: 1 }}
+          >
+            {getFieldDecorator(`value_${index}`, {
+              rules: [{ required: true, message: "请输入" }]
+            })(<Input placeholder="请输入" />)}
+          </Form.Item>
+          <Form.Item>
+            {keys.length > 1 ? (
+              <Icon
+                style={{ marginLeft: 10 }}
+                className="dynamic-delete-button"
+                type="minus-circle-o"
+                onClick={() => this.remove(k)}
+              />
+            ) : null}
+          </Form.Item>
+        </div>
+      ))
+    );
+  };
+
   render() {
     const {
       getFieldDecorator,
@@ -70,6 +167,7 @@ class Add extends React.Component {
     const { editItem } = this.props;
     const topicType = getFieldValue("type");
     const languageId = getFieldValue("languageId");
+    console.log("languageId", languageId);
     return (
       <Modal
         title={editItem && editItem.id ? "编辑" : "新增"}
@@ -150,6 +248,14 @@ class Add extends React.Component {
               {getFieldDecorator("filePath", {
                 rules: [{ required: true, message: "请选择" }]
               })(<UploadImg />)}
+            </Form.Item>
+          )}
+          {topicType === "normal" && this.rendFormItem()}
+          {topicType === "normal" && (
+            <Form.Item>
+              <Button type="dashed" onClick={this.add} style={{ width: "60%" }}>
+                <Icon type="plus" /> 新增注释
+              </Button>
             </Form.Item>
           )}
         </Form>

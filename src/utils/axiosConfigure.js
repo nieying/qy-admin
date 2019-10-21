@@ -42,7 +42,7 @@ const axiosConfigure = () => {
       if (res.errno === 0) {
         return Promise.resolve(res.data ? res.data : res);
       } else {
-        if (res.errno === 501 || res.errno === 502) {
+        if (res.errno === 501) {
           message.error(res.errmsg);
           history.push("/login");
         } else {

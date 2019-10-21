@@ -71,25 +71,16 @@ export const updateUnit = data => {
 export const deleteUnit = data => {
   return axios.post("/unit/delete", data);
 };
-/** 广告管理 */
-export const getAdvert = params => {
-  return axios.get("/ad/list", { params });
+export const getUnitByLanguage = params => {
+  return axios.get("/unit/list/language", {params});
 };
-export const createAdvert = data => {
-  return axios.post("/ad/create", data);
-};
-export const updateAdvert = data => {
-  return axios.post("/ad/update", data);
-};
-export const deleteAdvert = data => {
-  return axios.post("/ad/delete", data);
-};
+
 /** 题目管理 */
 export const getSubject = params => {
   return axios.get("/subject/list", { params });
 };
 export const getSubjectInfo = params => {
-  return axios.get("/subject/Info", { params });
+  return axios.get("/subject/info", { params });
 };
 export const createSubject = data => {
   return axios.post("/subject/create", data);
@@ -108,6 +99,20 @@ export const updateAnswer = data => {
 };
 export const deleteAnswer = data => {
   return axios.post("/subject/answer/delete", data);
+};
+
+/** 广告管理 */
+export const getAdvert = params => {
+  return axios.get("/ad/list", { params });
+};
+export const createAdvert = data => {
+  return axios.post("/ad/create", data);
+};
+export const updateAdvert = data => {
+  return axios.post("/ad/update", data);
+};
+export const deleteAdvert = data => {
+  return axios.post("/ad/delete", data);
 };
 
 /** 系统管理 - 角色管理*/

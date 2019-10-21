@@ -1,6 +1,6 @@
 import React from "react";
 import { Select } from "antd";
-import { getUnit } from "@api/index";
+import { getUnitByLanguage } from "@api/index";
 const { Option } = Select;
 
 class SelectUnit extends React.Component {
@@ -12,8 +12,18 @@ class SelectUnit extends React.Component {
       defaultValue: props.value || ""
     };
   }
-  componentWillMount() {
-    getUnit().then(res => {
+  componentDidMount() {
+    this.getData(this.state.languageId)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.languageId !== this.state.languageId) {
+      this.getData(nextProps.languageId)
+    }
+  }
+
+  getData = (languageId) => {
+    getUnitByLanguage({ languageId: languageId }).then(res => {
       this.setState({ options: res.list });
     });
   }

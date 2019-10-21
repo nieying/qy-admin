@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Form, Input, Icon, Button, Checkbox, message } from "antd";
 import { getAnswer, updateAnswer } from "@api/index";
 import { formatFormData } from "@utils/constants";
+import UploadImg from "@components/UploadImg";
 
 @Form.create()
 class AddAnswer extends React.Component {
@@ -9,8 +10,7 @@ class AddAnswer extends React.Component {
     super(props);
     this.keys = [1, 2, 3, 4];
     this.state = {
-      topicType: "1",
-      test: 1
+      topicType: props.topicType || "normal"
     };
   }
 
@@ -82,12 +82,12 @@ class AddAnswer extends React.Component {
     });
   };
   handleCheckBox = (e, k, index) => {
-    this.setState({ test: 10 }, () => {
-      this.keys[index].right = e.target.checked;
-      this.props.form.setFieldsValue({
-        [`right_${index}`]: e.target.checked
-      });
+    // this.setState({ test: 10 }, () => {
+    this.keys[index].right = e.target.checked;
+    this.props.form.setFieldsValue({
+      [`right_${index}`]: e.target.checked
     });
+    // });
     // this.keys.forEach((a, i) => {
     //   if (a.id === k.id) {
     //     a.right = e.target.checked;
@@ -102,7 +102,12 @@ class AddAnswer extends React.Component {
   };
 
   rendFormItem = () => {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { topicType } = this.state;
+    const {
+      getFieldDecorator,
+      getFieldValue,
+      setFieldsValue
+    } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -131,16 +136,29 @@ class AddAnswer extends React.Component {
             required={false}
             style={{ flex: 1 }}
           >
-            {getFieldDecorator(`answer_${index}`, {
-              // initialValue: `${`answer_${index}`}`,
-              rules: [{ required: true, message: "请输入" }]
-            })(
-              <Input
-                placeholder="请输入"
-                // value={`${`answer_${index}`}`}
-                style={{ width: "60%", marginRight: 8 }}
-              />
-            )}
+            {topicType === "picture"
+              ? getFieldDecorator(`answer_${index}`, {
+                  // initialValue: `${`answer_${index}`}`,
+                  rules: [{ required: true, message: "请上传图片" }]
+                })(
+                  <UploadImg
+                    setValue={value => {
+                      setFieldsValue({
+                        [`answer_${index}`]: value
+                      });
+                    }}
+                  />
+                )
+              : getFieldDecorator(`answer_${index}`, {
+                  // initialValue: `${`answer_${index}`}`,
+                  rules: [{ required: true, message: "请输入" }]
+                })(
+                  <Input
+                    placeholder="请输入"
+                    // value={`${`answer_${index}`}`}
+                    style={{ width: "60%", marginRight: 8 }}
+                  />
+                )}
           </Form.Item>
           <Form.Item>
             {getFieldDecorator(`right_${index}`, {})(
@@ -177,7 +195,6 @@ class AddAnswer extends React.Component {
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >
-        {/* {this.state.test} */}
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           {this.rendFormItem()}
           {keys && keys.length < 5 && (
