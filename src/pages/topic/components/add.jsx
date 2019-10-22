@@ -12,7 +12,7 @@ import { formatFormData } from "@utils/constants";
 class Add extends React.Component {
   constructor(props) {
     super(props);
-    this.keys = [];
+    this.keys = [1, 2];
     this.state = {};
   }
 
@@ -49,7 +49,7 @@ class Add extends React.Component {
   };
 
   handleOk = e => {
-    const { editItem } = this.props;
+    const { id } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (values.type === "normal") {
@@ -58,14 +58,14 @@ class Add extends React.Component {
       }
       console.log("values===>", values);
       if (!err) {
-        editItem && editItem.id ? this.update(values) : this.create(values);
+        id ? this.update(values) : this.create(values);
       }
     });
   };
 
   update = values => {
-    const { editItem } = this.props;
-    values.id = editItem.id;
+    const { id } = this.props;
+    values.id = id;
     updateSubject(values).then(res => {
       this.succCallback();
     });
@@ -98,7 +98,7 @@ class Add extends React.Component {
   add = () => {
     const { form } = this.props;
     const keys = form.getFieldValue("keys");
-    const addKey = [];
+    const addKey = [1];
     const nextKeys = keys.concat(addKey);
     form.setFieldsValue({
       keys: nextKeys
@@ -240,14 +240,30 @@ class Add extends React.Component {
             <Form.Item label="语音上传">
               {getFieldDecorator("filePath", {
                 rules: [{ required: true, message: "请选择" }]
-              })(<UploadFile />)}
+              })(
+                <UploadFile
+                  setValue={value => {
+                    setFieldsValue({
+                      filePath: value
+                    });
+                  }}
+                />
+              )}
             </Form.Item>
           )}
           {topicType === "map" && (
             <Form.Item label="图片上传">
               {getFieldDecorator("filePath", {
                 rules: [{ required: true, message: "请选择" }]
-              })(<UploadImg />)}
+              })(
+                <UploadImg
+                  setValue={value => {
+                    setFieldsValue({
+                      filePath: value
+                    });
+                  }}
+                />
+              )}
             </Form.Item>
           )}
           {topicType === "normal" && this.rendFormItem()}

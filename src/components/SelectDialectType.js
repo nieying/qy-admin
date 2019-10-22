@@ -27,7 +27,7 @@ class SelectDialect extends React.Component {
     return (
       <Select
         showSearch
-        initialValue={defaultValue}
+        defaultValue={defaultValue}
         mode={mode ? "multiple" : ""}
         placeholder="请选择"
         optionFilterProp="children"

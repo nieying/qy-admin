@@ -4,7 +4,21 @@ import { Upload, Icon, message } from "antd";
 const { Dragger } = Upload;
 
 class UploadFile extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      filePath: props.value || '',
+      loading: false
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ filePath: nextProps && nextProps.value });
+  }
+
   render() {
+    const that = this;
     const props = {
       name: "file",
       multiple: true,
@@ -18,6 +32,7 @@ class UploadFile extends React.Component {
           console.log(info.file, info.fileList);
         }
         if (status === "done") {
+          that.props.setValue(info.file.response.data.url);
           message.success(`${info.file.name} file uploaded successfully.`);
         } else if (status === "error") {
           message.error(`${info.file.name} file upload failed.`);

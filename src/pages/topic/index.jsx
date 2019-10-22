@@ -53,7 +53,8 @@ class Subject extends React.Component {
       {
         title: "题目类型",
         dataIndex: "type",
-        key: "type"
+        key: "type",
+        render: (text, record) => this.rendType(record.type)
       },
       {
         title: "所属方言",
@@ -119,6 +120,18 @@ class Subject extends React.Component {
     this.setState({ pagination }, () => {
       this.getData();
     });
+  };
+  rendType = type => {
+    switch (type) {
+      case "normal":
+        return "防伪标题";
+      case "auto":
+        return "听力题";
+      case "map":
+        return "看图题";
+      default:
+        return "防伪标题";
+    }
   };
   //   获取数据
   getData = () => {

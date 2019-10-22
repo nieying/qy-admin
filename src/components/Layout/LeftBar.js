@@ -70,6 +70,11 @@ class LeftBar extends Component {
     }
   };
 
+  clickMenu = (key) => {
+    this.setState({ selectedKeys: [key] })
+    localStorage.setItem('prevPage', key)
+  }
+
   rendMenuItem = menu => {
     return (
       <Menu.Item key={menu.key}>
@@ -109,7 +114,7 @@ class LeftBar extends Component {
       <Menu
         theme={theme}
         onOpenChange={this.onOpenChange}
-        onClick={({ key }) => this.setState({ selectedKeys: [key] })}
+        onClick={({ key }) => this.clickMenu(key)}
         openKeys={openKeys}
         selectedKeys={selectedKeys}
         mode="inline"

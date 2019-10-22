@@ -1,8 +1,8 @@
 import React from "react";
 import SelectDialectType from "@components/SelectDialectType";
-import { Modal, Form, Select, Input, message } from "antd";
+import { Modal, Form, Input, message } from "antd";
 import { createDialect, updateDialect } from "@api/index";
-const { Option } = Select;
+const { TextArea } = Input;
 
 @Form.create()
 class Add extends React.Component {
@@ -15,7 +15,8 @@ class Add extends React.Component {
     const { editItem } = this.props;
     this.props.form.setFieldsValue({
       name: editItem.name,
-      classId: editItem.classId
+      classId: editItem.classId,
+      remark: editItem.remark
     });
   }
 
@@ -67,7 +68,7 @@ class Add extends React.Component {
           </Form.Item>
           <Form.Item label="归类">
             {getFieldDecorator("classId", {
-              rules: [{ required: true, message: "请选择" }]
+              rules: [{ required: true, message: "请选择" }]
             })(
               <SelectDialectType
                 setValue={value => {
@@ -77,6 +78,11 @@ class Add extends React.Component {
                 }}
               />
             )}
+          </Form.Item>
+          <Form.Item label="描述">
+            {getFieldDecorator("remark", {
+              rules: [{ required: true, message: "请输入" }]
+            })(<TextArea />)}
           </Form.Item>
         </Form>
       </Modal>
