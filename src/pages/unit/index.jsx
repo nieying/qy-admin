@@ -181,7 +181,7 @@ class Unit extends React.Component {
                 onChange={this.setNameCodition}
               />
             </Col>
-            <Col span={6}>
+            {/* <Col span={6}>
               <label>所属方言：</label>
               <SelectDialect
                 setValue={value => {
@@ -190,7 +190,7 @@ class Unit extends React.Component {
                   });
                 }}
               />
-            </Col>
+            </Col> */}
             <Col span={6} className="search-opts">
               <Button type="primary" onClick={this.getData}>
                 查询

@@ -15,6 +15,7 @@ class Add extends React.Component {
     const { editItem } = this.props;
     this.props.form.setFieldsValue({
       avatar: editItem.avatar,
+      darkAvatar: editItem.darkAvatar,
       name: editItem.name,
       languageId: editItem.languageId
     });
@@ -61,7 +62,7 @@ class Add extends React.Component {
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          <Form.Item label="课程图标">
+          <Form.Item label="点亮图标">
             {getFieldDecorator("avatar", {
               rules: [{ required: true, message: "请上传图片" }]
             })(
@@ -69,6 +70,19 @@ class Add extends React.Component {
                 setValue={value => {
                   setFieldsValue({
                     avatar: value
+                  });
+                }}
+              />
+            )}
+          </Form.Item>
+          <Form.Item label="灰色图标">
+            {getFieldDecorator("darkAvatar", {
+              rules: [{ required: true, message: "请上传图片" }]
+            })(
+              <UploadImg
+                setValue={value => {
+                  setFieldsValue({
+                    darkAvatar: value
                   });
                 }}
               />
