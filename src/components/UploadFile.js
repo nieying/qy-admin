@@ -7,6 +7,7 @@ class UploadFile extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log('props===>', props)
     this.state = {
       filePath: props.value || '',
       loading: false
@@ -18,6 +19,7 @@ class UploadFile extends React.Component {
   }
 
   render() {
+    const { filePath } = this.state;
     const that = this;
     const props = {
       name: "file",
@@ -39,13 +41,21 @@ class UploadFile extends React.Component {
         }
       }
     };
-
+    console.log('filePath', filePath)
     return (
       <Dragger {...props}>
-        <p className="ant-upload-drag-icon">
-          <Icon type="inbox" />
-        </p>
-        <p className="ant-upload-text">拖拽上传</p>
+        {
+          filePath ? <div>
+            {filePath}
+          </div> :
+            <div>
+              <p className="ant-upload-drag-icon">
+                <Icon type="inbox" />
+              </p>
+              <p className="ant-upload-text">拖拽上传</p>
+            </div>
+        }
+
       </Dragger>
     );
   }

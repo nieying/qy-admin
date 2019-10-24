@@ -8,8 +8,9 @@ import UploadImg from "@components/UploadImg";
 class AddAnswer extends React.Component {
   constructor(props) {
     super(props);
-    this.keys = [1, 2, 3, 4];
+    // this.keys = [];
     this.state = {
+      keys: [],
       topicType: props.topicType || "normal"
     };
   }
@@ -19,15 +20,17 @@ class AddAnswer extends React.Component {
   componentDidMount() {
     getAnswer({ subjectId: this.props.id }).then(res => {
       if (res) {
-        this.keys = res.list;
-        const formObj = {};
-        res.list.forEach((item, index) => {
-          formObj[`subjectId_${index}`] = item.subjectId;
-          formObj[`id_${index}`] = item.id;
-          formObj[`answer_${index}`] = item.answer;
-          formObj[`right_${index}`] = item.right;
-        });
-        this.props.form.setFieldsValue({ ...formObj });
+        this.setState({ keys: res.list });
+        // const formObj = {};
+        // res.list.forEach((item, index) => {
+        //   formObj[`subjectId_${index}`] = item.subjectId;
+        //   formObj[`id_${index}`] = item.id;
+        //   formObj[`answer_${index}`] = item.answer;
+        //   formObj[`right_${index}`] = item.right;
+        // });
+        // setTimeout(() => {
+        //   this.props.form.setFieldsValue({ ...formObj });
+        // }, 100);
       }
     });
   }
@@ -37,10 +40,9 @@ class AddAnswer extends React.Component {
     this.props.form.validateFields((err, values) => {
       const params = formatFormData(values);
       params.forEach(item => {
-        if (item.right === undefined) {
+        if (!item.right) {
           item.right = 0;
-        }
-        if (item.right === true) {
+        } else {
           item.right = 1;
         }
         if (item.subjectId === undefined) {
@@ -60,33 +62,38 @@ class AddAnswer extends React.Component {
   };
 
   remove = k => {
-    const { form } = this.props;
-    const keys = form.getFieldValue("keys");
+    // const { form } = this.props;
+    const { keys } = this.state;
+    // const keys = form.getFieldValue("keys");
     if (keys.length === 1) {
       return;
     }
+    this.setState({ keys: keys.filter(key => key !== k) });
 
-    form.setFieldsValue({
-      keys: keys.filter(key => key !== k)
-    });
+    // form.setFieldsValue({
+    //   keys: keys.filter(key => key !== k)
+    // });
   };
 
   add = () => {
     const { id, form } = this.props;
-    const keys = form.getFieldValue("keys");
+    // const keys = form.getFieldValue("keys");
     const addKey = [{ subjectId: id, answer: "", right: false }];
-    const nextKeys = keys.concat(addKey);
-    this.keys = keys.concat(addKey);
-    form.setFieldsValue({
-      keys: nextKeys
-    });
+    // const nextKeys = keys.concat(addKey);
+    // this.keys = keys.concat(addKey);
+    this.setState({ keys: this.state.keys.concat(addKey) });
+    // form.setFieldsValue({
+    //   keys: nextKeys
+    // });
   };
   handleCheckBox = (e, k, index) => {
+    const { keys } = this.state;
     // this.setState({ test: 10 }, () => {
-    this.keys[index].right = e.target.checked;
-    this.props.form.setFieldsValue({
-      [`right_${index}`]: e.target.checked
-    });
+    keys[index].right = e.target.checked;
+    // this.props.form.setFieldsValue({
+    //   [`right_${index}`]: e.target.checked
+    // });
+    this.setState({ keys });
     // });
     // this.keys.forEach((a, i) => {
     //   if (a.id === k.id) {
@@ -118,17 +125,22 @@ class AddAnswer extends React.Component {
         sm: { span: 20 }
       }
     };
-    getFieldDecorator("keys", { initialValue: this.keys });
+    getFieldDecorator("keys", { initialValue: this.state.keys });
     let keys = getFieldValue("keys");
+    console.log("keys", keys);
     return (
       keys &&
       keys.map((k, index) => (
         <div style={{ display: "flex" }} key={index}>
           <Form.Item {...formItemLayout} style={{ display: "none" }}>
-            {getFieldDecorator(`subjectId_${index}`)(<Input />)}
+            {getFieldDecorator(`subjectId_${index}`, {
+              initialValue: k.subjectId
+            })(<Input />)}
           </Form.Item>
           <Form.Item {...formItemLayout} style={{ display: "none" }}>
-            {getFieldDecorator(`id_${index}`)(<Input />)}
+            {getFieldDecorator(`id_${index}`, { initialValue: k.id })(
+              <Input />
+            )}
           </Form.Item>
           <Form.Item
             {...formItemLayout}
@@ -138,7 +150,7 @@ class AddAnswer extends React.Component {
           >
             {topicType === "picture"
               ? getFieldDecorator(`answer_${index}`, {
-                  // initialValue: `${`answer_${index}`}`,
+                  initialValue: k.answer,
                   rules: [{ required: true, message: "请上传图片" }]
                 })(
                   <UploadImg
@@ -150,7 +162,7 @@ class AddAnswer extends React.Component {
                   />
                 )
               : getFieldDecorator(`answer_${index}`, {
-                  // initialValue: `${`answer_${index}`}`,
+                  initialValue: k.answer,
                   rules: [{ required: true, message: "请输入" }]
                 })(
                   <Input
@@ -186,8 +198,8 @@ class AddAnswer extends React.Component {
   };
 
   render() {
-    const { getFieldValue } = this.props.form;
-    let keys = getFieldValue("keys");
+    // const { getFieldValue } = this.props.form;
+    const { keys } = this.state;
     return (
       <Modal
         title={"编辑"}
@@ -197,7 +209,7 @@ class AddAnswer extends React.Component {
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           {this.rendFormItem()}
-          {keys && keys.length < 5 && (
+          {keys && keys.length < 4 && (
             <Form.Item>
               <Button type="dashed" onClick={this.add} style={{ width: "60%" }}>
                 <Icon type="plus" /> 新增答题选项

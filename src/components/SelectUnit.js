@@ -8,17 +8,23 @@ class SelectUnit extends React.Component {
     super(props);
     this.state = {
       options: [],
-      languageId: props.languageId || "",
       defaultValue: props.value || ""
     };
   }
   componentDidMount() {
-    this.getData(this.state.languageId)
+    if(this.props.languageId) {
+      this.getData(this.props.languageId)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.languageId !== this.state.languageId) {
+    if (nextProps.languageId !== this.props.languageId) {
       this.getData(nextProps.languageId)
+    }
+    if(nextProps.value) {
+      this.setState({
+        defaultValue: nextProps.value
+      })
     }
   }
 
@@ -39,7 +45,7 @@ class SelectUnit extends React.Component {
       <Select
         showSearch
         allowClear={true}
-        defaultValue={defaultValue}
+        value={defaultValue}
         mode={mode ? "multiple" : ""}
         placeholder="请选择"
         optionFilterProp="children"

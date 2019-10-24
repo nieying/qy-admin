@@ -1,119 +1,150 @@
 import React from "react";
-import { PageHeader, Row, Col, Input, Button, Table, Divider } from "antd";
+import { PageHeader, Button, Table } from "antd";
 import AddModal from "./components/add";
+import { getUnit } from "@api/index";
 
-class Dialect extends React.Component {
+class Unit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      params: {
-        name: ""
-      },
+      loading: false,
       visible: false,
-      data: [
-        {
-          key: "1",
-          name: "John Brown",
-          type: 32
-        },
-        {
-          key: "2",
-          name: "Jim Green",
-          type: 42
-        },
-        {
-          key: "3",
-          name: "Joe Black",
-          type: 32
-        }
-      ]
+      name: "",
+      languageId: "",
+      dataObj: {
+        total: 0,
+        list: []
+      },
+      pagination: {
+        current: 1,
+        pageSize: 10
+      },
+      editItem: {}
     };
     this.columns = [
       {
-        title: "成就名称",
+        title: "序号",
+        width: 60,
+        key: "index",
+        render: (text, record, index) => `${index + 1}`
+      },
+      {
+        title: "图标",
+        key: "avatar",
+        render: (text, record) => (
+          <img src={record.avatar} alt="" className="avatar"></img>
+        )
+      },
+      {
+        title: "名称",
         dataIndex: "name",
         key: "name"
       },
       {
-        title: "成就图标",
-        dataIndex: "type",
-        key: "type"
+        title: "备注",
+        dataIndex: "languageName",
+        key: "languageName"
       },
       {
         title: "操作",
         key: "action",
         render: (text, record) => (
           <span>
-            <Button type="link">编辑</Button>
-            <Divider type="vertical" />
-            <Button type="link">删除</Button>
+            <Button
+              type="link"
+              onClick={() => {
+                this.showModal(record);
+              }}
+            >
+              编辑
+            </Button>
           </span>
         )
       }
     ];
   }
-
   componentDidMount() {
     this.getData();
   }
-
-  //   获取数据
-  getData = () => {
-    // todo
-  };
-
-  //   显示弹框
-  showModal = () => {
-    this.setState({
-      visible: true
+  changePagination = pagination => {
+    this.setState({ pagination }, () => {
+      this.getData();
     });
   };
-
+  //   获取数据
+  getData = () => {
+    const { name, languageId, pagination } = this.state;
+    const params = {
+      name,
+      languageId,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    this.setState({ loading: true });
+    getUnit(params).then(res => {
+      this.setState({
+        loading: false,
+        dataObj: {
+          total: res.total,
+          list: res.list
+        }
+      });
+    });
+  };
+  //   显示弹框
+  showModal = record => {
+    this.setState({
+      visible: true,
+      editItem: record && record
+    });
+  };
   //   隐藏弹框
   handleCancel = () => {
     this.setState({
       visible: false
     });
   };
-
   //   重置
   reset = () => {
-    this.setState({
-      params: {}
+    this.setState({ name: "" }, () => {
+      this.getData();
     });
   };
-
+  // 设置查询
+  setNameCodition = e => {
+    this.setState({ name: e.target.value });
+  };
   render() {
-    const { visible, data } = this.state;
+    const { loading, visible, dataObj, pagination, editItem } = this.state;
     return (
       <div className="page-dialect">
-        <PageHeader
-          title="成就管理"
-          extra={[
-            <Button key="1" type="primary" onClick={this.showModal}>
-              新增
-            </Button>
-          ]}
-        />
+        <PageHeader title="成就管理" extra={[]} />
         <div className="warpper">
-          <Row gutter={30} className="search-condition">
-            <Col span={6}>
-              <label>成就名称：</label>
-              <Input placeholder="请输入" />
-            </Col>
-            <Col span={6} className="search-opts">
-              <Button type="primary" onClick={this.getData}>
-                查询
-              </Button>
-              <Button onClick={this.reset}>重置</Button>
-            </Col>
-          </Row>
-          <Table columns={this.columns} dataSource={data} />
+          <Table
+            loading={loading}
+            columns={this.columns}
+            dataSource={dataObj.list}
+            pagination={{
+              total: dataObj.total,
+              pageSize: pagination.pageSize,
+              showTotal: function() {
+                return "共 " + dataObj.total + " 条数据";
+              }
+            }}
+            onChange={this.changePagination}
+            rowKey={record => record.id}
+          />
         </div>
-        {visible && <AddModal handleCancel={this.handleCancel} />}
+        {visible && (
+          <AddModal
+            handleCancel={this.handleCancel}
+            editItem={editItem}
+            getData={this.getData}
+          />
+        )}
       </div>
     );
   }
 }
 
-export default Dialect;
+export default Unit;

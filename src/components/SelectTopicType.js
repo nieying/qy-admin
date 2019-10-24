@@ -13,8 +13,16 @@ class SelectTopicType extends React.Component {
         { id: 'map', name: "看图题" },
         { id: 'picture', name: "选图题" }
       ],
-      defaultValue: props.value || ""
+      defaultValue: props.value || null
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.value) {
+      this.setState({
+        defaultValue: nextProps.value
+      })
+    }
   }
 
   onChange = value => {
@@ -27,7 +35,7 @@ class SelectTopicType extends React.Component {
     return (
       <Select
         showSearch
-        defaultValue={defaultValue.toString()}
+        value={defaultValue}
         mode={mode ? "multiple" : ""}
         placeholder="请选择"
         optionFilterProp="children"

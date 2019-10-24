@@ -201,6 +201,20 @@ export const getUsers = params => {
 export const getVipUsers = params => {
   return axios.get("/user/vip/list", { params });
 };
+/** 成就管理*/
+export const getBigRich = params => {
+  return axios.get("/config/grade/bigRich", { params });
+};
+export const postBigRich = data => {
+  return axios.post("/config/grade/bigRich", data);
+};
+export const getBigWinner = params => {
+  return axios.get("/config/grade/bigWinner", { params });
+};
+export const postBigWinner = data => {
+  return axios.post("/config/grade/bigWinner", data);
+};
+
 
 
 

@@ -30,20 +30,14 @@ class Add extends React.Component {
   // 获取题目详情
   getSubjectDetail = id => {
     getSubjectInfo({ id: id }).then(res => {
-      const formObj = {};
       let notes = JSON.parse(res.notes);
       this.keys = notes;
-      notes.forEach((item, index) => {
-        formObj[`key_${index}`] = item.key;
-        formObj[`value_${index}`] = item.value;
-      });
       this.props.form.setFieldsValue({
         type: res.type,
         languageId: res.languageId,
         title: res.title,
         unitId: res.unitId,
         filePath: res.filePath,
-        ...formObj
       });
     });
   };
@@ -125,21 +119,23 @@ class Add extends React.Component {
         <div style={{ display: "flex" }} key={index}>
           <Form.Item
             {...formItemLayout}
-            label={`关键字${index + 1}:`}
+            label={`关键字:`}
             required={false}
             style={{ flex: 1 }}
           >
             {getFieldDecorator(`key_${index}`, {
+              initialValue: k.key,
               rules: [{ required: true, message: "请输入" }]
             })(<Input placeholder="请输入" />)}
           </Form.Item>
           <Form.Item
             {...formItemLayout}
-            label={`注释${index + 1}:`}
+            label={`注释:`}
             required={false}
             style={{ flex: 1 }}
           >
             {getFieldDecorator(`value_${index}`, {
+              initialValue: k.value,
               rules: [{ required: true, message: "请输入" }]
             })(<Input placeholder="请输入" />)}
           </Form.Item>
@@ -165,9 +161,8 @@ class Add extends React.Component {
       getFieldValue
     } = this.props.form;
     const { editItem } = this.props;
-    const topicType = getFieldValue("type");
+    // const getFieldValue("type") = getFieldValue("type");
     const languageId = getFieldValue("languageId");
-    console.log("languageId", languageId);
     return (
       <Modal
         title={editItem && editItem.id ? "编辑" : "新增"}
@@ -202,7 +197,7 @@ class Add extends React.Component {
               />
             )}
           </Form.Item>
-          {languageId && (
+          {true && (
             <Form.Item label="所属单元">
               {getFieldDecorator("unitId", {
                 rules: [{ required: true, message: "请选择" }]
@@ -218,25 +213,14 @@ class Add extends React.Component {
               )}
             </Form.Item>
           )}
-          {/* <Form.Item label="难度级别">
-            {getFieldDecorator("level", {
-              rules: [{ required: true, message: "请选择" }]
-            })(
-              <Select placeholder="请选择">
-                <Option value="1">1</Option>
-                <Option value="2">2</Option>
-                <Option value="3">3</Option>
-              </Select>
-            )}
-          </Form.Item> */}
-          {topicType !== "map" && (
+          {getFieldValue("type") !== "map" && (
             <Form.Item label="文本题干">
               {getFieldDecorator("title", {
                 rules: [{ required: true, message: "请输入" }]
               })(<Input placeholder="请输入" />)}
             </Form.Item>
           )}
-          {topicType === "auto" && (
+          {getFieldValue("type") === "auto" && (
             <Form.Item label="语音上传">
               {getFieldDecorator("filePath", {
                 rules: [{ required: true, message: "请选择" }]
@@ -251,7 +235,7 @@ class Add extends React.Component {
               )}
             </Form.Item>
           )}
-          {topicType === "map" && (
+          {getFieldValue("type") === "map" && (
             <Form.Item label="图片上传">
               {getFieldDecorator("filePath", {
                 rules: [{ required: true, message: "请选择" }]
@@ -266,8 +250,8 @@ class Add extends React.Component {
               )}
             </Form.Item>
           )}
-          {topicType === "normal" && this.rendFormItem()}
-          {topicType === "normal" && (
+          {getFieldValue("type") === "normal" && this.rendFormItem()}
+          {getFieldValue("type") === "normal" && (
             <Form.Item>
               <Button type="dashed" onClick={this.add} style={{ width: "60%" }}>
                 <Icon type="plus" /> 新增注释

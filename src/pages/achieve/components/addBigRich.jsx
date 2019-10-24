@@ -62,44 +62,36 @@ class Add extends React.Component {
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          <div style={{ display: 'flex' }}>
+            <Form.Item label="点亮图标">
+              {getFieldDecorator("avatar", {
+                rules: [{ required: true, message: "请上传图片" }]
+              })(
+                <UploadImg
+                  setValue={value => {
+                    setFieldsValue({
+                      avatar: value
+                    });
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item label="灰色图标">
+              {getFieldDecorator("darkAvatar", {
+                rules: [{ required: true, message: "请上传图片" }]
+              })(
+                <UploadImg
+                  setValue={value => {
+                    setFieldsValue({
+                      darkAvatar: value
+                    });
+                  }}
+                />
+              )}
+            </Form.Item>
+          </div>
           <Form.Item label="名称">
             {getFieldDecorator("name", {
-              rules: [{ required: true, message: "请输入" }]
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label="点亮图标">
-            {getFieldDecorator("avatar", {
-              rules: [{ required: true, message: "请上传图片" }]
-            })(
-              <UploadImg
-                setValue={value => {
-                  setFieldsValue({
-                    avatar: value
-                  });
-                }}
-              />
-            )}
-          </Form.Item>
-          <Form.Item label="灰色图标">
-            {getFieldDecorator("darkAvatar", {
-              rules: [{ required: true, message: "请上传图片" }]
-            })(
-              <UploadImg
-                setValue={value => {
-                  setFieldsValue({
-                    darkAvatar: value
-                  });
-                }}
-              />
-            )}
-          </Form.Item>
-          <Form.Item label="等级">
-            {getFieldDecorator("name", {
-              rules: [{ required: true, message: "请输入" }]
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label="对应值">
-            {getFieldDecorator("value", {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
           </Form.Item>

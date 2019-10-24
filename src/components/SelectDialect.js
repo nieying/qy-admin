@@ -8,13 +8,21 @@ class SelectDialect extends React.Component {
     super(props);
     this.state = {
       options: [],
-      defaultValue: props.value || ""
+      defaultValue: props.value || null
     };
   }
   componentWillMount() {
     getDialect().then(res => {
       this.setState({ options: res.list });
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.value) {
+      this.setState({
+        defaultValue: nextProps.value
+      })
+    }
   }
 
   onChange = value => {
@@ -24,12 +32,13 @@ class SelectDialect extends React.Component {
   render() {
     const { options, defaultValue } = this.state;
     const { mode } = this.props;
+    console.log('defaultValue    render', defaultValue)
     return (
       <Select
         showSearch
-        defaultValue={defaultValue}
+        value={defaultValue}
         mode={mode ? "multiple" : ""}
-        placeholder="请输入"
+        placeholder="请选择"
         optionFilterProp="children"
         onChange={this.onChange}
         filterOption={(input, option) =>

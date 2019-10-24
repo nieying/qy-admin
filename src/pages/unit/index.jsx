@@ -164,7 +164,7 @@ class Unit extends React.Component {
     return (
       <div className="page-dialect">
         <PageHeader
-          title="单元名称"
+          title="单元管理"
           extra={[
             <Button key="1" type="primary" onClick={this.showModal}>
               新增
