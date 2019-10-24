@@ -1,7 +1,7 @@
 import React from "react";
 import { PageHeader, Button, Table } from "antd";
 import AddModal from "./components/add";
-import { getUnit } from "@api/index";
+import { getGardeList } from "@api/index";
 
 class Unit extends React.Component {
   constructor(props) {
@@ -9,15 +9,9 @@ class Unit extends React.Component {
     this.state = {
       loading: false,
       visible: false,
-      name: "",
-      languageId: "",
       dataObj: {
         total: 0,
         list: []
-      },
-      pagination: {
-        current: 1,
-        pageSize: 10
       },
       editItem: {}
     };
@@ -30,20 +24,20 @@ class Unit extends React.Component {
       },
       {
         title: "图标",
-        key: "avatar",
+        key: "image",
         render: (text, record) => (
-          <img src={record.avatar} alt="" className="avatar"></img>
+          <img src={record.image} alt="" className="avatar"></img>
         )
       },
       {
         title: "名称",
-        dataIndex: "name",
-        key: "name"
+        dataIndex: "title",
+        key: "title"
       },
       {
         title: "备注",
-        dataIndex: "languageName",
-        key: "languageName"
+        dataIndex: "remark",
+        key: "remark"
       },
       {
         title: "操作",
@@ -73,15 +67,8 @@ class Unit extends React.Component {
   };
   //   获取数据
   getData = () => {
-    const { name, languageId, pagination } = this.state;
-    const params = {
-      name,
-      languageId,
-      page: pagination.current,
-      limit: pagination.pageSize
-    };
     this.setState({ loading: true });
-    getUnit(params).then(res => {
+    getGardeList().then(res => {
       this.setState({
         loading: false,
         dataObj: {
@@ -93,6 +80,35 @@ class Unit extends React.Component {
   };
   //   显示弹框
   showModal = record => {
+    /**
+     * bigRich,
+     * bigWinner,
+     * exactPrize,
+     * actTimes,
+     * languageProveList,
+     * languageProcess,
+     * smallFire,
+     * mediumFire,
+     * maxFire
+     */
+
+    if (record && record.type === "grade_key_bigRich") {
+      record.configList = [record.config.grade_rich_level_a]
+        .concat([record.config.grade_rich_level_b])
+        .concat([record.config.grade_rich_level_c])
+        .concat([record.config.grade_rich_level_d])
+        .concat([record.config.grade_rich_level_e]);
+      record.showItem = true;
+    }
+    if (record && record.type === "grade_key_bigWinner") {
+      record.configList = [record.config.grade_winner_level_a]
+        .concat([record.config.grade_winner_level_b])
+        .concat([record.config.grade_winner_level_c])
+        .concat([record.config.grade_winner_level_d])
+        .concat([record.config.grade_winner_level_e]);
+      record.showItem = true;
+    }
+    console.log("res", record);
     this.setState({
       visible: true,
       editItem: record && record
@@ -124,15 +140,7 @@ class Unit extends React.Component {
             loading={loading}
             columns={this.columns}
             dataSource={dataObj.list}
-            pagination={{
-              total: dataObj.total,
-              pageSize: pagination.pageSize,
-              showTotal: function() {
-                return "共 " + dataObj.total + " 条数据";
-              }
-            }}
-            onChange={this.changePagination}
-            rowKey={record => record.id}
+            rowKey={record => record.type}
           />
         </div>
         {visible && (
