@@ -33,6 +33,20 @@ class Activity extends React.Component {
     };
     this.columns = [
       {
+        title: "序号",
+        width: 60,
+        key: "index",
+        render: (text, record, index) => `${index + 1}`
+      },
+      {
+        title: "活动banner",
+        dataIndex: "imgUrl",
+        key: 'imgUrl',
+        render: (text, record) => (
+          <img src={record.imgUrl} alt="" className="avatar"></img>
+        )
+      },
+      {
         title: "活动名称",
         dataIndex: "title",
         key: "title"
