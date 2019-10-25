@@ -1,7 +1,8 @@
 import React from "react";
-import SelectDialectType from "@components/SelectDialectType";
-import { Modal, Form, Input, message } from "antd";
+import { Modal, Form, Input, message, Switch } from "antd";
 import { createDialect, updateDialect } from "@api/index";
+import SelectDialectType from "@components/SelectDialectType";
+import UploadImg from "@components/UploadImg";
 const { TextArea } = Input;
 
 @Form.create()
@@ -14,6 +15,8 @@ class Add extends React.Component {
   componentDidMount() {
     const { editItem } = this.props;
     this.props.form.setFieldsValue({
+      provePath: editItem.provePath,
+      state: editItem.state,
       name: editItem.name,
       classId: editItem.classId,
       remark: editItem.remark
@@ -61,6 +64,27 @@ class Add extends React.Component {
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          <Form.Item label="图标">
+            {getFieldDecorator("provePath", {
+              rules: [{ required: true, message: "请上传图片" }]
+            })(
+              <UploadImg
+                setValue={value => {
+                  setFieldsValue({
+                    provePath: value
+                  });
+                }}
+              />
+            )}
+          </Form.Item>
+          <Form.Item label="启用">
+            {getFieldDecorator("state", {
+              valuePropName: "checked",
+              rules: [{ required: true, message: "请输入" }]
+            })(
+                <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+            )}
+          </Form.Item>
           <Form.Item label="方言">
             {getFieldDecorator("name", {
               rules: [{ required: true, message: "请输入" }]

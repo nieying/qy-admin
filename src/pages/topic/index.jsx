@@ -67,6 +67,12 @@ class Subject extends React.Component {
         key: "unitName"
       },
       {
+        title: "是否启用",
+        dataIndex: "state",
+        key: "state",
+        render: (text, record) => <span>{record.state ? "启用" : "禁用"}</span>
+      },
+      {
         title: "创建时间",
         key: "addTime",
         render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
@@ -201,6 +207,12 @@ class Subject extends React.Component {
   hideAnswerModal = () => {
     this.setState({ showAnswer: false });
   };
+
+  handleSelectTopic = val => {
+    this.setState({ type: val }, () => {
+      this.getData();
+    });
+  };
   render() {
     const {
       loading,
@@ -227,12 +239,7 @@ class Subject extends React.Component {
           <Row gutter={30} className="search-condition">
             <Col span={6}>
               <label>题目类型：</label>
-              <SelectTopicType
-                value={type}
-                setValue={value => {
-                  this.setState({ type: value });
-                }}
-              />
+              <SelectTopicType value={type} setValue={this.handleSelectTopic} />
             </Col>
             <Col span={6}>
               <label>题目名称：</label>

@@ -58,6 +58,12 @@ class Unit extends React.Component {
         key: "languageName"
       },
       {
+        title: "是否启用",
+        dataIndex: "state",
+        key: "state",
+        render: (text, record) => <span>{record.state ? "启用" : "禁用"}</span>
+      },
+      {
         title: "创建时间",
         key: "addTime",
         render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")

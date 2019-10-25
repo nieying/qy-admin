@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, message } from "antd";
+import { Modal, Form, Input, message, Switch } from "antd";
 import { createUnit, updateUnit } from "@api/index";
 import UploadImg from "@components/UploadImg";
 import SelectDialect from "@components/SelectDialect";
@@ -17,6 +17,7 @@ class Add extends React.Component {
       avatar: editItem.avatar,
       darkAvatar: editItem.darkAvatar,
       name: editItem.name,
+      state: editItem.state,
       languageId: editItem.languageId
     });
   }
@@ -92,6 +93,14 @@ class Add extends React.Component {
             {getFieldDecorator("name", {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
+          </Form.Item>
+          <Form.Item label="启用">
+            {getFieldDecorator("state", {
+              valuePropName: "checked",
+              rules: [{ required: true, message: "请输入" }]
+            })(
+                <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+            )}
           </Form.Item>
           <Form.Item label="所属方言">
             {getFieldDecorator("languageId", {

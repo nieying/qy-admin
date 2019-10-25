@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, message, Button, Icon } from "antd";
+import { Modal, Form, Input, message, Button, Icon, Switch } from "antd";
 import { createSubject, updateSubject, getSubjectInfo } from "@api/index";
 import UploadImg from "@components/UploadImg";
 import SelectTopicType from "@components/SelectTopicType";
@@ -34,6 +34,7 @@ class Add extends React.Component {
       this.keys = notes;
       this.props.form.setFieldsValue({
         type: res.type,
+        state: res.state,
         languageId: res.languageId,
         title: res.title,
         unitId: res.unitId,
@@ -213,6 +214,14 @@ class Add extends React.Component {
               )}
             </Form.Item>
           )}
+          <Form.Item label="启用">
+            {getFieldDecorator("state", {
+              valuePropName: "checked",
+              rules: [{ required: true, message: "请输入" }]
+            })(
+                <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+            )}
+          </Form.Item>
           {getFieldValue("type") !== "map" && (
             <Form.Item label="文本题干">
               {getFieldDecorator("title", {

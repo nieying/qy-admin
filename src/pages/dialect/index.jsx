@@ -39,6 +39,13 @@ class Dialect extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
+        title: "图标",
+        key: "provePath",
+        render: (text, record) => (
+          <img src={record.provePath} alt="" className="avatar"></img>
+        )
+      },
+      {
         title: "方言名称",
         dataIndex: "name",
         key: "name"
@@ -47,6 +54,12 @@ class Dialect extends React.Component {
         title: "方言归类",
         dataIndex: "className",
         key: "className"
+      },
+      {
+        title: "是否启用",
+        dataIndex: "state",
+        key: "state",
+        render: (text, record) => <span>{record.state ? "启用" : "禁用"}</span>
       },
       {
         title: "创建时间",
