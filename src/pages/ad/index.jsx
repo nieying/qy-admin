@@ -13,7 +13,7 @@ import {
   Switch
 } from "antd";
 import AddModal from "./components/add";
-import { getAdvert, updateAdvert, deleteAdvert } from "@api/index";
+import { getAdvert, deleteAdvert } from "@api/index";
 
 class Advert extends React.Component {
   constructor(props) {
@@ -53,8 +53,8 @@ class Advert extends React.Component {
       },
       {
         title: "广告内容",
-        dataIndex: "type",
-        key: "type"
+        dataIndex: "content",
+        key: "content"
       },
       {
         title: "创建时间",
@@ -68,17 +68,9 @@ class Advert extends React.Component {
       },
       {
         title: "是否启用",
+        dataIndex: "state",
         key: "state",
-        render: (text, record) => (
-          <Switch
-            checkedChildren="启用"
-            unCheckedChildren="禁用"
-            defaultChecked={record.state ? true : false}
-            onChange={e => {
-              this.handleState(e, record);
-            }}
-          />
-        )
+        render: (text, record) => <span>{record.state ? "启用" : "禁用"}</span>
       },
       {
         title: "操作",
@@ -136,11 +128,11 @@ class Advert extends React.Component {
     });
   };
   // 启用禁用
-  handleState = (state, record) => {
-    updateAdvert({ id: record.id, state: state ? 1 : 0 }).then(res => {
-      res && message.success(state ? "启用成功！" : "禁用成功");
-    });
-  };
+  // handleState = (state, record) => {
+  //   updateAdvert({ id: record.id, state: state ? 1 : 0 }).then(res => {
+  //     res && message.success(state ? "启用成功！" : "禁用成功");
+  //   });
+  // };
   //   显示弹框
   showModal = record => {
     this.setState({
@@ -193,7 +185,7 @@ class Advert extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>广告：</label>
+              <label>广告标题：</label>
               <Input
                 placeholder="请输入"
                 allowClear

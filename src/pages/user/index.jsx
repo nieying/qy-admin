@@ -1,16 +1,6 @@
 import React from "react";
 import moment from "moment";
-import {
-  PageHeader,
-  Row,
-  Col,
-  Input,
-  Button,
-  Table,
-  Divider,
-  Modal,
-  message
-} from "antd";
+import { PageHeader, Row, Col, Input, Button, Table } from "antd";
 import { getUsers } from "@api/index";
 
 class User extends React.Component {
@@ -18,7 +8,6 @@ class User extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      visible: false,
       name: "",
       dataObj: {
         total: 0,
@@ -27,8 +16,7 @@ class User extends React.Component {
       pagination: {
         current: 1,
         pageSize: 10
-      },
-      editItem: {}
+      }
     };
     this.columns = [
       {
@@ -38,9 +26,27 @@ class User extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
+        title: "头像",
+        key: "avatar",
+        render: (text, record) => (
+          <img src={record.avatar} alt="" className="avatar"></img>
+        )
+      },
+      {
         title: "用户名称",
-        dataIndex: "name",
-        key: "name"
+        dataIndex: "nickname",
+        key: "nickname"
+      },
+      {
+        title: "性别",
+        dataIndex: "gender",
+        key: "gender",
+        render: (text, record) => <span>{record.gender ? "男" : "女"}</span>
+      },
+      {
+        title: "手机号码",
+        dataIndex: "mobile",
+        key: "mobile"
       },
       {
         title: "创建时间",
@@ -52,31 +58,6 @@ class User extends React.Component {
         key: "updateTime",
         render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
       }
-      // {
-      //   title: "操作",
-      //   key: "action",
-      //   render: (text, record) => (
-      //     <span>
-      //       <Button
-      //         type="link"
-      //         onClick={() => {
-      //           this.showModal(record);
-      //         }}
-      //       >
-      //         编辑
-      //       </Button>
-      //       <Divider type="vertical" />
-      //       <Button
-      //         type="link"
-      //         onClick={() => {
-      //           this.del(record);
-      //         }}
-      //       >
-      //         删除
-      //       </Button>
-      //     </span>
-      //   )
-      // }
     ];
   }
   componentDidMount() {
@@ -97,7 +78,7 @@ class User extends React.Component {
     };
     this.setState({ loading: true });
     getUsers(params).then(res => {
-      this.setState({
+      res && this.setState({
         loading: false,
         dataObj: {
           total: res.total,
@@ -106,19 +87,6 @@ class User extends React.Component {
       });
     });
   };
-  // //   显示弹框
-  // showModal = record => {
-  //   this.setState({
-  //     visible: true,
-  //     editItem: record && record
-  //   });
-  // };
-  // //   隐藏弹框
-  // handleCancel = () => {
-  //   this.setState({
-  //     visible: false
-  //   });
-  // };
   //   重置
   reset = () => {
     this.setState({ name: "" }, () => {
@@ -130,17 +98,10 @@ class User extends React.Component {
     this.setState({ name: e.target.value });
   };
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const { loading, dataObj, pagination } = this.state;
     return (
       <div className="page-dialect">
-        <PageHeader
-          title="用户管理"
-          // extra={[
-          //   <Button key="1" type="primary" onClick={this.showModal}>
-          //     新增
-          //   </Button>
-          // ]}
-        />
+        <PageHeader title="用户管理" />
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>

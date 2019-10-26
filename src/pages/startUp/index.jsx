@@ -9,11 +9,10 @@ import {
   Table,
   Divider,
   Modal,
-  message,
-  Switch
+  message
 } from "antd";
 import AddModal from "./components/add";
-import { getStartup, updateStartup, deleteStartup } from "@api/index";
+import { getStartup, deleteStartup } from "@api/index";
 
 class Startup extends React.Component {
   constructor(props) {
@@ -54,7 +53,14 @@ class Startup extends React.Component {
       {
         title: "协会名称",
         dataIndex: "organizeName",
-        key: "organizeName"
+        key: "organizeName",
+        render: (text, record) => <span>{record.organizeName ? record.organizeName : "无"}</span>
+      },
+      {
+        title: "是否启用",
+        dataIndex: "state",
+        key: "state",
+        render: (text, record) => <span>{record.state ? "启用" : "禁用"}</span>
       },
       {
         title: "创建时间",
@@ -65,20 +71,6 @@ class Startup extends React.Component {
         title: "修改时间",
         key: "updateTime",
         render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
-      },
-      {
-        title: "是否启用",
-        key: "state",
-        render: (text, record) => (
-          <Switch
-            checkedChildren="启用"
-            unCheckedChildren="禁用"
-            defaultChecked={record.state ? true : false}
-            onChange={e => {
-              this.handleState(e, record);
-            }}
-          />
-        )
       },
       {
         title: "操作",
@@ -125,19 +117,13 @@ class Startup extends React.Component {
     };
     this.setState({ loading: true });
     getStartup(params).then(res => {
-      this.setState({
+      res && this.setState({
         loading: false,
         dataObj: {
           total: res.total,
           list: res.list
         }
       });
-    });
-  };
-  // 启用禁用
-  handleState = (state, record) => {
-    updateStartup({ id: record.id, state: state ? 1 : 0 }).then(res => {
-      res && message.success(state ? "启用成功！" : "禁用成功");
     });
   };
   //   显示弹框
@@ -192,7 +178,7 @@ class Startup extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>方言名称：</label>
+              <label>名称：</label>
               <Input
                 placeholder="请输入"
                 allowClear

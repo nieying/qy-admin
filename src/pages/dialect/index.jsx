@@ -116,7 +116,7 @@ class Dialect extends React.Component {
     };
     this.setState({ loading: true });
     getDialect(params).then(res => {
-      this.setState({
+      res && this.setState({
         loading: false,
         dataObj: {
           total: res.total,

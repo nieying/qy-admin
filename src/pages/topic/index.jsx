@@ -14,7 +14,8 @@ import {
 import AddModal from "./components/add";
 import AddAnswer from "./components/AddAnswer";
 import SelectTopicType from "@components/SelectTopicType";
-// import SelectUnit from "@components/SelectUnit";
+import SelectDialect from "@components/SelectDialect";
+import SelectUnit from "@components/SelectUnit";
 
 import { getSubject, deleteSubject } from "@api/index";
 class Subject extends React.Component {
@@ -24,9 +25,10 @@ class Subject extends React.Component {
       loading: false,
       visible: false,
       showAnswer: false,
+      languageId: "",
       unitId: "",
       name: "",
-      type: "normal",
+      type: "",
       dataObj: {
         total: 0,
         list: []
@@ -136,13 +138,14 @@ class Subject extends React.Component {
       case "map":
         return "看图题";
       default:
-        return "防伪标题";
+        return "选图题";
     }
   };
   //   获取数据
   getData = () => {
-    const { unitId, type, name, pagination } = this.state;
+    const { languageId, unitId, type, name, pagination } = this.state;
     const params = {
+      languageId,
       unitId,
       type,
       name,
@@ -151,7 +154,7 @@ class Subject extends React.Component {
     };
     this.setState({ loading: true });
     getSubject(params).then(res => {
-      this.setState({
+     res && this.setState({
         loading: false,
         dataObj: {
           total: res.total,
@@ -223,7 +226,9 @@ class Subject extends React.Component {
       topicId,
       name,
       type,
-      topicType
+      topicType,
+      languageId,
+      unitId
     } = this.state;
     return (
       <div className="page-dialect">
@@ -237,11 +242,11 @@ class Subject extends React.Component {
         />
         <div className="warpper">
           <Row gutter={30} className="search-condition">
-            <Col span={6}>
+            <Col span={5}>
               <label>题目类型：</label>
               <SelectTopicType value={type} setValue={this.handleSelectTopic} />
             </Col>
-            <Col span={6}>
+            <Col span={5}>
               <label>题目名称：</label>
               <Input
                 value={name}
@@ -250,16 +255,28 @@ class Subject extends React.Component {
                 }}
               />
             </Col>
-            {/* <Col span={6}>
+            <Col span={5}>
+              <label>所属方言：</label>
+              <SelectDialect
+                value={languageId}
+                setValue={value => {
+                  this.setState({
+                    languageId: value
+                  });
+                }}
+              />
+            </Col>
+            <Col span={5}>
               <label>单元名称：</label>
               <SelectUnit
+                languageId={languageId}
                 value={unitId}
                 setValue={value => {
                   this.setState({ unitId: value });
                 }}
               />
-            </Col> */}
-            <Col span={6} className="search-opts">
+            </Col>
+            <Col span={4} className="search-opts">
               <Button type="primary" onClick={this.getData}>
                 查询
               </Button>

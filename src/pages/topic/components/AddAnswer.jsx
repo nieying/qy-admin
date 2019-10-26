@@ -127,7 +127,6 @@ class AddAnswer extends React.Component {
     };
     getFieldDecorator("keys", { initialValue: this.state.keys });
     let keys = getFieldValue("keys");
-    console.log("keys", keys);
     return (
       keys &&
       keys.map((k, index) => (

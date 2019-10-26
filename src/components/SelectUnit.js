@@ -21,7 +21,7 @@ class SelectUnit extends React.Component {
     if (nextProps.languageId !== this.props.languageId) {
       this.getData(nextProps.languageId)
     }
-    if(nextProps.value) {
+    if(nextProps.value !== this.state.defaultValue) {
       this.setState({
         defaultValue: nextProps.value
       })

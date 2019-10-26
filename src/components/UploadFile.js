@@ -4,17 +4,16 @@ import { Upload, Icon, message } from "antd";
 const { Dragger } = Upload;
 
 class UploadFile extends React.Component {
-
   constructor(props) {
     super(props);
-    console.log('props===>', props)
     this.state = {
-      filePath: props.value || '',
+      filePath: props.value || "",
       loading: false
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
+    debugger;
     this.setState({ filePath: nextProps && nextProps.value });
   }
 
@@ -41,21 +40,18 @@ class UploadFile extends React.Component {
         }
       }
     };
-    console.log('filePath', filePath)
     return (
       <Dragger {...props}>
-        {
-          filePath ? <div>
-            {filePath}
-          </div> :
-            <div>
-              <p className="ant-upload-drag-icon">
-                <Icon type="inbox" />
-              </p>
-              <p className="ant-upload-text">拖拽上传</p>
-            </div>
-        }
-
+        {filePath ? (
+          <div style={{ width: 200 }}>{filePath}</div>
+        ) : (
+          <div>
+            <p className="ant-upload-drag-icon">
+              <Icon type="inbox" />
+            </p>
+            <p className="ant-upload-text">拖拽上传</p>
+          </div>
+        )}
       </Dragger>
     );
   }

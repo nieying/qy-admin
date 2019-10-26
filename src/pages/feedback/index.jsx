@@ -141,9 +141,6 @@ class User extends React.Component {
         <PageHeader
           title="反馈管理"
           extra={[
-            <Button key="1" type="primary" onClick={this.showModal}>
-              新增
-            </Button>
           ]}
         />
         <div className="warpper">

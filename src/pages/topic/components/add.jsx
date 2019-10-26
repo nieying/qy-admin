@@ -13,7 +13,9 @@ class Add extends React.Component {
   constructor(props) {
     super(props);
     this.keys = [1, 2];
-    this.state = {};
+    this.state = {
+      detailObj: null
+    };
   }
 
   componentDidMount() {
@@ -22,7 +24,8 @@ class Add extends React.Component {
       this.getSubjectDetail(id);
     } else {
       this.props.form.setFieldsValue({
-        type: "normal"
+        type: "normal",
+        state: false
       });
     }
   }
@@ -30,6 +33,7 @@ class Add extends React.Component {
   // 获取题目详情
   getSubjectDetail = id => {
     getSubjectInfo({ id: id }).then(res => {
+      this.setState({ detailObj: res });
       let notes = JSON.parse(res.notes);
       this.keys = notes;
       this.props.form.setFieldsValue({
@@ -38,7 +42,7 @@ class Add extends React.Component {
         languageId: res.languageId,
         title: res.title,
         unitId: res.unitId,
-        filePath: res.filePath,
+        filePath: res.filePath
       });
     });
   };
@@ -51,7 +55,6 @@ class Add extends React.Component {
         const notes = JSON.stringify(formatFormData(values));
         values.notes = notes;
       }
-      console.log("values===>", values);
       if (!err) {
         id ? this.update(values) : this.create(values);
       }
@@ -72,8 +75,8 @@ class Add extends React.Component {
   };
 
   succCallback = () => {
-    const { editItem } = this.props;
-    message.success(editItem && editItem.id ? "编辑成功" : "添加成功");
+    const { id } = this.props;
+    message.success(id ? "编辑成功" : "添加成功");
     this.props.handleCancel();
     this.props.getData();
   };
@@ -162,7 +165,7 @@ class Add extends React.Component {
       getFieldValue
     } = this.props.form;
     const { editItem } = this.props;
-    // const getFieldValue("type") = getFieldValue("type");
+    const filePath = getFieldValue("filePath");
     const languageId = getFieldValue("languageId");
     return (
       <Modal
@@ -218,17 +221,13 @@ class Add extends React.Component {
             {getFieldDecorator("state", {
               valuePropName: "checked",
               rules: [{ required: true, message: "请输入" }]
-            })(
-                <Switch checkedChildren="启用" unCheckedChildren="禁用" />
-            )}
+            })(<Switch checkedChildren="启用" unCheckedChildren="禁用" />)}
           </Form.Item>
-          {getFieldValue("type") !== "map" && (
-            <Form.Item label="文本题干">
-              {getFieldDecorator("title", {
-                rules: [{ required: true, message: "请输入" }]
-              })(<Input placeholder="请输入" />)}
-            </Form.Item>
-          )}
+          <Form.Item label="文本题干">
+            {getFieldDecorator("title", {
+              rules: [{ required: true, message: "请输入" }]
+            })(<Input placeholder="请输入" />)}
+          </Form.Item>
           {getFieldValue("type") === "auto" && (
             <Form.Item label="语音上传">
               {getFieldDecorator("filePath", {
@@ -247,6 +246,7 @@ class Add extends React.Component {
           {getFieldValue("type") === "map" && (
             <Form.Item label="图片上传">
               {getFieldDecorator("filePath", {
+                // initialValue: detailObj && detailObj.filePath,
                 rules: [{ required: true, message: "请选择" }]
               })(
                 <UploadImg

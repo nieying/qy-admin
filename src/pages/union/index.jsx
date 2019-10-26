@@ -120,7 +120,7 @@ class Organize extends React.Component {
     };
     this.setState({ loading: true });
     getOrganize(params).then(res => {
-      this.setState({
+      res && this.setState({
         loading: false,
         dataObj: {
           total: res.total,

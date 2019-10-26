@@ -119,13 +119,14 @@ class Unit extends React.Component {
     };
     this.setState({ loading: true });
     getUnit(params).then(res => {
-      this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
     });
   };
   //   显示弹框
@@ -166,7 +167,14 @@ class Unit extends React.Component {
     });
   };
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const {
+      loading,
+      visible,
+      dataObj,
+      pagination,
+      editItem,
+      languageId
+    } = this.state;
     return (
       <div className="page-dialect">
         <PageHeader
@@ -187,16 +195,17 @@ class Unit extends React.Component {
                 onChange={this.setNameCodition}
               />
             </Col>
-            {/* <Col span={6}>
+            <Col span={6}>
               <label>所属方言：</label>
               <SelectDialect
+                value={languageId}
                 setValue={value => {
                   this.setState({
                     languageId: value
                   });
                 }}
               />
-            </Col> */}
+            </Col>
             <Col span={6} className="search-opts">
               <Button type="primary" onClick={this.getData}>
                 查询

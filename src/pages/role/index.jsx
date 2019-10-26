@@ -32,7 +32,7 @@ class Admin extends React.Component {
     };
     this.columns = [
       {
-        title: "管理员头像",
+        title: "头像",
         dataIndex: "avatar",
         key: "avatar",
         render: (text, record) => {
@@ -40,7 +40,7 @@ class Admin extends React.Component {
         }
       },
       {
-        title: "管理员名称",
+        title: "名称",
         dataIndex: "username",
         key: "username"
       },
@@ -104,7 +104,7 @@ class Admin extends React.Component {
     };
     this.setState({ loading: true });
     getAdmin(params).then(res => {
-      this.setState({
+      res && this.setState({
         loading: false,
         dataObj: {
           total: res.total,
@@ -162,7 +162,7 @@ class Admin extends React.Component {
     return (
       <div className="page-dialect">
         <PageHeader
-          title="课程管理"
+          title="角色管理"
           extra={[
             <Button key="1" type="primary" onClick={this.showModal}>
               新增
@@ -172,7 +172,7 @@ class Admin extends React.Component {
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>
-              <label>管理员名称：</label>
+              <label>名称：</label>
               <Input
                 placeholder="请输入"
                 allowClear

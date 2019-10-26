@@ -12,9 +12,6 @@ class Add extends React.Component {
 
   componentDidMount() {
     const { editItem } = this.props;
-    // getGardeInfo({type: editItem.type}).then(res=> {
-    //   console.log()
-    // })
     this.props.form.setFieldsValue({
       image: editItem.image,
       darkImage: editItem.darkImage,
@@ -85,7 +82,6 @@ class Add extends React.Component {
   render() {
     const { editItem } = this.props;
     const { getFieldDecorator, setFieldsValue } = this.props.form;
-    console.log("editItem====>", editItem);
     return (
       <Modal
         title={"修改"}

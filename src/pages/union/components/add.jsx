@@ -59,7 +59,7 @@ class Add extends React.Component {
     const { editItem } = this.props;
     return (
       <Modal
-        title={editItem && editItem.id ? "编辑" : "修改"}
+        title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
@@ -67,7 +67,7 @@ class Add extends React.Component {
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           <Form.Item label="协会图标">
             {getFieldDecorator("avatar", {
-              rules: [{ message: "请输入" }]
+              rules: [{required: true, message: "请输入" }]
             })(
               <UploadImg
                 setValue={value => {

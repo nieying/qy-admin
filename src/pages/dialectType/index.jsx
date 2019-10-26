@@ -98,7 +98,7 @@ class DialectType extends React.Component {
     };
     this.setState({ loading: true });
     getDialectType(params).then(res => {
-      this.setState({
+      res && this.setState({
         loading: false,
         dataObj: {
           total: res.total,

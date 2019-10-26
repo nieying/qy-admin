@@ -13,13 +13,19 @@ class Add extends React.Component {
 
   componentDidMount() {
     const { editItem } = this.props;
-    this.props.form.setFieldsValue({
-      avatar: editItem.avatar,
-      darkAvatar: editItem.darkAvatar,
-      name: editItem.name,
-      state: editItem.state,
-      languageId: editItem.languageId
-    });
+    if (editItem && editItem.id) {
+      this.props.form.setFieldsValue({
+        avatar: editItem.avatar,
+        darkAvatar: editItem.darkAvatar,
+        name: editItem.name,
+        state: editItem.state,
+        languageId: editItem.languageId
+      });
+    } else {
+      this.props.form.setFieldsValue({
+        state: false,
+      });
+    }
   }
 
   handleOk = e => {
@@ -57,7 +63,7 @@ class Add extends React.Component {
     const { editItem } = this.props;
     return (
       <Modal
-        title={editItem && editItem.id ? "编辑" : "修改"}
+        title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}

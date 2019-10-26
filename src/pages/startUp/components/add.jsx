@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, message } from "antd";
+import { Modal, Form, Input, message, Switch } from "antd";
 import { createStartup, updateStartup } from "@api/index";
 import UploadImg from "@components/UploadImg";
 import SelectUnion from "@components/SelectUnion";
@@ -13,11 +13,18 @@ class Add extends React.Component {
 
   componentDidMount() {
     const { editItem } = this.props;
-    this.props.form.setFieldsValue({
-      imgUrl: editItem.imgUrl,
-      title: editItem.title,
-      organizeId: editItem.organizeId
-    });
+    if (editItem && editItem.id) {
+      this.props.form.setFieldsValue({
+        imgUrl: editItem.imgUrl,
+        state: editItem.state,
+        title: editItem.title,
+        organizeId: editItem.organizeId
+      });
+    } else {
+      this.props.form.setFieldsValue({
+        state: false
+      });
+    }
   }
 
   handleOk = e => {
@@ -55,7 +62,7 @@ class Add extends React.Component {
     const { editItem } = this.props;
     return (
       <Modal
-        title={editItem && editItem.id ? "编辑" : "修改"}
+        title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
@@ -74,6 +81,12 @@ class Add extends React.Component {
               />
             )}
           </Form.Item>
+          <Form.Item label="启用">
+            {getFieldDecorator("state", {
+              valuePropName: "checked",
+              rules: [{ required: true, message: "请输入" }]
+            })(<Switch checkedChildren="启用" unCheckedChildren="禁用" />)}
+          </Form.Item>
           <Form.Item label="名称">
             {getFieldDecorator("title", {
               rules: [{ required: true, message: "请输入" }]
@@ -81,7 +94,7 @@ class Add extends React.Component {
           </Form.Item>
           <Form.Item label="协会">
             {getFieldDecorator("organizeId", {
-              rules: [{ required: true, message: "请选择" }]
+              rules: [{ message: "请选择" }]
             })(
               <SelectUnion
                 setValue={value => {

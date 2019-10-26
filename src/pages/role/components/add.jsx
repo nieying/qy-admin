@@ -60,13 +60,13 @@ class Add extends React.Component {
     const { editItem } = this.props;
     return (
       <Modal
-        title={editItem && editItem.id ? "编辑" : "修改"}
+        title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          <Form.Item label="管理员头像">
+          <Form.Item label="头像">
             {getFieldDecorator("avatar", {
               rules: [{ required: true, message: "请输入" }]
             })(
@@ -79,12 +79,12 @@ class Add extends React.Component {
               />
             )}
           </Form.Item>
-          <Form.Item label="管理员名称">
+          <Form.Item label="名称">
             {getFieldDecorator("username", {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="管理员密码">
+          <Form.Item label="密码">
             {getFieldDecorator("password", {
               rules: [{ required: true, message: "请选择" }]
             })(<Input />)}

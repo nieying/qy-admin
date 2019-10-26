@@ -18,7 +18,7 @@ class SelectDialect extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.value) {
+    if(nextProps.value !== this.state.defaultValue) {
       this.setState({
         defaultValue: nextProps.value
       })
@@ -26,16 +26,17 @@ class SelectDialect extends React.Component {
   }
 
   onChange = value => {
-    this.props.setValue(value);
+    this.props.setValue(value || '');
+  //  !value && this.setState({defaultValue: ''})
   };
 
   render() {
     const { options, defaultValue } = this.state;
     const { mode } = this.props;
-    console.log('defaultValue    render', defaultValue)
     return (
       <Select
         showSearch
+        allowClear={true}
         value={defaultValue}
         mode={mode ? "multiple" : ""}
         placeholder="请选择"

@@ -8,8 +8,7 @@ class User extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      visible: false,
-      username: "",
+      name: "",
       mobile: "",
       dataObj: {
         total: 0,
@@ -18,8 +17,7 @@ class User extends React.Component {
       pagination: {
         current: 1,
         pageSize: 10
-      },
-      editItem: {}
+      }
     };
     this.columns = [
       {
@@ -61,31 +59,6 @@ class User extends React.Component {
         key: "updateTime",
         render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
       }
-      // {
-      //   title: "操作",
-      //   key: "action",
-      //   render: (text, record) => (
-      //     <span>
-      //       <Button
-      //         type="link"
-      //         onClick={() => {
-      //           this.showModal(record);
-      //         }}
-      //       >
-      //         编辑
-      //       </Button>
-      //       <Divider type="vertical" />
-      //       <Button
-      //         type="link"
-      //         onClick={() => {
-      //           this.del(record);
-      //         }}
-      //       >
-      //         删除
-      //       </Button>
-      //     </span>
-      //   )
-      // }
     ];
   }
   componentDidMount() {
@@ -98,16 +71,16 @@ class User extends React.Component {
   };
   //   获取数据
   getData = () => {
-    const { username, mobile, pagination } = this.state;
+    const { name, mobile, pagination } = this.state;
     const params = {
-      username,
+      name,
       mobile,
       page: pagination.current,
       limit: pagination.pageSize
     };
     this.setState({ loading: true });
     getVipUsers(params).then(res => {
-      this.setState({
+      res && this.setState({
         loading: false,
         dataObj: {
           total: res.total,
@@ -116,28 +89,15 @@ class User extends React.Component {
       });
     });
   };
-  // //   显示弹框
-  // showModal = record => {
-  //   this.setState({
-  //     visible: true,
-  //     editItem: record && record
-  //   });
-  // };
-  // //   隐藏弹框
-  // handleCancel = () => {
-  //   this.setState({
-  //     visible: false
-  //   });
-  // };
   //   重置
   reset = () => {
-    this.setState({ username: "" }, () => {
+    this.setState({ name: "" }, () => {
       this.getData();
     });
   };
   // 设置查询
   setNameCodition = e => {
-    this.setState({ username: e.target.value });
+    this.setState({ name: e.target.value });
   };
   // 设置查询
   setMobileCodition = e => {
@@ -147,14 +107,7 @@ class User extends React.Component {
     const { loading, dataObj, pagination } = this.state;
     return (
       <div className="page-dialect">
-        <PageHeader
-          title="会员管理"
-          // extra={[
-          //   <Button key="1" type="primary" onClick={this.showModal}>
-          //     新增
-          //   </Button>
-          // ]}
-        />
+        <PageHeader title="会员管理" />
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>

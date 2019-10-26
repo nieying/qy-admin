@@ -86,7 +86,7 @@ class Add extends React.Component {
       <Modal
         width="80%"
         centered
-        title={editItem && editItem.id ? "编辑" : "修改"}
+        title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
