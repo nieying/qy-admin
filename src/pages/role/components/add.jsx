@@ -87,7 +87,7 @@ class Add extends React.Component {
           <Form.Item label="密码">
             {getFieldDecorator("password", {
               rules: [{ required: true, message: "请选择" }]
-            })(<Input />)}
+            })(<Input type="password"/>)}
           </Form.Item>
           <Form.Item label="菜单权限">
             {getFieldDecorator("menus", {

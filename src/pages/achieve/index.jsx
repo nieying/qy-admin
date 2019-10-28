@@ -131,7 +131,7 @@ class Unit extends React.Component {
     this.setState({ name: e.target.value });
   };
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const { loading, visible, dataObj, editItem } = this.state;
     return (
       <div className="page-dialect">
         <PageHeader title="成就管理" extra={[]} />

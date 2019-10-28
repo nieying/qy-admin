@@ -8,29 +8,16 @@ import UploadImg from "@components/UploadImg";
 class AddAnswer extends React.Component {
   constructor(props) {
     super(props);
-    // this.keys = [];
     this.state = {
       keys: [],
       topicType: props.topicType || "normal"
     };
   }
 
-  componentWillMount() {}
-
   componentDidMount() {
     getAnswer({ subjectId: this.props.id }).then(res => {
       if (res) {
         this.setState({ keys: res.list });
-        // const formObj = {};
-        // res.list.forEach((item, index) => {
-        //   formObj[`subjectId_${index}`] = item.subjectId;
-        //   formObj[`id_${index}`] = item.id;
-        //   formObj[`answer_${index}`] = item.answer;
-        //   formObj[`right_${index}`] = item.right;
-        // });
-        // setTimeout(() => {
-        //   this.props.form.setFieldsValue({ ...formObj });
-        // }, 100);
       }
     });
   }
@@ -41,9 +28,7 @@ class AddAnswer extends React.Component {
       const params = formatFormData(values);
       params.forEach(item => {
         if (!item.right) {
-          item.right = 0;
-        } else {
-          item.right = 1;
+          item.right = false;
         }
         if (item.subjectId === undefined) {
           item.subjectId = this.props.id;
@@ -62,50 +47,25 @@ class AddAnswer extends React.Component {
   };
 
   remove = k => {
-    // const { form } = this.props;
     const { keys } = this.state;
-    // const keys = form.getFieldValue("keys");
     if (keys.length === 1) {
       return;
     }
     this.setState({ keys: keys.filter(key => key !== k) });
-
-    // form.setFieldsValue({
-    //   keys: keys.filter(key => key !== k)
-    // });
   };
 
   add = () => {
-    const { id, form } = this.props;
-    // const keys = form.getFieldValue("keys");
+    const { id } = this.props;
     const addKey = [{ subjectId: id, answer: "", right: false }];
-    // const nextKeys = keys.concat(addKey);
-    // this.keys = keys.concat(addKey);
     this.setState({ keys: this.state.keys.concat(addKey) });
-    // form.setFieldsValue({
-    //   keys: nextKeys
-    // });
   };
   handleCheckBox = (e, k, index) => {
     const { keys } = this.state;
-    // this.setState({ test: 10 }, () => {
+    keys.forEach(k => {
+      k.right = false;
+    });
     keys[index].right = e.target.checked;
-    // this.props.form.setFieldsValue({
-    //   [`right_${index}`]: e.target.checked
-    // });
     this.setState({ keys });
-    // });
-    // this.keys.forEach((a, i) => {
-    //   if (a.id === k.id) {
-    //     a.right = e.target.checked;
-    //     this.props.form.setFieldsValue({
-    //       [`right_${i}`]: e.target.checked
-    //     });
-    //   } else {
-    //     a.right = 0;
-    //     this.props.form.setFieldsValue({ [`right_${i}`]: false });
-    //   }
-    // });
   };
 
   rendFormItem = () => {
@@ -166,7 +126,6 @@ class AddAnswer extends React.Component {
                 })(
                   <Input
                     placeholder="请输入"
-                    // value={`${`answer_${index}`}`}
                     style={{ width: "60%", marginRight: 8 }}
                   />
                 )}
@@ -197,7 +156,6 @@ class AddAnswer extends React.Component {
   };
 
   render() {
-    // const { getFieldValue } = this.props.form;
     const { keys } = this.state;
     return (
       <Modal

@@ -44,11 +44,6 @@ class User extends React.Component {
         render: (text, record) => <span>{record.gender ? "男" : "女"}</span>
       },
       {
-        title: "手机号码",
-        dataIndex: "mobile",
-        key: "mobile"
-      },
-      {
         title: "创建时间",
         key: "addTime",
         render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")

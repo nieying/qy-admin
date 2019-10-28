@@ -115,13 +115,9 @@ class Admin extends React.Component {
   };
   //   显示弹框
   showModal = record => {
-    let menusIds = [];
-    if (record) {
-      record.menus.map(item => {
-        menusIds.push(item.id);
-      });
+    if (record && record.id) {
+      record.menusIds = record.menus.map(item => item.id);
     }
-    record.menusIds = menusIds;
     this.setState({
       visible: true,
       editItem: record && record
