@@ -207,6 +207,7 @@ class Add extends React.Component {
                 rules: [{ required: true, message: "请选择" }]
               })(
                 <SelectUnit
+                  mode={true}
                   languageId={languageId}
                   setValue={value => {
                     setFieldsValue({
