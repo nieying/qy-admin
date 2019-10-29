@@ -131,7 +131,9 @@ class AddAnswer extends React.Component {
                 )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator(`right_${index}`, {})(
+            {getFieldDecorator(`right_${index}`, {
+              initialValue: k.right,
+            })(
               <div className="answer-check">
                 <Checkbox
                   checked={k.right}

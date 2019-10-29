@@ -13,7 +13,6 @@ class UploadFile extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    debugger;
     this.setState({ filePath: nextProps && nextProps.value });
   }
 

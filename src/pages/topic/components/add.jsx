@@ -12,7 +12,7 @@ import { formatFormData } from "@utils/constants";
 class Add extends React.Component {
   constructor(props) {
     super(props);
-    this.keys = [1, 2];
+    this.keys = [];
     this.state = {
       detailObj: null
     };
@@ -51,7 +51,7 @@ class Add extends React.Component {
     const { id } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if (values.type === "normal") {
+      if (values.type !== "map") {
         const notes = JSON.stringify(formatFormData(values));
         values.notes = notes;
       }
@@ -96,7 +96,7 @@ class Add extends React.Component {
   add = () => {
     const { form } = this.props;
     const keys = form.getFieldValue("keys");
-    const addKey = [1];
+    const addKey = [{key:'', value:''}];
     const nextKeys = keys.concat(addKey);
     form.setFieldsValue({
       keys: nextKeys
@@ -207,7 +207,7 @@ class Add extends React.Component {
                 rules: [{ required: true, message: "请选择" }]
               })(
                 <SelectUnit
-                  mode={true}
+                  // mode={true}
                   languageId={languageId}
                   setValue={value => {
                     setFieldsValue({
@@ -260,8 +260,8 @@ class Add extends React.Component {
               )}
             </Form.Item>
           )}
-          {getFieldValue("type") === "normal" && this.rendFormItem()}
-          {getFieldValue("type") === "normal" && (
+          {getFieldValue("type") !== "map" && this.rendFormItem()}
+          {getFieldValue("type") !== "map" && (
             <Form.Item>
               <Button type="dashed" onClick={this.add} style={{ width: "60%" }}>
                 <Icon type="plus" /> 新增注释
