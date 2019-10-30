@@ -12,7 +12,7 @@ import {
   message
 } from "antd";
 import AddModal from "./components/add";
-import { getActivity, deleteActivity } from "@api/index";
+import { getActivity, deleteActivity, exportActivity } from "@api/index";
 
 class Activity extends React.Component {
   constructor(props) {
@@ -129,6 +129,18 @@ class Activity extends React.Component {
       });
     });
   };
+
+   // 导出
+   onExport = () => {
+    const { name, pagination } = this.state;
+    const params = {
+      name,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    exportActivity(params);
+  };
+
   //   显示弹框
   showModal = record => {
     this.setState({
@@ -176,9 +188,9 @@ class Activity extends React.Component {
             // <Button key="1" type="primary">
             //   导入
             // </Button>,
-            // <Button key="2" type="primary">
-            //   导出
-            // </Button>,
+            <Button key="2" type="info" onClick={this.onExport}>
+              导出
+            </Button>,
             <Button key="3" type="primary" onClick={this.showModal}>
               新增
             </Button>

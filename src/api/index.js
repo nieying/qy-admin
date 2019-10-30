@@ -139,6 +139,9 @@ export const getActivity = params => {
 export const readActivity = params => {
   return axios.get("/activity/info", { params });
 };
+export const exportActivity = params => {
+  return axios.get("/activity/export", { params });
+};
 export const createActivity = data => {
   return axios.post("/activity/create", data);
 };
@@ -171,6 +174,9 @@ export const deleteNotes = data => {
 export const getOrganize = params => {
   return axios.get("/organize/list", { params });
 };
+export const exportOrganize = params => {
+  return axios.get("/organize/export", { params });
+};
 export const createOrganize = data => {
   return axios.post("/organize/create", data);
 };
@@ -197,6 +203,9 @@ export const deleteStartup = data => {
 /** 用户-会员管理*/
 export const getUsers = params => {
   return axios.get("/user/list", { params });
+};
+export const exportUsers = params => {
+  return axios.get("/user/export", { params });
 };
 export const getVipUsers = params => {
   return axios.get("/user/vip/list", { params });

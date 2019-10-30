@@ -45,7 +45,7 @@ class SelectUnit extends React.Component {
       <Select
         showSearch
         allowClear={true}
-        value={defaultValue}
+        value={defaultValue || []}
         mode={mode ? "multiple" : ""}
         placeholder="请选择"
         optionFilterProp="children"

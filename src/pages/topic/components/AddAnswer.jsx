@@ -10,7 +10,8 @@ class AddAnswer extends React.Component {
     super(props);
     this.state = {
       keys: [],
-      topicType: props.topicType || "normal"
+      topicType: props.topicType || "normal",
+      loading: false
     };
   }
 
@@ -35,6 +36,7 @@ class AddAnswer extends React.Component {
         }
       });
       if (!err) {
+        this.setState({ loading: true });
         updateAnswer(params).then(res => {
           if (res) {
             message.success("编辑成功");
@@ -132,7 +134,7 @@ class AddAnswer extends React.Component {
           </Form.Item>
           <Form.Item>
             {getFieldDecorator(`right_${index}`, {
-              initialValue: k.right,
+              initialValue: k.right
             })(
               <div className="answer-check">
                 <Checkbox
@@ -163,6 +165,7 @@ class AddAnswer extends React.Component {
       <Modal
         title={"编辑"}
         visible={true}
+        confirmLoading={this.state.loading}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >

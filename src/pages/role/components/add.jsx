@@ -17,7 +17,7 @@ class Add extends React.Component {
       this.props.form.setFieldsValue({
         avatar: editItem.avatar,
         username: editItem.username,
-        password: '******',
+        password: "******",
         menus: editItem.menusIds || []
       });
     }
@@ -28,6 +28,7 @@ class Add extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.setState({ loading: true });
         editItem && editItem.id ? this.update(values) : this.add(values);
       }
     });
@@ -62,6 +63,7 @@ class Add extends React.Component {
       <Modal
         title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
+        confirmLoading={this.state.loading}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >
@@ -87,7 +89,7 @@ class Add extends React.Component {
           <Form.Item label="密码">
             {getFieldDecorator("password", {
               rules: [{ required: true, message: "请选择" }]
-            })(<Input type="password"/>)}
+            })(<Input type="password" />)}
           </Form.Item>
           <Form.Item label="菜单权限">
             {getFieldDecorator("menus", {

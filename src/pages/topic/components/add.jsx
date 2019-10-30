@@ -14,6 +14,7 @@ class Add extends React.Component {
     super(props);
     this.keys = [];
     this.state = {
+      loading: false,
       detailObj: null
     };
   }
@@ -41,7 +42,7 @@ class Add extends React.Component {
         state: res.state,
         languageId: res.languageId,
         title: res.title,
-        unitId: res.unitId,
+        unitIdList: [res.unitId],
         filePath: res.filePath
       });
     });
@@ -56,6 +57,7 @@ class Add extends React.Component {
         values.notes = notes;
       }
       if (!err) {
+        this.setState({loading:true})
         id ? this.update(values) : this.create(values);
       }
     });
@@ -96,7 +98,7 @@ class Add extends React.Component {
   add = () => {
     const { form } = this.props;
     const keys = form.getFieldValue("keys");
-    const addKey = [{key:'', value:''}];
+    const addKey = [{ key: "", value: "" }];
     const nextKeys = keys.concat(addKey);
     form.setFieldsValue({
       keys: nextKeys
@@ -165,12 +167,14 @@ class Add extends React.Component {
       getFieldValue
     } = this.props.form;
     const { editItem } = this.props;
-    const filePath = getFieldValue("filePath");
+    const { detailObj } = this.state;
+    // const filePath = getFieldValue("filePath");
     const languageId = getFieldValue("languageId");
     return (
       <Modal
         title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
+        confirmLoading={this.state.loading}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >
@@ -203,15 +207,15 @@ class Add extends React.Component {
           </Form.Item>
           {true && (
             <Form.Item label="所属单元">
-              {getFieldDecorator("unitId", {
+              {getFieldDecorator("unitIdList", {
                 rules: [{ required: true, message: "请选择" }]
               })(
                 <SelectUnit
-                  // mode={true}
+                  mode={true}
                   languageId={languageId}
                   setValue={value => {
                     setFieldsValue({
-                      unitId: value
+                      unitIdList: value
                     });
                   }}
                 />
@@ -232,6 +236,7 @@ class Add extends React.Component {
           {getFieldValue("type") === "auto" && (
             <Form.Item label="语音上传">
               {getFieldDecorator("filePath", {
+                initialValue: detailObj && detailObj.filePath,
                 rules: [{ required: true, message: "请选择" }]
               })(
                 <UploadFile
@@ -247,7 +252,7 @@ class Add extends React.Component {
           {getFieldValue("type") === "map" && (
             <Form.Item label="图片上传">
               {getFieldDecorator("filePath", {
-                // initialValue: detailObj && detailObj.filePath,
+                initialValue: detailObj && detailObj.filePath,
                 rules: [{ required: true, message: "请选择" }]
               })(
                 <UploadImg

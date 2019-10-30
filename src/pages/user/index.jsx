@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { PageHeader, Row, Col, Input, Button, Table } from "antd";
-import { getUsers } from "@api/index";
+import { getUsers, exportUsers } from "@api/index";
 
 class User extends React.Component {
   constructor(props) {
@@ -82,6 +82,16 @@ class User extends React.Component {
       });
     });
   };
+   // 导出
+   onExport = () => {
+    const { name, pagination } = this.state;
+    const params = {
+      name,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    exportUsers(params);
+  };
   //   重置
   reset = () => {
     this.setState({ name: "" }, () => {
@@ -96,7 +106,11 @@ class User extends React.Component {
     const { loading, dataObj, pagination } = this.state;
     return (
       <div className="page-dialect">
-        <PageHeader title="用户管理" />
+        <PageHeader title="用户管理" extra={[
+            <Button key="1" type="info" onClick={this.onExport}>
+              导出
+            </Button>
+          ]}/>
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>

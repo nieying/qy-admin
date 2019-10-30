@@ -15,7 +15,8 @@ class Add extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: ""
+      editorState: "",
+      loading: false
     };
   }
 
@@ -54,6 +55,7 @@ class Add extends React.Component {
       values.startTime = moment(values.startTime).format("YYYY-MM-DD HH:mm:ss");
       values.endTime = moment(values.endTime).format("YYYY-MM-DD HH:mm:ss");
       if (!err) {
+        this.setState({ loading: true });
         editItem && editItem.id ? this.update(values) : this.add(values);
       }
     });
@@ -88,6 +90,7 @@ class Add extends React.Component {
         centered
         title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
+        confirmLoading={this.state.loading}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >

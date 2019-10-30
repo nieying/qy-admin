@@ -12,7 +12,7 @@ import {
   message
 } from "antd";
 import AddModal from "./components/add";
-import { getOrganize, deleteOrganize } from "@api/index";
+import { getOrganize, deleteOrganize, exportOrganize } from "@api/index";
 
 class Organize extends React.Component {
   constructor(props) {
@@ -110,6 +110,16 @@ class Organize extends React.Component {
       this.getData();
     });
   };
+  // 导出
+  onExport = () => {
+    const { name, pagination } = this.state;
+    const params = {
+      name,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    exportOrganize(params);
+  };
   //   获取数据
   getData = () => {
     const { name, pagination } = this.state;
@@ -120,13 +130,14 @@ class Organize extends React.Component {
     };
     this.setState({ loading: true });
     getOrganize(params).then(res => {
-      res && this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
     });
   };
   //   显示弹框
@@ -173,7 +184,10 @@ class Organize extends React.Component {
         <PageHeader
           title="协会管理"
           extra={[
-            <Button key="1" type="primary" onClick={this.showModal}>
+            <Button key="1" type="info" onClick={this.onExport}>
+              导出
+            </Button>,
+            <Button key="2" type="primary" onClick={this.showModal}>
               新增
             </Button>
           ]}

@@ -1,13 +1,15 @@
 import React from "react";
 import { Modal, Form, Input, message } from "antd";
-import { getGardeInfo, updateGarde } from "@api/index";
+import { updateGarde } from "@api/index";
 import UploadImg from "@components/UploadImg";
 
 @Form.create()
 class Add extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: false
+    };
   }
 
   componentDidMount() {
@@ -25,6 +27,7 @@ class Add extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.setState({ loading: true });
         values.type = editItem.type.split("_")[2];
         if (editItem.showItem) {
           values.config = {
@@ -47,8 +50,8 @@ class Add extends React.Component {
             level_e: {
               name: values.name_4,
               value: values.value_4
-            },
-          }
+            }
+          };
         }
         updateGarde(values).then(res => {
           message.success("编辑成功");
@@ -86,6 +89,7 @@ class Add extends React.Component {
       <Modal
         title={"修改"}
         visible={true}
+        confirmLoading={this.state.loading}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >

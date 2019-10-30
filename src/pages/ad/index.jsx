@@ -9,8 +9,7 @@ import {
   Table,
   Divider,
   Modal,
-  message,
-  Switch
+  message
 } from "antd";
 import AddModal from "./components/add";
 import { getAdvert, deleteAdvert } from "@api/index";

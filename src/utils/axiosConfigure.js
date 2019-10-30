@@ -1,5 +1,5 @@
 import axios from "axios";
-import qs from "qs";
+// import qs from "qs";
 import { message } from "antd";
 import { createHashHistory } from "history";
 const history = createHashHistory();
@@ -10,24 +10,11 @@ const axiosConfigure = () => {
     function (config) {
       if (localStorage.getItem("token")) {
         config.headers = {
-          "X-Admin-Token": localStorage.getItem("token")
+          "X-Admin-Token": localStorage.getItem("token"),
         };
       }
       config.url = `https://api.deyushiyuan.cn/litemall/admin${config.url}`;
       // config.url = `http://192.168.0.10:8083/admin${config.url}`;
-      //配置发送请求的信息
-      // let { accessToken, appId } = localStorage;
-      // let timestamp = Date.parse(new Date());
-      // let jsons = { accessToken, appId, timestamp };
-      // if (config.method === "get" && !config.dropXtoken) {
-      //   config.params = Object.assign(jsons, config.params);
-      // }
-      // if (config.method === "post" && !config.dropXtoken) {
-      //   config.data = qs.stringify(Object.assign(jsons, config.data));
-      // }
-      // if (config.method === "post") {
-      //   config.data = qs.stringify(config.data);
-      // }
       return config;
     },
     function (error) {
@@ -39,14 +26,19 @@ const axiosConfigure = () => {
   axios.interceptors.response.use(
     response => {
       const res = response.data;
-      if (res.errno === 0) {
-        return Promise.resolve(res.data ? res.data : res);
+      if (response.headers && (response.headers['content-type'] === 'application/csv;charset=utf-8' ||
+        response.headers['content-type'] === 'application/vnd.ms-excel')) {
+        window.location.href = response.request.responseURL
       } else {
-        if (res.errno === 501) {
-          message.error(res.errmsg);
-          history.push("/login");
+        if (res.errno === 0) {
+          return Promise.resolve(res.data ? res.data : res);
         } else {
-          message.error(res.errmsg);
+          if (res.errno === 501) {
+            message.error(res.errmsg);
+            history.push("/login");
+          } else {
+            message.error(res.errmsg);
+          }
         }
       }
     },

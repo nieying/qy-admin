@@ -49,7 +49,7 @@ class Add extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator, setFieldsValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     const { editItem } = this.props;
     return (
       <Modal

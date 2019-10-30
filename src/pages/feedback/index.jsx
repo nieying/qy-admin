@@ -1,16 +1,6 @@
 import React from "react";
 import moment from "moment";
-import {
-  PageHeader,
-  Row,
-  Col,
-  Input,
-  Button,
-  Table,
-  Divider,
-  Modal,
-  message
-} from "antd";
+import { PageHeader, Row, Col, Input, Button, Table } from "antd";
 import { getUsers } from "@api/index";
 
 class User extends React.Component {
@@ -111,20 +101,7 @@ class User extends React.Component {
       });
     });
   };
-  // //   显示弹框
-  // showModal = record => {
-  //   this.setState({
-  //     visible: true,
-  //     editItem: record && record
-  //   });
-  // };
-  // //   隐藏弹框
-  // handleCancel = () => {
-  //   this.setState({
-  //     visible: false
-  //   });
-  // };
-  //   重置
+  // 重置
   reset = () => {
     this.setState({ name: "" }, () => {
       this.getData();
@@ -135,14 +112,10 @@ class User extends React.Component {
     this.setState({ name: e.target.value });
   };
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const { loading, dataObj, pagination } = this.state;
     return (
       <div className="page-dialect">
-        <PageHeader
-          title="反馈管理"
-          extra={[
-          ]}
-        />
+        <PageHeader title="反馈管理" extra={[]} />
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>

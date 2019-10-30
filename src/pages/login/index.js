@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
-import { login, adminInfo } from "@api/index";
+import { Form, Icon, Input, Button } from "antd";
+import { login } from "@api/index";
 import "./index.scss";
 
 @Form.create()
@@ -21,7 +21,6 @@ class Login extends Component {
             localStorage.setItem("token", res.token);
             localStorage.setItem("adminInfo", JSON.stringify(res.adminInfo));
             localStorage.setItem("menus", JSON.stringify(res.menus));
-            // this.getAdminInfo();
             const route = localStorage.getItem('prevPage') || '/dialect'
             this.props.history.push(route);
           }
@@ -30,14 +29,8 @@ class Login extends Component {
     });
   };
 
-  // getAdminInfo = () => {
-  //   adminInfo().then(res => {
-  //     console.log('get admin info res', res)
-  //   })
-  // }
-
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form; 
 
     return (
       <div className="page-login">
@@ -89,7 +82,6 @@ class Login extends Component {
                 htmlType="submit"
                 className="login-form-button"
               >
-                {" "}
                 登入
               </Button>
             </Form.Item>

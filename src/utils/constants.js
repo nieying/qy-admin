@@ -41,6 +41,7 @@ export function optionTip(code, msg, message, callBack) {
 export function formatFormData(params) {
     let reg = /_\d+$/
     let obj = {}
+    // eslint-disable-next-line no-unused-vars
     for (let key in params) {
         if (reg.test(key)) {
             let objKey = key.replace(reg, '')

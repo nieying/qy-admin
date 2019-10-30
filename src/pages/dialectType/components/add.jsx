@@ -6,7 +6,9 @@ import { createDialectType, updateDialectType } from "@api";
 class Add extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: false
+    };
   }
 
   componentDidMount() {
@@ -21,6 +23,7 @@ class Add extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.setState({ loading: true });
         editItem && editItem.id ? this.update(values) : this.add(values);
       }
     });
@@ -53,6 +56,7 @@ class Add extends React.Component {
       <Modal
         title={editItem && editItem.id ? "编辑" : "新增"}
         visible={true}
+        confirmLoading={this.state.loading}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >

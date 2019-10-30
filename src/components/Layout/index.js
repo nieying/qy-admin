@@ -7,7 +7,7 @@ import { logout } from "@api/index";
 
 import "./index.scss";
 
-const logoImg = require("@images/logo.png");
+// const logoImg = require("@images/logo.png");
 const { Content, Sider, Header } = Layout;
 
 @withRouter
@@ -50,7 +50,7 @@ class LayoutIndex extends Component {
     return (
       <Layout>
         <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="logo">{collapsed ? "千言" : "千言-后台管理"}</div>
+          <div className="logo">{collapsed ? "仟言" : "仟言-后台管理"}</div>
           <LeftBar />
         </Sider>
         <Layout>
