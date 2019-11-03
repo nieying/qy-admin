@@ -19,8 +19,8 @@ class Add extends React.Component {
       this.props.form.setFieldsValue({
         imgUrl: editItem.imgUrl,
         state: editItem.state,
-        title: editItem.title,
-        organizeId: editItem.organizeId
+        title: editItem.title
+        // organizeId: editItem.organizeId
       });
     } else {
       this.props.form.setFieldsValue({
@@ -96,7 +96,7 @@ class Add extends React.Component {
               rules: [{ required: true, message: "请输入" }]
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="协会">
+          {/* <Form.Item label="协会">
             {getFieldDecorator("organizeId", {
               rules: [{ message: "请选择" }]
             })(
@@ -108,7 +108,7 @@ class Add extends React.Component {
                 }}
               />
             )}
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
     );

@@ -12,6 +12,7 @@ import {
   message
 } from "antd";
 import AddModal from "./components/add";
+import Protocol from "./components/protocol";
 import { getActivity, deleteActivity, exportActivity } from "@api/index";
 
 class Activity extends React.Component {
@@ -20,6 +21,7 @@ class Activity extends React.Component {
     this.state = {
       loading: false,
       visible: false,
+      isShowProtocol: false,
       name: "",
       dataObj: {
         total: 0,
@@ -41,7 +43,7 @@ class Activity extends React.Component {
       {
         title: "活动banner",
         dataIndex: "imgUrl",
-        key: 'imgUrl',
+        key: "imgUrl",
         render: (text, record) => (
           <img src={record.imgUrl} alt="" className="avatar"></img>
         )
@@ -54,9 +56,9 @@ class Activity extends React.Component {
       {
         title: "活动类别",
         dataIndex: "type",
-        key: 'type',
+        key: "type",
         render: (text, record) => (
-          <span>{record.type === 'official' ? '官方活动' : '协会活动'}</span>
+          <span>{record.type === "official" ? "官方活动" : "协会活动"}</span>
         )
       },
       {
@@ -130,8 +132,8 @@ class Activity extends React.Component {
     });
   };
 
-   // 导出
-   onExport = () => {
+  // 导出
+  onExport = () => {
     const { name, pagination } = this.state;
     const params = {
       name,
@@ -178,16 +180,22 @@ class Activity extends React.Component {
       }
     });
   };
+  showProtocol = () => {
+    this.setState({ isShowProtocol: true });
+  };
+  hideProtocol = () => {
+    this.setState({ isShowProtocol: false });
+  };
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const { loading, visible,isShowProtocol, dataObj, pagination, editItem } = this.state;
     return (
       <div className="page-dialect">
         <PageHeader
           title="活动管理"
           extra={[
-            // <Button key="1" type="primary">
-            //   导入
-            // </Button>,
+            <Button key="1" type="primary" onClick={this.showProtocol}>
+              协议
+            </Button>,
             <Button key="2" type="info" onClick={this.onExport}>
               导出
             </Button>,
@@ -235,6 +243,7 @@ class Activity extends React.Component {
             getData={this.getData}
           />
         )}
+        {isShowProtocol && <Protocol handleCancel={this.hideProtocol} />}
       </div>
     );
   }

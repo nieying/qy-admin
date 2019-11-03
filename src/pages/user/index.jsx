@@ -33,7 +33,7 @@ class User extends React.Component {
         )
       },
       {
-        title: "用户名称",
+        title: "微信昵称",
         dataIndex: "nickname",
         key: "nickname"
       },

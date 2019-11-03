@@ -35,6 +35,7 @@ class SelectTopicType extends React.Component {
     return (
       <Select
         showSearch
+        allowClear={true}
         value={defaultValue}
         mode={mode ? "multiple" : ""}
         placeholder="请选择"

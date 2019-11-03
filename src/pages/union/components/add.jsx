@@ -11,7 +11,7 @@ class Add extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading:false
+      loading: false
     };
   }
 
@@ -31,7 +31,7 @@ class Add extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.setState({loading:true})
+        this.setState({ loading: true });
         editItem && editItem.id ? this.update(values) : this.add(values);
       }
     });
@@ -41,12 +41,12 @@ class Add extends React.Component {
     const { editItem } = this.props;
     values.id = editItem.id;
     updateOrganize(values).then(res => {
-      this.succCallback();
+      res && this.succCallback();
     });
   };
   add = values => {
     createOrganize(values).then(res => {
-      this.succCallback();
+      res && this.succCallback();
     });
   };
 
@@ -71,7 +71,7 @@ class Add extends React.Component {
         <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           <Form.Item label="协会图标">
             {getFieldDecorator("avatar", {
-              rules: [{required: true, message: "请输入" }]
+              rules: [{ required: true, message: "请输入" }]
             })(
               <UploadImg
                 setValue={value => {

@@ -220,6 +220,12 @@ export const getGardeInfo = params => {
 export const updateGarde = data => {
   return axios.post("/config/grade", data);
 };
+export const getProtocol = params => {
+  return axios.get("/config/agreement_ca", { params });
+};
+export const postProtocol = data => {
+  return axios.post("/config/agreement_ca", data);
+};
 
 
 

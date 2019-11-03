@@ -50,12 +50,12 @@ class Startup extends React.Component {
         dataIndex: "title",
         key: "title"
       },
-      {
-        title: "协会名称",
-        dataIndex: "organizeName",
-        key: "organizeName",
-        render: (text, record) => <span>{record.organizeName ? record.organizeName : "无"}</span>
-      },
+      // {
+      //   title: "协会名称",
+      //   dataIndex: "organizeName",
+      //   key: "organizeName",
+      //   render: (text, record) => <span>{record.organizeName ? record.organizeName : "无"}</span>
+      // },
       {
         title: "是否启用",
         dataIndex: "state",
@@ -85,7 +85,7 @@ class Startup extends React.Component {
             >
               编辑
             </Button>
-            <Divider type="vertical" />
+            {/* <Divider type="vertical" />
             <Button
               type="link"
               onClick={() => {
@@ -93,7 +93,7 @@ class Startup extends React.Component {
               }}
             >
               删除
-            </Button>
+            </Button> */}
           </span>
         )
       }
@@ -169,14 +169,14 @@ class Startup extends React.Component {
       <div className="page-dialect">
         <PageHeader
           title="启动页管理"
-          extra={[
-            <Button key="1" type="primary" onClick={this.showModal}>
-              新增
-            </Button>
-          ]}
+          // extra={[
+          //   <Button key="1" type="primary" onClick={this.showModal}>
+          //     新增
+          //   </Button>
+          // ]}
         />
         <div className="warpper">
-          <Row gutter={30} className="search-condition">
+          {/* <Row gutter={30} className="search-condition">
             <Col span={6}>
               <label>名称：</label>
               <Input
@@ -191,18 +191,12 @@ class Startup extends React.Component {
               </Button>
               <Button onClick={this.reset}>重置</Button>
             </Col>
-          </Row>
+          </Row> */}
           <Table
             loading={loading}
             columns={this.columns}
             dataSource={dataObj.list}
-            pagination={{
-              total: dataObj.total,
-              pageSize: pagination.pageSize,
-              showTotal: function() {
-                return "共 " + dataObj.total + " 条数据";
-              }
-            }}
+            pagination={false}
             onChange={this.changePagination}
             rowKey={record => record.id}
           />
