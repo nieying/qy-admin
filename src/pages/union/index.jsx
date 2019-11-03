@@ -56,6 +56,11 @@ class Organize extends React.Component {
         key: "leaderName"
       },
       {
+        title: "微信昵称",
+        dataIndex: "leaderWeixinName",
+        key: "leaderWeixinName"
+      },
+      {
         title: "描述",
         dataIndex: "remark",
         key: "remark"
