@@ -26,8 +26,7 @@ const axiosConfigure = () => {
   axios.interceptors.response.use(
     response => {
       const res = response.data;
-      if (response.headers && (response.headers['content-type'] === 'application/csv;charset=utf-8' ||
-        response.headers['content-type'] === 'application/vnd.ms-excel')) {
+      if (response.headers['content-type'].includes('ms-excel')) {
         window.location.href = response.request.responseURL
       } else {
         if (res.errno === 0) {

@@ -29,9 +29,11 @@ class SelectUnit extends React.Component {
   }
 
   getData = (languageId) => {
-    getUnitByLanguage({ languageId: languageId }).then(res => {
-      this.setState({ options: res.list });
-    });
+    if(languageId) {
+      getUnitByLanguage({ languageId: languageId }).then(res => {
+        this.setState({ options: res.list });
+      });
+    }
   }
 
   onChange = value => {

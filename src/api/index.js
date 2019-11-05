@@ -210,6 +210,10 @@ export const exportUsers = params => {
 export const getVipUsers = params => {
   return axios.get("/user/vip/list", { params });
 };
+export const exportVip = params => {
+  return axios.get("/user/vip/export", { params });
+};
+
 /** 成就管理*/
 export const getGardeList = params => {
   return axios.get("/config/grade/list", { params });

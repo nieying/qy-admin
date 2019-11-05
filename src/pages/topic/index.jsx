@@ -132,7 +132,7 @@ class Subject extends React.Component {
   rendType = type => {
     switch (type) {
       case "normal":
-        return "防伪标题";
+        return "伪音标题";
       case "auto":
         return "听力题";
       case "map":

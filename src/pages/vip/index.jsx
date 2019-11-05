@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { PageHeader, Row, Col, Input, Button, Table } from "antd";
-import { getVipUsers } from "@api/index";
+import { getVipUsers, exportVip } from "@api/index";
 
 class User extends React.Component {
   constructor(props) {
@@ -80,13 +80,14 @@ class User extends React.Component {
     };
     this.setState({ loading: true });
     getVipUsers(params).then(res => {
-      res && this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
     });
   };
   //   重置
@@ -103,11 +104,28 @@ class User extends React.Component {
   setMobileCodition = e => {
     this.setState({ mobile: e.target.value });
   };
+  // 导出
+  onExport = () => {
+    const { name, pagination } = this.state;
+    const params = {
+      name,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    exportVip(params);
+  };
   render() {
     const { loading, dataObj, pagination } = this.state;
     return (
       <div className="page-dialect">
-        <PageHeader title="会员管理" />
+        <PageHeader
+          title="会员管理"
+          extra={[
+            <Button key="1" type="info" onClick={this.onExport}>
+              导出
+            </Button>
+          ]}
+        />
         <div className="warpper">
           <Row gutter={30} className="search-condition">
             <Col span={6}>

@@ -19,6 +19,7 @@ class Admin extends React.Component {
     this.state = {
       loading: false,
       visible: false,
+      currentName: JSON.parse(localStorage.getItem("adminInfo")).nickName,
       username: "",
       dataObj: {
         total: 0,
@@ -55,27 +56,30 @@ class Admin extends React.Component {
       {
         title: "操作",
         key: "action",
-        render: (text, record) => (
-          <span>
-            <Button
-              type="link"
-              onClick={() => {
-                this.showModal(record);
-              }}
-            >
-              编辑
-            </Button>
-            <Divider type="vertical" />
-            <Button
-              type="link"
-              onClick={() => {
-                this.del(record);
-              }}
-            >
-              删除
-            </Button>
-          </span>
-        )
+        render: (text, record) =>
+          this.state.currentName !== record.username ? (
+            <span>
+              <Button
+                type="link"
+                onClick={() => {
+                  this.showModal(record);
+                }}
+              >
+                编辑
+              </Button>
+              <Divider type="vertical" />
+              <Button
+                type="link"
+                onClick={() => {
+                  this.del(record);
+                }}
+              >
+                删除
+              </Button>
+            </span>
+          ) : (
+            ""
+          )
       }
     ];
   }
@@ -87,6 +91,7 @@ class Admin extends React.Component {
     return <span>{menusTitle.toString()}</span>;
   };
   componentDidMount() {
+    console.log("localStorage.getItem111", this.state.currentName);
     this.getData();
   }
   changePagination = pagination => {
@@ -104,13 +109,14 @@ class Admin extends React.Component {
     };
     this.setState({ loading: true });
     getAdmin(params).then(res => {
-      res && this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
     });
   };
   //   显示弹框

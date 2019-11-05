@@ -1,15 +1,17 @@
 import React from "react";
 import moment from "moment";
 import { PageHeader, Row, Col, Input, Button, Table } from "antd";
-import { getUsers } from "@api/index";
-
+import { getFeedback } from "@api/index";
+import SelectDialect from "@components/SelectDialect";
+import SelectUnit from "@components/SelectUnit";
 class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       visible: false,
-      name: "",
+      languageId: "",
+      unitId: "",
       dataObj: {
         total: 0,
         list: []
@@ -29,8 +31,18 @@ class User extends React.Component {
       },
       {
         title: "反馈人",
-        dataIndex: "name",
-        key: "name"
+        dataIndex: "nickName",
+        key: "nickName"
+      },
+      {
+        title: "方言",
+        dataIndex: "languageName",
+        key: "languageName"
+      },
+      {
+        title: "单元",
+        dataIndex: "unitName",
+        key: "unitName"
       },
       {
         title: "反馈内容",
@@ -84,14 +96,15 @@ class User extends React.Component {
   };
   //   获取数据
   getData = () => {
-    const { name, pagination } = this.state;
+    const { languageId, unitId, pagination } = this.state;
     const params = {
-      name,
+      languageId,
+      unitId,
       page: pagination.current,
       limit: pagination.pageSize
     };
     this.setState({ loading: true });
-    getUsers(params).then(res => {
+    getFeedback(params).then(res => {
       this.setState({
         loading: false,
         dataObj: {
@@ -112,18 +125,31 @@ class User extends React.Component {
     this.setState({ name: e.target.value });
   };
   render() {
-    const { loading, dataObj, pagination } = this.state;
+    const { languageId, unitId, loading, dataObj, pagination } = this.state;
     return (
       <div className="page-dialect">
         <PageHeader title="反馈管理" extra={[]} />
         <div className="warpper">
           <Row gutter={30} className="search-condition">
+          <Col span={6}>
+              <label>所属方言：</label>
+              <SelectDialect
+                value={languageId}
+                setValue={value => {
+                  this.setState({
+                    languageId: value
+                  });
+                }}
+              />
+            </Col>
             <Col span={6}>
-              <label>反馈内容：</label>
-              <Input
-                placeholder="请输入"
-                allowClear
-                onChange={this.setNameCodition}
+              <label>单元名称：</label>
+              <SelectUnit
+                languageId={languageId}
+                value={unitId}
+                setValue={value => {
+                  this.setState({ unitId: value });
+                }}
               />
             </Col>
             <Col span={6} className="search-opts">
