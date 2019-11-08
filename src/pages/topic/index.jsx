@@ -9,7 +9,9 @@ import {
   Table,
   Divider,
   Modal,
-  message
+  message,
+  Icon,
+  Upload
 } from "antd";
 import AddModal from "./components/add";
 import AddAnswer from "./components/AddAnswer";
@@ -17,7 +19,13 @@ import SelectTopicType from "@components/SelectTopicType";
 import SelectDialect from "@components/SelectDialect";
 import SelectUnit from "@components/SelectUnit";
 
-import { getSubject, deleteSubject } from "@api/index";
+import {
+  getSubject,
+  deleteSubject,
+  exportSubject,
+  downloadTemplate,
+  importSubject
+} from "@api/index";
 class Subject extends React.Component {
   constructor(props) {
     super(props);
@@ -154,13 +162,14 @@ class Subject extends React.Component {
     };
     this.setState({ loading: true });
     getSubject(params).then(res => {
-     res && this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
     });
   };
   //   显示弹框
@@ -216,6 +225,23 @@ class Subject extends React.Component {
       this.getData();
     });
   };
+
+  onExport = () => {
+    const { languageId, unitId, type, name, pagination } = this.state;
+    const params = {
+      languageId,
+      unitId,
+      type,
+      name,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    exportSubject(params);
+  };
+
+  download = () => {
+    downloadTemplate().then(res => {});
+  };
   render() {
     const {
       loading,
@@ -230,12 +256,53 @@ class Subject extends React.Component {
       languageId,
       unitId
     } = this.state;
+    const that = this;
+    const props = {
+      name: "file",
+      showUploadList: false,
+      action: "https://api.deyushiyuan.cn/litemall/admin/subject/import",
+      headers: {
+        "X-Admin-Token": localStorage.getItem("token")
+      },
+      onChange(info) {
+        const { file, fileList } = info;
+        if (file.status !== "uploading") {
+          console.log(file, fileList);
+        }
+        if (file.status === "done") {
+          const res = file.response && file.response.data;
+          if (res) {
+            if (res.failed > 0) {
+              message.success(
+                `成功导入${
+                  res.success
+                }条，失败的序号为：${res.failedIds.toString()}!`
+              );
+            } else {
+              message.success(`导入成功!`);
+            }
+          }
+          that.getData();
+        } else if (file.status === "error") {
+          message.error("导入失败!");
+        }
+      }
+    };
     return (
       <div className="page-dialect">
         <PageHeader
           title="单元管理"
           extra={[
-            <Button key="1" type="primary" onClick={this.showModal}>
+            <Button key="1" type="link" onClick={this.download}>
+              下载模板
+            </Button>,
+            <Upload {...props} key="2">
+              <Button type="primary">导入</Button>
+            </Upload>,
+            <Button key="3" onClick={this.onExport}>
+              导出
+            </Button>,
+            <Button key="4" type="primary" onClick={this.showModal}>
               新增
             </Button>
           ]}

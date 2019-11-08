@@ -33,10 +33,9 @@ class Dialect extends React.Component {
     };
     this.columns = [
       {
-        title: "序号",
-        width: 60,
-        key: "index",
-        render: (text, record, index) => `${index + 1}`
+        title: "方言id",
+        dataIndex: "id",
+        key: "id"
       },
       {
         title: "图标",
@@ -116,13 +115,14 @@ class Dialect extends React.Component {
     };
     this.setState({ loading: true });
     getDialect(params).then(res => {
-      res && this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
     });
   };
   //   显示弹框

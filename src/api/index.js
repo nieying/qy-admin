@@ -101,6 +101,18 @@ export const deleteAnswer = data => {
   return axios.post("/subject/answer/delete", data);
 };
 
+export const exportSubject = params => {
+  return axios.get("/subject/export", { params });
+};
+
+export const downloadTemplate = params => {
+  return axios.get("/subject/template", { params });
+};
+
+export const importSubject = data => {
+  return axios.post("/subject/import", data);
+};
+
 /** 广告管理 */
 export const getAdvert = params => {
   return axios.get("/ad/list", { params });

@@ -35,10 +35,9 @@ class Unit extends React.Component {
     };
     this.columns = [
       {
-        title: "序号",
-        width: 60,
-        key: "index",
-        render: (text, record, index) => `${index + 1}`
+        title: "单元id",
+        dataIndex: "id",
+        key: "id"
       },
       {
         title: "图标",

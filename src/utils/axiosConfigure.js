@@ -14,7 +14,6 @@ const axiosConfigure = () => {
         };
       }
       config.url = `https://api.deyushiyuan.cn/litemall/admin${config.url}`;
-      // config.url = `http://192.168.0.10:8083/admin${config.url}`;
       return config;
     },
     function (error) {
