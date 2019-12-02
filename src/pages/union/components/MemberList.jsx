@@ -11,9 +11,8 @@ import {
   Modal,
   message
 } from "antd";
-import AddModal from "./components/add";
 import { getOrganize, deleteOrganize, exportOrganize } from "@api/index";
-import './index.scss'
+
 class Organize extends React.Component {
   constructor(props) {
     super(props);
@@ -85,31 +84,15 @@ class Organize extends React.Component {
         key: "action",
         render: (text, record) => (
           <span>
-             <Button
-              type="link"
-              onClick={() => {
-                this.props.history.push(`/union/detail?id=${record.id}`)
-              }}
-            >
-              详情
-            </Button>
             <Button
               type="link"
               onClick={() => {
                 this.showModal(record);
               }}
             >
-              编辑
+              设置标签
             </Button>
             <Divider type="vertical" />
-            <Button
-              type="link"
-              onClick={() => {
-                this.del(record);
-              }}
-            >
-              删除
-            </Button>
           </span>
         )
       }
@@ -122,16 +105,6 @@ class Organize extends React.Component {
     this.setState({ pagination }, () => {
       this.getData();
     });
-  };
-  // 导出
-  onExport = () => {
-    const { name, pagination } = this.state;
-    const params = {
-      name,
-      page: pagination.current,
-      limit: pagination.pageSize
-    };
-    exportOrganize(params);
   };
   //   获取数据
   getData = () => {
@@ -153,75 +126,12 @@ class Organize extends React.Component {
         });
     });
   };
-  //   显示弹框
-  showModal = record => {
-    this.setState({
-      visible: true,
-      editItem: record && record
-    });
-  };
-  //   隐藏弹框
-  handleCancel = () => {
-    this.setState({
-      visible: false
-    });
-  };
-  //   重置
-  reset = () => {
-    this.setState({ name: "" }, () => {
-      this.getData();
-    });
-  };
-  // 设置查询
-  setNameCodition = e => {
-    this.setState({ name: e.target.value });
-  };
-  // 删除
-  del = record => {
-    Modal.confirm({
-      content: `确定删除${record.name}吗？`,
-      okText: "确认",
-      cancelText: "取消",
-      onOk: () => {
-        deleteOrganize({ id: record.id }).then(res => {
-          message.success("删除成功！");
-          this.getData();
-        });
-      }
-    });
-  };
+  
   render() {
     const { loading, visible, dataObj, pagination, editItem } = this.state;
     return (
-      <div className="page-union">
-        <PageHeader
-          title="协会管理"
-          extra={[
-            <Button key="1" type="info" onClick={this.onExport}>
-              导出
-            </Button>,
-            <Button key="2" type="primary" onClick={this.showModal}>
-              新增
-            </Button>
-          ]}
-        />
-        <div className="warpper">
-          <Row gutter={30} className="search-condition">
-            <Col span={6}>
-              <label>协会名称：</label>
-              <Input
-                placeholder="请输入"
-                allowClear
-                onChange={this.setNameCodition}
-              />
-            </Col>
-            <Col span={6} className="search-opts">
-              <Button type="primary" onClick={this.getData}>
-                查询
-              </Button>
-              <Button onClick={this.reset}>重置</Button>
-            </Col>
-          </Row>
+      <div className="member-list">
+        <h5>成员列表</h5>
           <Table
             loading={loading}
             columns={this.columns}
@@ -236,14 +146,6 @@ class Organize extends React.Component {
             onChange={this.changePagination}
             rowKey={record => record.id}
           />
-        </div>
-        {visible && (
-          <AddModal
-            handleCancel={this.handleCancel}
-            editItem={editItem}
-            getData={this.getData}
-          />
-        )}
       </div>
     );
   }

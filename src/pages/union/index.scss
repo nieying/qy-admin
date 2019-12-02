@@ -1,0 +1,29 @@
+@import '@styles/_mixin.scss';
+
+.page-detail {
+    h5 {
+        font-size: 16px;
+    }
+
+    .item-info {
+        background: white;
+        padding: 15px;
+
+        .ant-row {
+            margin: 5px 0;
+        }
+
+    }
+
+    .member-list {
+        margin-top: 20px;
+    }
+
+    .task-list {
+        margin-top: 20px;
+
+        .top-content {
+            @include flex-between
+        }
+    }
+}

@@ -13,8 +13,11 @@ import {
 } from "antd";
 import AddModal from "./components/add";
 import { getOrganize, deleteOrganize, exportOrganize } from "@api/index";
-import './index.scss'
-class Organize extends React.Component {
+import Info from "./components/Info";
+import MemberList from "./components/MemberList";
+import TaskList from "./components/TaskList";
+
+class UnionDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,10 +88,10 @@ class Organize extends React.Component {
         key: "action",
         render: (text, record) => (
           <span>
-             <Button
+            <Button
               type="link"
               onClick={() => {
-                this.props.history.push(`/union/detail?id=${record.id}`)
+                this.props.history.push("/union/detail");
               }}
             >
               详情
@@ -153,100 +156,20 @@ class Organize extends React.Component {
         });
     });
   };
-  //   显示弹框
-  showModal = record => {
-    this.setState({
-      visible: true,
-      editItem: record && record
-    });
-  };
-  //   隐藏弹框
-  handleCancel = () => {
-    this.setState({
-      visible: false
-    });
-  };
-  //   重置
-  reset = () => {
-    this.setState({ name: "" }, () => {
-      this.getData();
-    });
-  };
-  // 设置查询
-  setNameCodition = e => {
-    this.setState({ name: e.target.value });
-  };
-  // 删除
-  del = record => {
-    Modal.confirm({
-      content: `确定删除${record.name}吗？`,
-      okText: "确认",
-      cancelText: "取消",
-      onOk: () => {
-        deleteOrganize({ id: record.id }).then(res => {
-          message.success("删除成功！");
-          this.getData();
-        });
-      }
-    });
-  };
+
   render() {
     const { loading, visible, dataObj, pagination, editItem } = this.state;
     return (
-      <div className="page-union">
-        <PageHeader
-          title="协会管理"
-          extra={[
-            <Button key="1" type="info" onClick={this.onExport}>
-              导出
-            </Button>,
-            <Button key="2" type="primary" onClick={this.showModal}>
-              新增
-            </Button>
-          ]}
-        />
+      <div className="page-detail">
+        <PageHeader title="协会详情" />
         <div className="warpper">
-          <Row gutter={30} className="search-condition">
-            <Col span={6}>
-              <label>协会名称：</label>
-              <Input
-                placeholder="请输入"
-                allowClear
-                onChange={this.setNameCodition}
-              />
-            </Col>
-            <Col span={6} className="search-opts">
-              <Button type="primary" onClick={this.getData}>
-                查询
-              </Button>
-              <Button onClick={this.reset}>重置</Button>
-            </Col>
-          </Row>
-          <Table
-            loading={loading}
-            columns={this.columns}
-            dataSource={dataObj.list}
-            pagination={{
-              total: dataObj.total,
-              pageSize: pagination.pageSize,
-              showTotal: function() {
-                return "共 " + dataObj.total + " 条数据";
-              }
-            }}
-            onChange={this.changePagination}
-            rowKey={record => record.id}
-          />
+          <Info />
+          <MemberList />
+          <TaskList />
         </div>
-        {visible && (
-          <AddModal
-            handleCancel={this.handleCancel}
-            editItem={editItem}
-            getData={this.getData}
-          />
-        )}
       </div>
     );
   }
 }
 
-export default Organize;
+export default UnionDetail;

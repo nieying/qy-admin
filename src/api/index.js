@@ -197,6 +197,24 @@ export const updateOrganize = data => {
 };
 export const deleteOrganize = data => {
   return axios.post("/organize/delete", data);
+}
+export const getOwnerOrganize = params => {
+  return axios.get("/organize/Owner/list", { params });
+};
+export const getOwnerOrganizeInfo = params => {
+  return axios.get("/organize/Owner/info", { params });
+};
+export const getMemberList = data => {
+  return axios.post("/organize/Owner/member/list", data);
+};
+export const getTaskList = params => {
+  return axios.get("/organize/Owner/task/list", { params });
+};
+export const addTask = data => {
+  return axios.post("/organize/Owner/task/add", data);
+};
+export const updateOwnerOrganize = data => {
+  return axios.post("/organize/Owner/update", data);
 };
 /** 启动页管理*/
 export const getStartup = params => {
