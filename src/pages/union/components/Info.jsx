@@ -1,24 +1,21 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
-import { getOrganize } from "@api/index";
-import { Row, Col, Input, message } from "antd";
+import { getOrganizeInfo } from "@api/index";
+import { Row, Col } from "antd";
 
-@withRouter
 class Info extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      detailObj: {}
     };
   }
 
   componentWillMount() {}
 
   componentDidMount() {
-    var searchParams = new URLSearchParams(this.props.location.search);
-    const id = searchParams.get("id");
-    getOrganize({ id }).then(res => {
-      this.setState({ detailObj: res });
+    getOrganizeInfo({ organizeId: this.props.id }).then(res => {
+      res && this.setState({ detailObj: res });
     });
   }
 
@@ -29,26 +26,19 @@ class Info extends React.Component {
         <h5>基本信息</h5>
         <div className="item-info">
           <Row>
-            <Col span={8}>
+            {/* <Col span={8}>
               <span>协会图标：</span>
-              <img src="" alt="" />
+              <img src={detailObj.avatar} alt="" />
+            </Col> */}
+            <Col span={8}>
+              <span>协会名称：</span> {detailObj.name}
             </Col>
             <Col span={8}>
-              <span>协会名称：</span> 123
+              <span>会长名称：</span> {detailObj.leaderName}
             </Col>
-            <Col span={8}>
-              <span>会长名称：</span>111
-            </Col>
-          </Row>
-          <Row>
             <Col span={8}>
               <span>微信昵称：</span>
-              <img src="" alt="" />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              <span>描述：</span>
+              {detailObj.leaderWeixinName}
             </Col>
           </Row>
         </div>

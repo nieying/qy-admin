@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Table, Divider, Modal, message } from "antd";
-import { getGardeList } from "@api/index";
+import { getTaskList } from "@api/index";
 import AddTask from "./AddTask";
 
 class Organize extends React.Component {
@@ -28,20 +28,20 @@ class Organize extends React.Component {
       },
       {
         title: "图标",
-        key: "image",
+        key: "avatar",
         render: (text, record) => (
-          <img src={record.image} alt="" className="avatar"></img>
+          <img src={record.avatar} alt="" className="avatar"></img>
         )
       },
       {
-        title: "名称",
+        title: "任务名称",
         dataIndex: "title",
         key: "title"
       },
       {
-        title: "备注",
-        dataIndex: "remark",
-        key: "remark"
+        title: "任务描述",
+        dataIndex: "detail",
+        key: "detail"
       },
       {
         title: "操作",
@@ -79,14 +79,14 @@ class Organize extends React.Component {
   };
   //   获取数据
   getData = () => {
-    const { name, pagination } = this.state;
+    const { pagination } = this.state;
     const params = {
-      name,
+      organizeId: this.props.id,
       page: pagination.current,
       limit: pagination.pageSize
     };
     this.setState({ loading: true });
-    getGardeList(params).then(res => {
+    getTaskList(params).then(res => {
       res &&
         this.setState({
           loading: false,
@@ -106,7 +106,8 @@ class Organize extends React.Component {
   };
   showModal = record => {
     this.setState({
-      editItem: record ? record : {},
+      editItem:
+        record && record.organizeId ? record : { organizeId: this.props.id },
       visible: true
     });
   };
@@ -126,6 +127,7 @@ class Organize extends React.Component {
           columns={this.columns}
           dataSource={dataObj.list}
           pagination={{
+            size: "small",
             total: dataObj.total,
             pageSize: pagination.pageSize,
             showTotal: function() {

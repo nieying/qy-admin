@@ -1,17 +1,7 @@
 import React from "react";
 import moment from "moment";
-import {
-  PageHeader,
-  Row,
-  Col,
-  Input,
-  Button,
-  Table,
-  Divider,
-  Modal,
-  message
-} from "antd";
-import { getOrganize, deleteOrganize, exportOrganize } from "@api/index";
+import { Button, Table, Divider, Modal, message } from "antd";
+import { getMemberList } from "@api/index";
 
 class Organize extends React.Component {
   constructor(props) {
@@ -38,46 +28,21 @@ class Organize extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: "协会图标",
+        title: "微信头像",
         key: "avatar",
         render: (text, record) => (
           <img src={record.avatar} alt="" className="avatar"></img>
         )
       },
       {
-        title: "协会名称",
-        dataIndex: "name",
-        key: "name"
+        title: "用户名称",
+        dataIndex: "userName",
+        key: "userName"
       },
       {
-        title: "会长名称",
-        dataIndex: "leaderName",
-        key: "leaderName"
-      },
-      {
-        title: "微信昵称",
-        dataIndex: "leaderWeixinName",
-        key: "leaderWeixinName"
-      },
-      {
-        title: "描述",
-        dataIndex: "remark",
-        key: "remark"
-      },
-      {
-        title: "属性",
-        dataIndex: "attribute",
-        key: "attribute"
-      },
-      {
-        title: "创建时间",
-        key: "addTime",
-        render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
-      },
-      {
-        title: "修改时间",
-        key: "updateTime",
-        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
+        title: "标签",
+        dataIndex: "tag",
+        key: "tag"
       },
       {
         title: "操作",
@@ -93,6 +58,14 @@ class Organize extends React.Component {
               设置标签
             </Button>
             <Divider type="vertical" />
+            <Button
+              type="link"
+              onClick={() => {
+                this.kickOut(record);
+              }}
+            >
+              踢出协会
+            </Button>
           </span>
         )
       }
@@ -108,14 +81,14 @@ class Organize extends React.Component {
   };
   //   获取数据
   getData = () => {
-    const { name, pagination } = this.state;
+    const { pagination } = this.state;
     const params = {
-      name,
+      organizeId: this.props.id,
       page: pagination.current,
       limit: pagination.pageSize
     };
     this.setState({ loading: true });
-    getOrganize(params).then(res => {
+    getMemberList(params).then(res => {
       res &&
         this.setState({
           loading: false,
@@ -126,26 +99,30 @@ class Organize extends React.Component {
         });
     });
   };
-  
+
+  // 踢出协会
+  kickOut = reacord => {};
+
   render() {
     const { loading, visible, dataObj, pagination, editItem } = this.state;
     return (
       <div className="member-list">
         <h5>成员列表</h5>
-          <Table
-            loading={loading}
-            columns={this.columns}
-            dataSource={dataObj.list}
-            pagination={{
-              total: dataObj.total,
-              pageSize: pagination.pageSize,
-              showTotal: function() {
-                return "共 " + dataObj.total + " 条数据";
-              }
-            }}
-            onChange={this.changePagination}
-            rowKey={record => record.id}
-          />
+        <Table
+          loading={loading}
+          columns={this.columns}
+          dataSource={dataObj.list}
+          pagination={{
+            size: "small",
+            total: dataObj.total,
+            pageSize: pagination.pageSize,
+            showTotal: function() {
+              return "共 " + dataObj.total + " 条数据";
+            }
+          }}
+          onChange={this.changePagination}
+          rowKey={record => record.id}
+        />
       </div>
     );
   }
