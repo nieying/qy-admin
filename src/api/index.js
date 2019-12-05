@@ -204,6 +204,9 @@ export const getOrganizeInfo = params => {
 export const getMemberList = params => {
   return axios.get("/organize/member/list", { params });
 };
+export const quitOrganize = data => {
+  return axios.post("/organize/member/quit", data);
+}
 // 协会任务管理
 export const createTask = data => {
   return axios.post("/organize/task/create", data);

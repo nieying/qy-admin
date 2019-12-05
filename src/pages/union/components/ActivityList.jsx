@@ -1,14 +1,15 @@
 import React from "react";
+import moment from "moment";
 import { Button, Table, Divider, Modal, message } from "antd";
-import { getMemberList, quitOrganize } from "@api/index";
+import { getActivity, deleteActivity, exportActivity } from "@api/index";
+import AddActivity from "./AddActivity";
 
-class MemberList extends React.Component {
+class ActivityList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       visible: false,
-      name: "",
       dataObj: {
         total: 0,
         list: []
@@ -27,43 +28,63 @@ class MemberList extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: "微信头像",
-        key: "avatar",
+        title: "活动banner",
+        dataIndex: "imgUrl",
+        key: "imgUrl",
         render: (text, record) => (
-          <img src={record.avatar} alt="" className="avatar-sm"></img>
+          <img src={record.imgUrl} alt="" className="avatar-sm"></img>
         )
       },
       {
-        title: "用户名称",
-        dataIndex: "userName",
-        key: "userName"
+        title: "活动名称",
+        dataIndex: "title",
+        key: "title"
       },
       {
-        title: "标签",
-        dataIndex: "tag",
-        key: "tag"
+        title: "活动类别",
+        dataIndex: "type",
+        key: "type",
+        render: (text, record) => (
+          <span>{record.type === "official" ? "官方活动" : "协会活动"}</span>
+        )
+      },
+      {
+        title: "开始时间",
+        dataIndex: "startTime",
+        key: "startTime",
+        render: (text, record) => (
+          <span>{moment(record.startTime).format("YYYY-MM-DD")}</span>
+        )
+      },
+      {
+        title: "结束时间",
+        dataIndex: "endTime",
+        key: "endTime",
+        render: (text, record) => (
+          <span>{moment(record.endTime).format("YYYY-MM-DD")}</span>
+        )
       },
       {
         title: "操作",
         key: "action",
         render: (text, record) => (
           <span>
-            {/* <Button
+            <Button
               type="link"
               onClick={() => {
                 this.showModal(record);
               }}
             >
-              设置标签
+              编辑
             </Button>
-            <Divider type="vertical" /> */}
+            <Divider type="vertical" />
             <Button
               type="link"
               onClick={() => {
-                this.kickOut(record);
+                this.del(record);
               }}
             >
-              踢出协会
+              删除
             </Button>
           </span>
         )
@@ -87,7 +108,7 @@ class MemberList extends React.Component {
       limit: pagination.pageSize
     };
     this.setState({ loading: true });
-    getMemberList(params).then(res => {
+    getActivity(params).then(res => {
       res &&
         this.setState({
           loading: false,
@@ -99,18 +120,29 @@ class MemberList extends React.Component {
     });
   };
 
-  // 踢出协会
-  kickOut = record => {
+  //   隐藏弹框
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  };
+  showModal = record => {
+    this.setState({
+      editItem:
+        record && record.organizeId ? record : { organizeId: this.props.id },
+      visible: true
+    });
+  };
+
+  // 删除
+  del = record => {
     Modal.confirm({
-      content: `确定踢出${record.userName}吗？`,
+      content: `确定删除${record.title}吗？`,
       okText: "确认",
       cancelText: "取消",
       onOk: () => {
-        quitOrganize({
-          userId: record.userId,
-          organizeId: record.organizeId
-        }).then(res => {
-          message.success("踢出成功！");
+        deleteActivity({ id: record.id }).then(res => {
+          message.success("删除成功！");
           this.getData();
         });
       }
@@ -118,10 +150,16 @@ class MemberList extends React.Component {
   };
 
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const { loading, dataObj, pagination, visible, editItem } = this.state;
+    const { id } = this.props;
     return (
-      <div className="member-list">
-        <h5>成员列表</h5>
+      <div className="task-list">
+        <div className="top-content">
+          <h5>活动列表 </h5>
+          <Button type="primary" size="small" onClick={this.showModal}>
+            新增活动
+          </Button>
+        </div>
         <Table
           loading={loading}
           columns={this.columns}
@@ -138,9 +176,17 @@ class MemberList extends React.Component {
           onChange={this.changePagination}
           rowKey={record => record.id}
         />
+        {visible && (
+          <AddActivity
+            handleCancel={this.handleCancel}
+            organizeId={id}
+            editItem={editItem}
+            getData={this.getData}
+          />
+        )}
       </div>
     );
   }
 }
 
-export default MemberList;
+export default ActivityList;

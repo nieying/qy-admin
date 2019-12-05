@@ -55,6 +55,7 @@ class Add extends React.Component {
     message.success(editItem && editItem.id ? "编辑成功" : "添加成功");
     this.props.handleCancel();
     this.props.getData();
+    this.setState({ loading: false });
   };
 
   render() {

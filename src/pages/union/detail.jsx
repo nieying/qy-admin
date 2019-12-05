@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import Info from "./components/Info";
 import MemberList from "./components/MemberList";
 import TaskList from "./components/TaskList";
+import ActivityList from "./components/ActivityList";
 
 @withRouter
 class UnionDetail extends React.Component {
@@ -28,6 +29,7 @@ class UnionDetail extends React.Component {
           <Info id={id} {...this.props} />
           <MemberList id={id} {...this.props} />
           <TaskList id={id} {...this.props} />
+          <ActivityList id={id} {...this.props} />
         </div>
       </div>
     );

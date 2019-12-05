@@ -3,7 +3,7 @@ import { Button, Table, Divider, Modal, message } from "antd";
 import { getTaskList } from "@api/index";
 import AddTask from "./AddTask";
 
-class Organize extends React.Component {
+class TaskList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +30,7 @@ class Organize extends React.Component {
         title: "图标",
         key: "avatar",
         render: (text, record) => (
-          <img src={record.avatar} alt="" className="avatar"></img>
+          <img src={record.avatar} alt="" className="avatar-sm"></img>
         )
       },
       {
@@ -126,6 +126,7 @@ class Organize extends React.Component {
           loading={loading}
           columns={this.columns}
           dataSource={dataObj.list}
+          // scroll={{ y: 300 }}
           pagination={{
             size: "small",
             total: dataObj.total,
@@ -149,4 +150,4 @@ class Organize extends React.Component {
   }
 }
 
-export default Organize;
+export default TaskList;
