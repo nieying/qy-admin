@@ -1,29 +1,34 @@
 @import '@styles/_mixin.scss';
 
 .page-detail {
-    h5 {
-        font-size: 16px;
-    }
+	h5 {
+		font-size: 16px;
+	}
 
-    .item-info {
-        background: white;
-        padding: 15px;
+	.ant-tabs {
+		background: white;
+		padding: 0 15px;
+	}
 
-        .ant-row {
-            margin: 5px 0;
-        }
+	.item-info {
+		background: white;
+		padding: 15px;
 
-    }
+		.ant-row {
+			margin: 5px 0;
+		}
 
-    .member-list {
-        margin-top: 20px;
-    }
+	}
 
-    .task-list {
-        margin-top: 20px;
+	.member-list {
+		margin-top: 20px;
+	}
 
-        .top-content {
-            @include flex-between
-        }
-    }
+	.task-list {
+		margin-top: 20px;
+
+		.top-content {
+			@include flex-between
+		}
+	}
 }

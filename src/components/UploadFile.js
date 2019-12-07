@@ -22,7 +22,7 @@ class UploadFile extends React.Component {
     const props = {
       name: "file",
       multiple: true,
-      action: "https://api.deyushiyuan.cn/litemall/admin/storage/create",
+      action: "https://api.talkiin.cn/app/admin/storage/create",
       headers: {
         "X-Admin-Token": localStorage.getItem("token")
       },

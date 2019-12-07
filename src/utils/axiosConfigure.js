@@ -13,7 +13,8 @@ const axiosConfigure = () => {
           "X-Admin-Token": localStorage.getItem("token"),
         };
       }
-      config.url = `https://api.deyushiyuan.cn/litemall/admin${config.url}`;
+      // config.url = `https://api.deyushiyuan.cn/litemall/admin${config.url}`;
+      config.url = `https://api.talkiin.cn/app/admin${config.url}`;
       return config;
     },
     function (error) {

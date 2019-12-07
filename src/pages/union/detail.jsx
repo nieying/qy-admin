@@ -1,11 +1,12 @@
 import React from "react";
 import moment from "moment";
-import { PageHeader, Button, Divider } from "antd";
+import { PageHeader, Tabs } from "antd";
 import { withRouter } from "react-router-dom";
 import Info from "./components/Info";
 import MemberList from "./components/MemberList";
 import TaskList from "./components/TaskList";
 import ActivityList from "./components/ActivityList";
+const { TabPane } = Tabs;
 
 @withRouter
 class UnionDetail extends React.Component {
@@ -26,10 +27,19 @@ class UnionDetail extends React.Component {
       <div className="page-detail">
         <PageHeader title="协会详情" />
         <div className="warpper">
-          <Info id={id} {...this.props} />
-          <MemberList id={id} {...this.props} />
-          <TaskList id={id} {...this.props} />
-          <ActivityList id={id} {...this.props} />
+          <Tabs defaultActiveKey="1">
+            <TabPane tab="活动列表" key="1">
+              {/* <Info id={id} {...this.props} /> */}
+              <ActivityList id={id} {...this.props} />
+            </TabPane>
+            <TabPane tab="任务列表" key="2">
+              <TaskList id={id} {...this.props} />
+            </TabPane>
+            <TabPane tab="成员列表" key="3">
+              <MemberList id={id} {...this.props} />
+            </TabPane>
+          </Tabs>
+          ,
         </div>
       </div>
     );

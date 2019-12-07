@@ -9,11 +9,12 @@ import {
   Table,
   Divider,
   Modal,
-  message
+  message,
+  Popover
 } from "antd";
 import AddModal from "./components/add";
 import { getOrganize, deleteOrganize, exportOrganize } from "@api/index";
-import './index.scss'
+import "./index.scss";
 class Organize extends React.Component {
   constructor(props) {
     super(props);
@@ -52,47 +53,63 @@ class Organize extends React.Component {
       },
       {
         title: "会长名称",
-        dataIndex: "leaderName",
-        key: "leaderName"
+        key: "leaderName",
+        render: (text, record) => (
+          <span>
+            <Popover
+              content={
+                <div>
+                  <p>账号：{record.code}</p>
+                  <p>密码：{record.password_text}</p>
+                </div>
+              }
+              // title="Title"
+              trigger="click"
+            >
+              <Button type="link">{record.leaderName}</Button>
+            </Popover>
+          </span>
+        )
       },
       {
         title: "微信昵称",
         dataIndex: "leaderWeixinName",
         key: "leaderWeixinName"
       },
-      {
-        title: "描述",
-        dataIndex: "remark",
-        key: "remark"
-      },
-      {
-        title: "属性",
-        dataIndex: "attribute",
-        key: "attribute"
-      },
+      // {
+      //   title: "描述",
+      //   dataIndex: "remark",
+      //   key: "remark"
+      // },
+      // {
+      //   title: "属性",
+      //   dataIndex: "attribute",
+      //   key: "attribute"
+      // },
       {
         title: "创建时间",
         key: "addTime",
         render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
       },
-      {
-        title: "修改时间",
-        key: "updateTime",
-        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
-      },
+      // {
+      //   title: "修改时间",
+      //   key: "updateTime",
+      //   render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
+      // },
       {
         title: "操作",
         key: "action",
         render: (text, record) => (
           <span>
-             <Button
+            <Button
               type="link"
               onClick={() => {
-                this.props.history.push(`/union/detail?id=${record.id}`)
+                this.props.history.push(`/union/detail?id=${record.id}`);
               }}
             >
               详情
             </Button>
+            <Divider type="vertical" />
             <Button
               type="link"
               onClick={() => {
