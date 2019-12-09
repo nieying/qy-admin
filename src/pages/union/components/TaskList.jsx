@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Table, Divider, Modal, message } from "antd";
-import { getTaskList } from "@api/index";
+import { getTaskList, updateTask } from "@api/index";
 import AddTask from "./AddTask";
 
 class TaskList extends React.Component {
@@ -38,10 +38,16 @@ class TaskList extends React.Component {
         dataIndex: "title",
         key: "title"
       },
+      // {
+      //   title: "任务描述",
+      //   dataIndex: "detail",
+      //   key: "detail"
+      // },
       {
-        title: "任务描述",
-        dataIndex: "detail",
-        key: "detail"
+        title: "任务状态",
+        key: "taskTarget",
+        render: (text, record) =>
+          record.taskTarget === 100 ? "已完成" : "未完成"
       },
       {
         title: "操作",
@@ -56,14 +62,16 @@ class TaskList extends React.Component {
             >
               编辑
             </Button>
-            <Button
-              type="link"
-              onClick={() => {
-                this.showModal(record);
-              }}
-            >
-              点亮
-            </Button>
+            {record.taskTarget !== 100 && (
+              <Button
+                type="link"
+                onClick={() => {
+                  this.onUpdate(record);
+                }}
+              >
+                点亮
+              </Button>
+            )}
           </span>
         )
       }
@@ -95,6 +103,19 @@ class TaskList extends React.Component {
             list: res.list
           }
         });
+    });
+  };
+  // 点亮
+  onUpdate = record => {
+    updateTask({
+      id: record.id,
+      organizeId: record.organizeId,
+      taskTarget: 100
+    }).then(res => {
+      if (res) {
+        message.success("修改成功");
+        this.getData();
+      }
     });
   };
 

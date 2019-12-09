@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Form, Input, message } from "antd";
 import { createTask, updateTask } from "@api/index";
 import UploadImg from "@components/UploadImg";
+const { TextArea } = Input;
 
 @Form.create()
 class Add extends React.Component {
@@ -101,7 +102,7 @@ class Add extends React.Component {
           <Form.Item label="任务详情">
             {getFieldDecorator("detail", {
               rules: [{ required: true, message: "请输入" }]
-            })(<Input />)}
+            })(<TextArea rows={4} />)}
           </Form.Item>
         </Form>
       </Modal>
