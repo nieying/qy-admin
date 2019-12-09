@@ -40,8 +40,27 @@ class MemberList extends React.Component {
       },
       {
         title: "标签",
-        dataIndex: "tag",
-        key: "tag"
+        key: "tag",
+        render: (text, record) => {
+          if (record.role === "owner") {
+            return "会长";
+          } else {
+            return record.rank;
+          }
+        }
+      },
+      {
+        title: "转态",
+        key: "state",
+        render: (text, record) => {
+          if (record.state === 2) {
+            return "成员";
+          } else if (record.state === 1) {
+            return "待审核";
+          } else if (record.state === 0) {
+            return "待支付";
+          }
+        }
       },
       {
         title: "操作",
@@ -57,14 +76,16 @@ class MemberList extends React.Component {
               设置标签
             </Button>
             <Divider type="vertical" /> */}
-            <Button
-              type="link"
-              onClick={() => {
-                this.kickOut(record);
-              }}
-            >
-              踢出协会
-            </Button>
+            {record.role !== "owner" && record.state === 2 && (
+              <Button
+                type="link"
+                onClick={() => {
+                  this.kickOut(record);
+                }}
+              >
+                踢出协会
+              </Button>
+            )}
           </span>
         )
       }

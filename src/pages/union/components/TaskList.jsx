@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Table, Divider, Modal, message } from "antd";
-import { getTaskList, updateTask } from "@api/index";
+import { getTaskList, updateTask, deleteTask } from "@api/index";
 import AddTask from "./AddTask";
 
 class TaskList extends React.Component {
@@ -50,6 +50,12 @@ class TaskList extends React.Component {
           record.taskTarget === 100 ? "已完成" : "未完成"
       },
       {
+        title: "任务状态",
+        key: "taskTarget",
+        render: (text, record) =>
+          record.taskTarget === 100 ? "已完成" : "未完成"
+      },
+      {
         title: "操作",
         key: "action",
         render: (text, record) => (
@@ -62,15 +68,27 @@ class TaskList extends React.Component {
             >
               编辑
             </Button>
+            <Divider type="vertical" />
+            <Button
+              type="link"
+              onClick={() => {
+                this.del(record);
+              }}
+            >
+              删除
+            </Button>
             {record.taskTarget !== 100 && (
-              <Button
-                type="link"
-                onClick={() => {
-                  this.onUpdate(record);
-                }}
-              >
-                点亮
-              </Button>
+              <span>
+                <Divider type="vertical" />
+                <Button
+                  type="link"
+                  onClick={() => {
+                    this.onUpdate(record);
+                  }}
+                >
+                  点亮
+                </Button>
+              </span>
             )}
           </span>
         )
@@ -83,6 +101,19 @@ class TaskList extends React.Component {
   changePagination = pagination => {
     this.setState({ pagination }, () => {
       this.getData();
+    });
+  };
+  onUpdate = record => {
+    Modal.confirm({
+      content: `确定标记该${record.title}完成吗？`,
+      okText: "确认",
+      cancelText: "取消",
+      onOk: () => {
+        updateTask({ id: record.id, taskTarget: 100 }).then(res => {
+          message.success("修改成功");
+          this.getData();
+        });
+      }
     });
   };
   //   获取数据
@@ -130,6 +161,21 @@ class TaskList extends React.Component {
       editItem:
         record && record.organizeId ? record : { organizeId: this.props.id },
       visible: true
+    });
+  };
+
+  // 删除
+  del = record => {
+    Modal.confirm({
+      content: `确定删除${record.title}吗？`,
+      okText: "确认",
+      cancelText: "取消",
+      onOk: () => {
+        deleteTask({ id: record.id }).then(res => {
+          message.success("删除成功！");
+          this.getData();
+        });
+      }
     });
   };
 

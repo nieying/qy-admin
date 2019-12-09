@@ -260,7 +260,7 @@ class Subject extends React.Component {
     const props = {
       name: "file",
       showUploadList: false,
-      action: "https://api.deyushiyuan.cn/litemall/admin/subject/import",
+      action: "https://api.talkiin.cn/app/admin/subject/import",
       headers: {
         "X-Admin-Token": localStorage.getItem("token")
       },
