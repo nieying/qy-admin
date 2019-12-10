@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment";
 import { Button, Table, Divider, Modal, message } from "antd";
-import { getActivity, deleteActivity, exportActivity } from "@api/index";
+import { getActivity, deleteActivity } from "@api/index";
 import AddActivity from "./AddActivity";
+import ActivityMember from "./ActivityMember";
 
 class ActivityList extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class ActivityList extends React.Component {
     this.state = {
       loading: false,
       visible: false,
+      showMemberList: false,
       dataObj: {
         total: 0,
         list: []
@@ -72,6 +74,15 @@ class ActivityList extends React.Component {
             <Button
               type="link"
               onClick={() => {
+                this.showMemberModal(record);
+              }}
+            >
+              设置人员
+            </Button>
+            <Divider type="vertical" />
+            <Button
+              type="link"
+              onClick={() => {
                 this.showModal(record);
               }}
             >
@@ -121,6 +132,17 @@ class ActivityList extends React.Component {
   };
 
   //   隐藏弹框
+  handleCancelMember = () => {
+    this.setState({
+      showMemberList: false
+    });
+  };
+  showMemberModal = record => {
+    this.setState({
+      showMemberList: true
+    });
+  };
+  //   隐藏弹框
   handleCancel = () => {
     this.setState({
       visible: false
@@ -150,7 +172,7 @@ class ActivityList extends React.Component {
   };
 
   render() {
-    const { loading, dataObj, pagination, visible, editItem } = this.state;
+    const { loading, dataObj, pagination, visible, editItem, showMemberList } = this.state;
     const { id } = this.props;
     return (
       <div className="task-list">
@@ -181,6 +203,13 @@ class ActivityList extends React.Component {
             handleCancel={this.handleCancel}
             organizeId={id}
             editItem={editItem}
+            getData={this.getData}
+          />
+        )}
+        {showMemberList && (
+          <ActivityMember
+            handleCancel={this.handleCancelMember}
+            organizeId={id}
             getData={this.getData}
           />
         )}

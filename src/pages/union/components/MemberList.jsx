@@ -50,7 +50,7 @@ class MemberList extends React.Component {
         }
       },
       {
-        title: "转态",
+        title: "状态",
         key: "state",
         render: (text, record) => {
           if (record.state === 2) {
