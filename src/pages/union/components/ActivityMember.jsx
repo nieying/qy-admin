@@ -58,6 +58,7 @@ class ActivityMember extends React.Component {
   getData = () => {
     const params = {
       organizeId: this.props.organizeId,
+      activityId: this.props.activityId,
       page: 1,
       limit: 10000
     };
@@ -83,18 +84,13 @@ class ActivityMember extends React.Component {
   };
 
   onChange = (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
     this.setState({ selectUserIds: selectedRowKeys });
   };
 
   handleOk = e => {
     e.preventDefault();
     updateOgranActState({
-      organizeId: this.props.organizeId,
+      activityId: this.props.activityId,
       memberIds: this.state.selectUserIds
     }).then(res => {
       if (res) {

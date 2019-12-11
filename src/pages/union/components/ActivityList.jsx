@@ -12,6 +12,7 @@ class ActivityList extends React.Component {
       loading: false,
       visible: false,
       showMemberList: false,
+      activityId: null,
       dataObj: {
         total: 0,
         list: []
@@ -139,6 +140,7 @@ class ActivityList extends React.Component {
   };
   showMemberModal = record => {
     this.setState({
+      activityId: record.id,
       showMemberList: true
     });
   };
@@ -172,7 +174,7 @@ class ActivityList extends React.Component {
   };
 
   render() {
-    const { loading, dataObj, pagination, visible, editItem, showMemberList } = this.state;
+    const { loading, dataObj, pagination, visible, editItem, showMemberList, activityId } = this.state;
     const { id } = this.props;
     return (
       <div className="task-list">
@@ -210,6 +212,7 @@ class ActivityList extends React.Component {
           <ActivityMember
             handleCancel={this.handleCancelMember}
             organizeId={id}
+            activityId ={activityId}
             getData={this.getData}
           />
         )}
