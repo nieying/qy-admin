@@ -20,8 +20,12 @@ class Login extends Component {
           if (res) {
             localStorage.setItem("token", res.token);
             localStorage.setItem("adminInfo", JSON.stringify(res.adminInfo));
+            localStorage.setItem("isAdmin", res.adminInfo.nickName === 'admin123' ? true : false);
             localStorage.setItem("menus", JSON.stringify(res.menus));
-            const route = localStorage.getItem('prevPage') || '/dialect'
+            let route = localStorage.getItem('prevPage') || '/dialect'
+            if (route.indexOf('/union/detail') > -1) {
+              route = '/union/detail'
+            }
             this.props.history.push(route);
           }
         });
@@ -30,7 +34,7 @@ class Login extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form; 
+    const { getFieldDecorator } = this.props.form;
 
     return (
       <div className="page-login">

@@ -35,8 +35,10 @@ class MemberList extends React.Component {
       },
       {
         title: "用户名称",
-        dataIndex: "userName",
-        key: "userName"
+        dataIndex: "name",
+        key: "name",
+        render: (text, record, index) => record.name || record.userName
+
       },
       {
         title: "标签",
@@ -76,7 +78,7 @@ class MemberList extends React.Component {
               设置标签
             </Button>
             <Divider type="vertical" /> */}
-            {record.role !== "owner" && record.state === 2 && (
+            { (record.role !== "owner" && record.state === 2) && (
               <Button
                 type="link"
                 onClick={() => {

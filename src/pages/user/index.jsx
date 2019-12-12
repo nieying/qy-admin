@@ -41,7 +41,7 @@ class User extends React.Component {
         title: "性别",
         dataIndex: "gender",
         key: "gender",
-        render: (text, record) => <span>{record.gender ? "男" : "女"}</span>
+        render: (text, record) => <span>{record.gender === 1 ? "男" : "女"}</span>
       },
       {
         title: "创建时间",

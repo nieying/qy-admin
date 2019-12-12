@@ -167,6 +167,9 @@ export const deleteActivity = data => {
 export const getFeedback = params => {
   return axios.get("/feedback/list", { params });
 };
+export const getOrganFeedback = params => {
+  return axios.get("/feedback/organize/list", { params });
+};
 
 /** 注释管理*/
 export const getNotes = params => {

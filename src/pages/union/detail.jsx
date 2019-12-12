@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { PageHeader, Tabs } from "antd";
 import { withRouter } from "react-router-dom";
-import Info from "./components/Info";
+// import Info from "./components/Info";
 import MemberList from "./components/MemberList";
 import TaskList from "./components/TaskList";
 import ActivityList from "./components/ActivityList";
@@ -39,7 +39,6 @@ class UnionDetail extends React.Component {
               <MemberList id={id} {...this.props} />
             </TabPane>
           </Tabs>
-          ,
         </div>
       </div>
     );
