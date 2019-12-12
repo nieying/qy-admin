@@ -7,8 +7,8 @@ import "./index.scss";
 class Login extends Component {
   componentDidMount() {
     this.props.form.setFieldsValue({
-      username: "admin123",
-      password: "admin123"
+      username: "",
+      password: ""
     });
   }
 
@@ -24,7 +24,7 @@ class Login extends Component {
             localStorage.setItem("menus", JSON.stringify(res.menus));
             let route = localStorage.getItem('prevPage') || '/dialect'
             if (route.indexOf('/union/detail') > -1) {
-              route = '/union/detail'
+              route = '/union'
             }
             this.props.history.push(route);
           }
