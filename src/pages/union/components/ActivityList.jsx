@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { Button, Table, Divider, Modal, message } from "antd";
-import { getActivity, deleteActivity } from "@api/index";
+import { getActivity, deleteActivity, approveActivity } from "@api/index";
 import AddActivity from "./AddActivity";
 import ActivityMember from "./ActivityMember";
 
@@ -23,6 +23,7 @@ class ActivityList extends React.Component {
       },
       editItem: {}
     };
+    this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
     this.columns = [
       {
         title: "序号",
@@ -68,10 +69,27 @@ class ActivityList extends React.Component {
         )
       },
       {
+        title: "活动状态",
+        key: "approved",
+        render: (text, record) =>
+          // 待审批：applied,审批通过：aip 拒绝rejected
+          record.approved === "applied" ? "待审核" : "已审核"
+      },
+      {
         title: "操作",
         key: "action",
         render: (text, record) => (
           <span>
+            {record.approved === "applied" && this.isAdmin && (
+              <Button
+                type="link"
+                onClick={() => {
+                  this.approve(record);
+                }}
+              >
+                审核
+              </Button>
+            )}
             <Button
               type="link"
               onClick={() => {
@@ -172,9 +190,31 @@ class ActivityList extends React.Component {
       }
     });
   };
+  // 审核
+  approve = record => {
+    Modal.confirm({
+      content: `确定将该活动审核通过吗？`,
+      okText: "确认",
+      cancelText: "取消",
+      onOk: () => {
+        approveActivity({ id: record.id, approved: "aip" }).then(res => {
+          message.success("审核成功！");
+          this.getData();
+        });
+      }
+    });
+  };
 
   render() {
-    const { loading, dataObj, pagination, visible, editItem, showMemberList, activityId } = this.state;
+    const {
+      loading,
+      dataObj,
+      pagination,
+      visible,
+      editItem,
+      showMemberList,
+      activityId
+    } = this.state;
     const { id } = this.props;
     return (
       <div className="task-list">
@@ -212,7 +252,7 @@ class ActivityList extends React.Component {
           <ActivityMember
             handleCancel={this.handleCancelMember}
             organizeId={id}
-            activityId ={activityId}
+            activityId={activityId}
             getData={this.getData}
           />
         )}

@@ -163,6 +163,9 @@ export const updateActivity = data => {
 export const deleteActivity = data => {
   return axios.post("/activity/delete", data);
 };
+export const approveActivity = data => {
+  return axios.post("/activity/approve", data);
+};
 /** 反馈管理*/
 export const getFeedback = params => {
   return axios.get("/feedback/list", { params });
@@ -200,7 +203,7 @@ export const updateOrganize = data => {
 };
 export const deleteOrganize = data => {
   return axios.post("/organize/delete", data);
-}
+};
 export const getOrganizeInfo = params => {
   return axios.get("/organize/info", { params });
 };
@@ -209,10 +212,10 @@ export const getMemberList = params => {
 };
 export const quitOrganize = data => {
   return axios.post("/organize/member/quit", data);
-}
+};
 export const updateOgranActState = data => {
   return axios.post("/organize/member/activity/state", data);
-}
+};
 // 协会任务管理
 export const createTask = data => {
   return axios.post("/organize/task/create", data);
@@ -225,6 +228,9 @@ export const updateTask = data => {
 };
 export const getTaskList = params => {
   return axios.get("/organize/task/list", { params });
+};
+export const approveTask = data => {
+  return axios.post("/organize/task/approve", data);
 };
 /** 启动页管理*/
 export const getStartup = params => {
@@ -270,7 +276,3 @@ export const getProtocol = params => {
 export const postProtocol = data => {
   return axios.post("/config/agreement_ca", data);
 };
-
-
-
-

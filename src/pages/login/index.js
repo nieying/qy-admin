@@ -20,7 +20,7 @@ class Login extends Component {
           if (res) {
             localStorage.setItem("token", res.token);
             localStorage.setItem("adminInfo", JSON.stringify(res.adminInfo));
-            localStorage.setItem("isAdmin", res.adminInfo.nickName === 'admin123' ? true : false);
+            localStorage.setItem("isAdmin", res.adminInfo.role.indexOf(1) > -1 ? true : false);
             localStorage.setItem("menus", JSON.stringify(res.menus));
             let route = localStorage.getItem('prevPage') || '/dialect'
             if (route.indexOf('/union/detail') > -1) {

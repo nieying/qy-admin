@@ -38,7 +38,7 @@ class Add extends React.Component {
     const { editItem } = this.props;
     values.id = editItem.id;
     updateAdmin(values).then(res => {
-      this.succCallback(res);
+       this.succCallback(res);
     });
   };
   add = values => {
@@ -54,6 +54,7 @@ class Add extends React.Component {
       this.props.handleCancel();
       this.props.getData();
     }
+    this.setState({ loading: false });
   };
 
   render() {

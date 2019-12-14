@@ -291,7 +291,7 @@ class Subject extends React.Component {
     return (
       <div className="page-dialect">
         <PageHeader
-          title="单元管理"
+          title="题目管理"
           extra={[
             <Button key="1" type="link" onClick={this.download}>
               下载模板
