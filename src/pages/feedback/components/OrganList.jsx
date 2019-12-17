@@ -41,14 +41,9 @@ class ActivityList extends React.Component {
         key: "content"
       },
       {
-        title: "创建时间",
-        key: "addTime",
-        render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
-      },
-      {
-        title: "修改时间",
-        key: "updateTime",
-        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
+        title: "反馈时间",
+        key: "add_time",
+        render: (text, record) => moment(record.add_time).format("YYYY-MM-DD")
       }
     ];
   }
