@@ -32,6 +32,7 @@ class Organize extends React.Component {
       },
       editItem: {}
     };
+    this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
     this.columns = [
       {
         title: "序号",
@@ -54,22 +55,28 @@ class Organize extends React.Component {
       {
         title: "会长名称",
         key: "leaderName",
-        render: (text, record) => (
-          <span>
-            <Popover
-              content={
-                <div>
-                  <p>账号：{record.code}</p>
-                  <p>密码：{record.password_text}</p>
-                </div>
-              }
-              // title="Title"
-              trigger="click"
-            >
-              <Button type="link">{record.leaderName}</Button>
-            </Popover>
-          </span>
-        )
+        render: (text, record) => {
+          if (this.isAdmin) {
+            return (
+              <span>
+                <Popover
+                  content={
+                    <div>
+                      <p>账号：{record.code}</p>
+                      <p>密码：{record.password_text}</p>
+                    </div>
+                  }
+                  // title="Title"
+                  trigger="click"
+                >
+                  <Button type="link">{record.leaderName}</Button>
+                </Popover>
+              </span>
+            );
+          } else {
+            return <span>{record.leaderName}</span>;
+          }
+        }
       },
       {
         title: "微信昵称",

@@ -12,6 +12,10 @@ export const adminInfo = params => {
 export const logout = data => {
   return axios.post("/auth/logout", data);
 };
+// 修改密码
+export const updatePassword = data => {
+  return axios.post("/profile/password", data);
+};
 
 // 文件、图片上传
 export const uploadFile = data => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Table, Divider, Modal, message } from "antd";
-import { getMemberList, quitOrganize } from "@api/index";
+import { getMemberList, quitOrganize, updateOrganize } from "@api/index";
 
 class MemberList extends React.Component {
   constructor(props) {
@@ -38,7 +38,6 @@ class MemberList extends React.Component {
         dataIndex: "name",
         key: "name",
         render: (text, record, index) => record.name || record.userName
-
       },
       {
         title: "标签",
@@ -69,16 +68,21 @@ class MemberList extends React.Component {
         key: "action",
         render: (text, record) => (
           <span>
-            {/* <Button
-              type="link"
-              onClick={() => {
-                this.showModal(record);
-              }}
-            >
-              设置标签
-            </Button>
-            <Divider type="vertical" /> */}
-            { (record.role !== "owner" && record.state === 2) && (
+            {record.role !== "owner" && record.state === 2 && (
+              <span>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    this.transfer(record);
+                  }}
+                >
+                  转让会长
+                </Button>
+                <Divider type="vertical" />
+              </span>
+            )}
+
+            {record.role !== "owner" && record.state === 2 && (
               <Button
                 type="link"
                 onClick={() => {
@@ -122,6 +126,25 @@ class MemberList extends React.Component {
     });
   };
 
+  // 转让会长
+  transfer = record => {
+    Modal.confirm({
+      content: `确定把会长转让给${record.userName}吗？`,
+      okText: "确认",
+      cancelText: "取消",
+      onOk: () => {
+        updateOrganize({
+          id: record.organizeId,
+          leaderId: record.userId
+        }).then(res => {
+          if (res) {
+            message.success("转让成功！");
+            this.getData();
+          }
+        });
+      }
+    });
+  };
   // 踢出协会
   kickOut = record => {
     Modal.confirm({
@@ -133,15 +156,17 @@ class MemberList extends React.Component {
           userId: record.userId,
           organizeId: record.organizeId
         }).then(res => {
-          message.success("踢出成功！");
-          this.getData();
+          if (res) {
+            message.success("踢出成功！");
+            this.getData();
+          }
         });
       }
     });
   };
 
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const { loading, dataObj, pagination } = this.state;
     return (
       <div className="member-list">
         <h5>成员列表</h5>

@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import LeftBar from "./LeftBar.js";
 import Routes from "@routes/index";
 import { logout } from "@api/index";
+import UpdatePwd from '@components/UpdatePwd'
 
 import "./index.scss";
 
@@ -15,6 +16,7 @@ class LayoutIndex extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      visible: false,
       collapsed: false
     };
   }
@@ -43,9 +45,19 @@ class LayoutIndex extends Component {
       }
     });
   };
-  componentWillMount() {}
-  render() {
-    const { collapsed } = this.state;
+  //   显示弹框
+  showModal = record => {
+    this.setState({
+      visible: true,
+    });
+  };
+  //   隐藏弹框
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  }; render() {
+    const { visible, collapsed } = this.state;
     const adminInfo = JSON.parse(localStorage.getItem("adminInfo"));
     return (
       <Layout>
@@ -66,7 +78,7 @@ class LayoutIndex extends Component {
               <div className="admin-avatar">
                 <img src={adminInfo.avatar} alt="" />
               </div>
-              <div className="name">{adminInfo.nickName}</div>
+              <div className="name" onClick={this.showModal}>{adminInfo.nickName}</div>
               <div className="quit" onClick={this.quit}>
                 退出 <Icon type="export" />
               </div>
@@ -76,6 +88,9 @@ class LayoutIndex extends Component {
             <Routes />
           </Content>
         </Layout>
+        {visible && (
+          <UpdatePwd handleCancel={this.handleCancel} />
+        )}
       </Layout>
     );
   }

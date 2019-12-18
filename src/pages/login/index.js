@@ -62,7 +62,7 @@ class Login extends Component {
                     <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   type="password"
-                  placeholder="Password"
+                  placeholder="请输入密码"
                 />
               )}
             </Form.Item>
