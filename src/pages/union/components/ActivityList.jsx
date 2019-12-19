@@ -239,6 +239,9 @@ class ActivityList extends React.Component {
           }}
           onChange={this.changePagination}
           rowKey={record => record.id}
+          rowClassName={record =>
+            record.approved === "applied" ? "bg-tr" : ""
+          }
         />
         {visible && (
           <AddActivity
