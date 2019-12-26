@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Table, Divider, Modal, message } from "antd";
 import { getMemberList, quitOrganize, updateOrganize } from "@api/index";
+import SetTagModal from "./SetTagModal";
 
 class MemberList extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class MemberList extends React.Component {
       },
       editItem: {}
     };
+    this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
     this.columns = [
       {
         title: "序号",
@@ -81,6 +83,19 @@ class MemberList extends React.Component {
                 <Divider type="vertical" />
               </span>
             )}
+            {this.isAdmin && record.role !== "owner" && (
+              <span>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    this.showModal(record);
+                  }}
+                >
+                  设置标签
+                </Button>
+                <Divider type="vertical" />
+              </span>
+            )}
 
             {record.role !== "owner" && record.state === 2 && (
               <Button
@@ -126,6 +141,18 @@ class MemberList extends React.Component {
     });
   };
 
+  showModal = record => {
+    this.setState({
+      visible: true,
+      editItem: record && record
+    });
+  };
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
   // 转让会长
   transfer = record => {
     Modal.confirm({
@@ -166,7 +193,7 @@ class MemberList extends React.Component {
   };
 
   render() {
-    const { loading, dataObj, pagination } = this.state;
+    const { loading, dataObj, pagination, visible, editItem } = this.state;
     return (
       <div className="member-list">
         <h5>成员列表</h5>
@@ -186,6 +213,13 @@ class MemberList extends React.Component {
           onChange={this.changePagination}
           rowKey={record => record.id}
         />
+        {visible && (
+          <SetTagModal
+            handleCancel={this.handleCancel}
+            editItem={editItem}
+            getData={this.getData}
+          />
+        )}
       </div>
     );
   }

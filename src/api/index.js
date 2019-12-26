@@ -220,6 +220,12 @@ export const quitOrganize = data => {
 export const updateOgranActState = data => {
   return axios.post("/organize/member/activity/state", data);
 };
+export const dragMember = data => {
+  return axios.post("/organize/member/drag", data);
+};
+export const editUnionMember = data => {
+  return axios.post("/organize/member/info", data);
+};
 // 协会任务管理
 export const createTask = data => {
   return axios.post("/organize/task/create", data);

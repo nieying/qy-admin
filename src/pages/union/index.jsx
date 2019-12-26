@@ -13,6 +13,7 @@ import {
   Popover
 } from "antd";
 import AddModal from "./components/add";
+import AddUnionMember from "./components/AddUnionMember";
 import { getOrganize, deleteOrganize, exportOrganize } from "@api/index";
 import "./index.scss";
 class Organize extends React.Component {
@@ -21,6 +22,7 @@ class Organize extends React.Component {
     this.state = {
       loading: false,
       visible: false,
+      isShowAddMemberModal: false,
       name: "",
       dataObj: {
         total: 0,
@@ -108,6 +110,19 @@ class Organize extends React.Component {
         key: "action",
         render: (text, record) => (
           <span>
+            {this.isAdmin && (
+              <span>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    this.showAddMemberModal(record);
+                  }}
+                >
+                  添加人员
+                </Button>
+                <Divider type="vertical" />
+              </span>
+            )}
             <Button
               type="link"
               onClick={() => {
@@ -177,17 +192,26 @@ class Organize extends React.Component {
         });
     });
   };
-  //   显示弹框
   showModal = record => {
     this.setState({
       visible: true,
       editItem: record && record
     });
   };
-  //   隐藏弹框
   handleCancel = () => {
     this.setState({
       visible: false
+    });
+  };
+  showAddMemberModal = record => {
+    this.setState({
+      isShowAddMemberModal: true,
+      editItem: record && record
+    });
+  };
+  hideAddMemberModal = () => {
+    this.setState({
+      isShowAddMemberModal: false
     });
   };
   //   重置
@@ -215,7 +239,14 @@ class Organize extends React.Component {
     });
   };
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const {
+      loading,
+      visible,
+      dataObj,
+      pagination,
+      editItem,
+      isShowAddMemberModal
+    } = this.state;
     return (
       <div className="page-union">
         <PageHeader
@@ -266,6 +297,12 @@ class Organize extends React.Component {
             handleCancel={this.handleCancel}
             editItem={editItem}
             getData={this.getData}
+          />
+        )}
+        {isShowAddMemberModal && (
+          <AddUnionMember
+            handleCancel={this.hideAddMemberModal}
+            id={editItem.id}
           />
         )}
       </div>
