@@ -121,5 +121,7 @@ p {
 	align-items: center;
 }
 
-
-
+.table-export {
+	@include flex-end;
+	margin: 10px;
+}

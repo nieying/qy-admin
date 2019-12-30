@@ -12,7 +12,10 @@ class SelectDialect extends React.Component {
     };
   }
   componentWillMount() {
-    getDialect().then(res => {
+    getDialect({
+      page: 1,
+      limit: 1000
+    }).then(res => {
       this.setState({ options: res.list });
     });
   }

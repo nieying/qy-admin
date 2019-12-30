@@ -90,15 +90,20 @@ class ActivityList extends React.Component {
                 审核
               </Button>
             )}
-            <Button
-              type="link"
-              onClick={() => {
-                this.showMemberModal(record);
-              }}
-            >
-              设置人员
-            </Button>
-            <Divider type="vertical" />
+            {record.approved !== "applied" && (
+              <span>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    this.showMemberModal(record);
+                  }}
+                >
+                  设置人员
+                </Button>
+                <Divider type="vertical" />
+              </span>
+            )}
+
             <Button
               type="link"
               onClick={() => {

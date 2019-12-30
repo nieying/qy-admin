@@ -1,9 +1,7 @@
 import React from "react";
 import moment from "moment";
-import { Button, Table } from "antd";
-import SelectDialect from "@components/SelectDialect";
-import SelectUnit from "@components/SelectUnit";
-import { getFeedback } from "@api/index";
+import { Table, Button } from "antd";
+import { getFeedback, exportSubjectFeedback } from "@api/index";
 
 class ActivityList extends React.Component {
   constructor(props) {
@@ -85,11 +83,27 @@ class ActivityList extends React.Component {
     });
   };
 
+  // 导出
+  onExport = () => {
+    const { languageId, unitId, pagination } = this.state;
+    const params = {
+      languageId,
+      unitId,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    exportSubjectFeedback(params);
+  };
+
   render() {
-    const { languageId, unitId, loading, dataObj, pagination } = this.state;
-    const { id } = this.props;
+    const { loading, dataObj, pagination } = this.state;
     return (
       <div className="task-list">
+        <div className="table-export">
+          <Button key="1" type="info" onClick={this.onExport}>
+            导出
+          </Button>
+        </div>
         <Table
           loading={loading}
           columns={this.columns}

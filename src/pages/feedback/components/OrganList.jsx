@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
-import { Button, Table, Divider, Modal, message } from "antd";
-import { getOrganFeedback } from "@api/index";
+import { Button, Table } from "antd";
+import { getOrganFeedback, exportOrganFeedback } from "@api/index";
 
 class ActivityList extends React.Component {
   constructor(props) {
@@ -74,10 +74,25 @@ class ActivityList extends React.Component {
     });
   };
 
+  // 导出
+  onExport = () => {
+    const { pagination } = this.state;
+    const params = {
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    exportOrganFeedback(params);
+  };
+
   render() {
     const { loading, dataObj, pagination } = this.state;
     return (
       <div className="task-list">
+        <div className="table-export">
+          <Button key="1" type="info" onClick={this.onExport}>
+            导出
+          </Button>
+        </div>
         <Table
           loading={loading}
           columns={this.columns}

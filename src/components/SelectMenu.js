@@ -19,6 +19,13 @@ class SelectDialect extends React.Component {
   }
 
   onChange = value => {
+    value.forEach(v => {
+      this.state.options.map(o => {
+        if (v === o.id) {
+          value = value.concat(o.childList.map(c => c.id))
+        } 
+      })
+    })
     this.props.setValue(value);
   };
 

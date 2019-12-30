@@ -1,7 +1,5 @@
 import React from "react";
-import moment from "moment";
-import { PageHeader, Row, Col, Tabs, Button, Table } from "antd";
-import { getFeedback, getOrganFeedback } from "@api/index";
+import { PageHeader, Tabs, Button } from "antd";
 import OrganList from "./components/OrganList";
 import TopicList from "./components/TopicList";
 
@@ -10,7 +8,9 @@ const { TabPane } = Tabs;
 class User extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      currentTab: "subject"
+    };
   }
   componentDidMount() {}
   // 重置
@@ -23,16 +23,27 @@ class User extends React.Component {
   setNameCodition = e => {
     this.setState({ name: e.target.value });
   };
+
+  handleTab = e => {
+    this.setState({
+      currentTab: e
+    });
+  };
+
   render() {
+    const { currentTab } = this.state;
     return (
       <div className="page-detail">
-        <PageHeader title="反馈管理" extra={[]} />
+        <PageHeader
+          title="反馈管理"
+          extra={[]}
+        />
         <div className="warpper">
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="题目反馈" key="1">
+          <Tabs defaultActiveKey={currentTab} onChange={this.handleTab}>
+            <TabPane tab="题目反馈" key="subject">
               <TopicList {...this.props} />
             </TabPane>
-            <TabPane tab="协会反馈" key="2">
+            <TabPane tab="协会反馈" key="organize">
               <OrganList {...this.props} />
             </TabPane>
           </Tabs>

@@ -28,6 +28,9 @@ class Add extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        if (values.password === "******") {
+          delete values.password;
+        }
         this.setState({ loading: true });
         editItem && editItem.id ? this.update(values) : this.add(values);
       }
@@ -38,7 +41,7 @@ class Add extends React.Component {
     const { editItem } = this.props;
     values.id = editItem.id;
     updateAdmin(values).then(res => {
-       this.succCallback(res);
+      this.succCallback(res);
     });
   };
   add = values => {

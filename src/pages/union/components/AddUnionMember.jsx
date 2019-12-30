@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Table, message } from "antd";
+import { Modal, Table, message, Input } from "antd";
 import { getUsers, dragMember } from "@api/index";
 
 class AddUnionMember extends React.Component {
@@ -9,6 +9,7 @@ class AddUnionMember extends React.Component {
       loading: false,
       dataObj: {},
       selectUserIds: [],
+      name: "",
       pagination: {
         current: 1,
         pageSize: 10
@@ -31,12 +32,16 @@ class AddUnionMember extends React.Component {
   }
 
   componentDidMount() {
-    this.getData()
+    this.getData();
   }
   changePagination = pagination => {
     this.setState({ pagination }, () => {
       this.getData();
     });
+  };
+
+  handleInput = e => {
+    this.setState({ name: e.target.value });
   };
   //   获取数据
   getData = () => {
@@ -48,13 +53,14 @@ class AddUnionMember extends React.Component {
     };
     this.setState({ loading: true });
     getUsers(params).then(res => {
-      res && this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
     });
   };
 
@@ -76,7 +82,7 @@ class AddUnionMember extends React.Component {
   };
 
   render() {
-    const { dataObj,pagination, selectUserIds } = this.state;
+    const { dataObj, pagination, selectUserIds } = this.state;
     const rowSelection = {
       selectedRowKeys: selectUserIds,
       onChange: this.onChange,
@@ -93,19 +99,26 @@ class AddUnionMember extends React.Component {
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >
+        <Input
+          placeholder="输入完成后按enter键搜索"
+          onChange={this.handleInput}
+          onPressEnter={this.getData}
+        />
         <Table
           rowSelection={rowSelection}
           columns={this.columns}
           dataSource={dataObj.list}
           rowKey={record => record.id}
           pagination={{
+            size: "small",
             total: dataObj.total,
             pageSize: pagination.pageSize,
             showTotal: function() {
               return "共 " + dataObj.total + " 条数据";
             }
           }}
-          onChange={this.changePagination}        />
+          onChange={this.changePagination}
+        />
       </Modal>
     );
   }

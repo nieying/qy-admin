@@ -26,6 +26,9 @@ export const uploadFile = data => {
 export const getMenu = params => {
   return axios.get("/menu/names", { params });
 };
+export const getMenuList = params => {
+  return axios.get("/menu/list", { params });
+};
 // export const createMenu = data => {
 //   return axios.post("/languageClass/create", data);
 // };
@@ -176,6 +179,12 @@ export const getFeedback = params => {
 };
 export const getOrganFeedback = params => {
   return axios.get("/feedback/organize/list", { params });
+};
+export const exportSubjectFeedback = params => {
+  return axios.get("/feedback/subject/export", { params });
+};
+export const exportOrganFeedback = params => {
+  return axios.get("/feedback/organize/export", { params });
 };
 
 /** 注释管理*/

@@ -20,7 +20,7 @@ class SetTagModal extends React.Component {
         },
         {
           id: 3,
-          name: "方言志愿者代表",
+          name: "志愿者代表",
           checked: false
         }
       ],
