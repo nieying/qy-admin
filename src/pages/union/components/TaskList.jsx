@@ -48,7 +48,7 @@ class TaskList extends React.Component {
         title: "完成情况",
         key: "taskTarget",
         render: (text, record) =>
-          record.taskTarget === 100 ? "已完成" : "未完成"
+          record.taskProgress === 100 ? "已完成" : "未完成"
       },
       {
         title: "任务状态",
@@ -62,6 +62,19 @@ class TaskList extends React.Component {
         key: "action",
         render: (text, record) => (
           <span>
+            {record.taskProgress !== 100 && record.approved !== "applied" && (
+              <span>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    this.onUpdate(record);
+                  }}
+                >
+                  点亮
+                </Button>
+                <Divider type="vertical" />
+              </span>
+            )}
             {record.approved === "applied" && this.isAdmin && (
               <Button
                 type="link"
@@ -89,21 +102,6 @@ class TaskList extends React.Component {
             >
               删除
             </Button>
-            {record.taskTarget !== 100 &&
-              record.taskTarget !==
-                "applied"(
-                  <span>
-                    <Divider type="vertical" />
-                    <Button
-                      type="link"
-                      onClick={() => {
-                        this.onUpdate(record);
-                      }}
-                    >
-                      点亮
-                    </Button>
-                  </span>
-                )}
           </span>
         )
       }
@@ -155,7 +153,7 @@ class TaskList extends React.Component {
     updateTask({
       id: record.id,
       organizeId: record.organizeId,
-      taskTarget: 100
+      taskProgress: 100
     }).then(res => {
       if (res) {
         message.success("修改成功");
