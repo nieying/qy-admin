@@ -43,6 +43,13 @@ class ActivityList extends React.Component {
         key: "unitName"
       },
       {
+        title: "题目",
+        dataIndex: "subjectTitle",
+        render: (text, record) => (
+          <div className="ov-title">{record.subjectTitle}</div>
+        )
+      },
+      {
         title: "反馈内容",
         dataIndex: "content",
         key: "content"

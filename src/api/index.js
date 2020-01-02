@@ -173,6 +173,12 @@ export const deleteActivity = data => {
 export const approveActivity = data => {
   return axios.post("/activity/approve", data);
 };
+export const getActivityMember = params => {
+  return axios.get("/activity/member", { params });
+};
+export const addActivityMember = data => {
+  return axios.post("/activity/member", data);
+};
 /** 反馈管理*/
 export const getFeedback = params => {
   return axios.get("/feedback/list", { params });
@@ -220,7 +226,7 @@ export const deleteOrganize = data => {
 export const getOrganizeInfo = params => {
   return axios.get("/organize/info", { params });
 };
-export const getMemberList = params => {
+export const getOrganMemberList = params => {
   return axios.get("/organize/member/list", { params });
 };
 export const quitOrganize = data => {
@@ -279,7 +285,13 @@ export const exportVip = params => {
   return axios.get("/user/vip/export", { params });
 };
 
-/** 成就管理*/
+/** 成就管理 配置管理*/
+export const getConfigList = params => {
+  return axios.get("/config/list", { params });
+};
+export const updateConfig = data => {
+  return axios.post("/config/update", data);
+};
 export const getGardeList = params => {
   return axios.get("/config/grade/list", { params });
 };

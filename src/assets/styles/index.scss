@@ -125,3 +125,7 @@ p {
 	@include flex-end;
 	margin: 10px;
 }
+
+.ov-title {
+	@include text-overflow;
+}

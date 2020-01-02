@@ -1,216 +1,56 @@
 import React from "react";
-import moment from "moment";
-import {
-  PageHeader,
-  Row,
-  Col,
-  Input,
-  Button,
-  Table,
-  Divider,
-  Modal,
-  message
-} from "antd";
-import AddModal from "./components/add";
-import { getStartup, deleteStartup } from "@api/index";
+import { PageHeader, Tabs } from "antd";
+import ConfigPage from "./components/ConfigPage";
+import StartUp from "./components/StartUp";
 
-class Startup extends React.Component {
+const { TabPane } = Tabs;
+
+class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      visible: false,
-      title: "",
-      dataObj: {
-        total: 0,
-        list: []
-      },
-      pagination: {
-        current: 1,
-        pageSize: 10
-      },
-      editItem: {}
+      currentTab: "subject"
     };
-    this.columns = [
-      {
-        title: "序号",
-        width: 60,
-        key: "index",
-        render: (text, record, index) => `${index + 1}`
-      },
-      {
-        title: "图片",
-        key: "imgUrl",
-        render: (text, record) => (
-          <img src={record.imgUrl} alt="" className="avatar"></img>
-        )
-      },
-      {
-        title: "名称",
-        dataIndex: "title",
-        key: "title"
-      },
-      // {
-      //   title: "协会名称",
-      //   dataIndex: "organizeName",
-      //   key: "organizeName",
-      //   render: (text, record) => <span>{record.organizeName ? record.organizeName : "无"}</span>
-      // },
-      {
-        title: "是否启用",
-        dataIndex: "state",
-        key: "state",
-        render: (text, record) => <span>{record.state ? "启用" : "禁用"}</span>
-      },
-      {
-        title: "创建时间",
-        key: "addTime",
-        render: (text, record) => moment(record.addTime).format("YYYY-MM-DD")
-      },
-      {
-        title: "修改时间",
-        key: "updateTime",
-        render: (text, record) => moment(record.updateTime).format("YYYY-MM-DD")
-      },
-      {
-        title: "操作",
-        key: "action",
-        render: (text, record) => (
-          <span>
-            <Button
-              type="link"
-              onClick={() => {
-                this.showModal(record);
-              }}
-            >
-              编辑
-            </Button>
-            {/* <Divider type="vertical" />
-            <Button
-              type="link"
-              onClick={() => {
-                this.del(record);
-              }}
-            >
-              删除
-            </Button> */}
-          </span>
-        )
-      }
-    ];
   }
-  componentDidMount() {
-    this.getData();
-  }
-  changePagination = pagination => {
-    this.setState({ pagination }, () => {
-      this.getData();
-    });
-  };
-  //   获取数据
-  getData = () => {
-    const { title, pagination } = this.state;
-    const params = {
-      name: title,
-      page: pagination.current,
-      limit: pagination.pageSize
-    };
-    this.setState({ loading: true });
-    getStartup(params).then(res => {
-      res && this.setState({
-        loading: false,
-        dataObj: {
-          total: res.total,
-          list: res.list
-        }
-      });
-    });
-  };
-  //   显示弹框
-  showModal = record => {
-    this.setState({
-      visible: true,
-      editItem: record && record
-    });
-  };
-  //   隐藏弹框
-  handleCancel = () => {
-    this.setState({
-      visible: false
-    });
-  };
-  //   重置
+  componentDidMount() {}
+  // 重置
   reset = () => {
-    this.setState({ title: "" }, () => {
+    this.setState({ name: "" }, () => {
       this.getData();
     });
   };
   // 设置查询
   setNameCodition = e => {
-    this.setState({ title: e.target.value });
+    this.setState({ name: e.target.value });
   };
-  // 删除
-  del = record => {
-    Modal.confirm({
-      content: `确定删除${record.title}吗？`,
-      okText: "确认",
-      cancelText: "取消",
-      onOk: () => {
-        deleteStartup({ id: record.id }).then(res => {
-          message.success("删除成功！");
-          this.getData();
-        });
-      }
+
+  handleTab = e => {
+    this.setState({
+      currentTab: e
     });
   };
+
   render() {
-    const { loading, visible, dataObj, pagination, editItem } = this.state;
+    const { currentTab } = this.state;
     return (
-      <div className="page-dialect">
+      <div className="page-detail">
         <PageHeader
-          title="启动页管理"
-          // extra={[
-          //   <Button key="1" type="primary" onClick={this.showModal}>
-          //     新增
-          //   </Button>
-          // ]}
+          title="配置管理"
+          extra={[]}
         />
         <div className="warpper">
-          {/* <Row gutter={30} className="search-condition">
-            <Col span={6}>
-              <label>名称：</label>
-              <Input
-                placeholder="请输入"
-                allowClear
-                onChange={this.setNameCodition}
-              />
-            </Col>
-            <Col span={6} className="search-opts">
-              <Button type="primary" onClick={this.getData}>
-                查询
-              </Button>
-              <Button onClick={this.reset}>重置</Button>
-            </Col>
-          </Row> */}
-          <Table
-            loading={loading}
-            columns={this.columns}
-            dataSource={dataObj.list}
-            pagination={false}
-            onChange={this.changePagination}
-            rowKey={record => record.id}
-          />
+          <Tabs defaultActiveKey={currentTab} onChange={this.handleTab}>
+            <TabPane tab="启动页" key="subject">
+              <StartUp {...this.props} />
+            </TabPane>
+            <TabPane tab="配置" key="organize">
+              <ConfigPage {...this.props} />
+            </TabPane>
+          </Tabs>
         </div>
-        {visible && (
-          <AddModal
-            handleCancel={this.handleCancel}
-            editItem={editItem}
-            getData={this.getData}
-          />
-        )}
       </div>
     );
   }
 }
 
-export default Startup;
+export default User;

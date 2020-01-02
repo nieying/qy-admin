@@ -19,3 +19,10 @@
     display: flex;
     justify-content: flex-end;
 }
+
+@mixin text-overflow{
+    max-width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Table, Divider, Modal, message } from "antd";
-import { getMemberList, quitOrganize, updateOrganize } from "@api/index";
+import { getOrganMemberList, quitOrganize, updateOrganize } from "@api/index";
 import SetTagModal from "./SetTagModal";
 
 class MemberList extends React.Component {
@@ -129,7 +129,7 @@ class MemberList extends React.Component {
       limit: pagination.pageSize
     };
     this.setState({ loading: true });
-    getMemberList(params).then(res => {
+    getOrganMemberList(params).then(res => {
       res &&
         this.setState({
           loading: false,

@@ -95,10 +95,10 @@ class ActivityList extends React.Component {
                 <Button
                   type="link"
                   onClick={() => {
-                    this.showMemberModal(record);
+                    this.props.history.push(`/union/detail/activity/member?organizeId=${record.organizeId}&activityId=${record.id}&type=${record.type}`)
                   }}
                 >
-                  设置人员
+                  参与人员
                 </Button>
                 <Divider type="vertical" />
               </span>
@@ -155,18 +155,6 @@ class ActivityList extends React.Component {
     });
   };
 
-  //   隐藏弹框
-  handleCancelMember = () => {
-    this.setState({
-      showMemberList: false
-    });
-  };
-  showMemberModal = record => {
-    this.setState({
-      activityId: record.id,
-      showMemberList: true
-    });
-  };
   //   隐藏弹框
   handleCancel = () => {
     this.setState({

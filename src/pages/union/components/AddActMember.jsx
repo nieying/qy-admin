@@ -1,14 +1,19 @@
 import React from "react";
-import { Modal, Table, message } from "antd";
-import { getOrganMemberList, updateOgranActState } from "@api/index";
+import { Modal, Table, message, Input } from "antd";
+import { getUsers, getOrganMemberList, addActivityMember } from "@api/index";
 
-class ActivityMember extends React.Component {
+class AddUnionMember extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       dataObj: {},
-      selectUserIds: []
+      selectUserIds: [],
+      name: "",
+      pagination: {
+        current: 1,
+        pageSize: 10
+      }
     };
     this.columns = [
       {
@@ -22,57 +27,57 @@ class ActivityMember extends React.Component {
         title: "用户名称",
         dataIndex: "userName",
         key: "userName"
-      },
-      {
-        title: "标签",
-        key: "tag",
-        render: (text, record) => {
-          if (record.role === "owner") {
-            return "会长";
-          } else {
-            return record.rank;
-          }
-        }
-      },
-      {
-        title: "状态",
-        key: "state",
-        render: (text, record) => {
-          if (record.state === 2) {
-            return "成员";
-          } else if (record.state === 1) {
-            return "待审核";
-          } else if (record.state === 0) {
-            return "待支付";
-          }
-        }
       }
     ];
   }
 
   componentDidMount() {
-    this.getData();
+    if (this.state.type === "official") {
+      this.getData();
+    } else {
+      this.getOrganMembers();
+    }
   }
+  changePagination = pagination => {
+    this.setState({ pagination }, () => {
+      this.getData();
+    });
+  };
 
+  handleInput = e => {
+    this.setState({ name: e.target.value });
+  };
   //   获取数据
   getData = () => {
+    const { name, pagination } = this.state;
+    const params = {
+      name,
+      page: pagination.current,
+      limit: pagination.pageSize
+    };
+    this.setState({ loading: true });
+    getUsers(params).then(res => {
+      res &&
+        this.setState({
+          loading: false,
+          dataObj: {
+            total: res.total,
+            list: res.list
+          }
+        });
+    });
+  };
+  getOrganMembers = () => {
     const params = {
       organizeId: this.props.organizeId,
       activityId: this.props.activityId,
       page: 1,
-      limit: 10000
+      limit: 10
     };
     this.setState({ loading: true });
     getOrganMemberList(params).then(res => {
-      let selectUserIds = [];
       if (res) {
-        res.list.filter(d => {
-          if (d.activityState) {
-            selectUserIds.push(d.id);
-          }
-        });
         this.setState({
-          selectUserIds: selectUserIds,
           loading: false,
           dataObj: {
             total: res.total,
@@ -89,19 +94,20 @@ class ActivityMember extends React.Component {
 
   handleOk = e => {
     e.preventDefault();
-    updateOgranActState({
+    addActivityMember({
       activityId: this.props.activityId,
-      memberIds: this.state.selectUserIds
+      userIds: this.state.selectUserIds
     }).then(res => {
       if (res) {
-        message.success("设置成功");
+        message.success("添加成功");
         this.props.handleCancel();
+        this.props.getData()
       }
     });
   };
 
   render() {
-    const { dataObj, selectUserIds } = this.state;
+    const { dataObj, pagination, selectUserIds } = this.state;
     const rowSelection = {
       selectedRowKeys: selectUserIds,
       onChange: this.onChange,
@@ -112,22 +118,35 @@ class ActivityMember extends React.Component {
     };
     return (
       <Modal
-        title="设置活动参与人员"
+        title="添加活动成员"
         visible={true}
         confirmLoading={this.state.loading}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
       >
+        <Input
+          placeholder="输入完成后按enter键搜索"
+          onChange={this.handleInput}
+          onPressEnter={this.getData}
+        />
         <Table
           rowSelection={rowSelection}
           columns={this.columns}
           dataSource={dataObj.list}
           rowKey={record => record.id}
-          pagination={false}
+          pagination={{
+            size: "small",
+            total: dataObj.total,
+            pageSize: pagination.pageSize,
+            showTotal: function() {
+              return "共 " + dataObj.total + " 条数据";
+            }
+          }}
+          onChange={this.changePagination}
         />
       </Modal>
     );
   }
 }
 
-export default ActivityMember;
+export default AddUnionMember;

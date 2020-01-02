@@ -16,6 +16,7 @@ import Notes from '@pages/notes';
 import StartUp from '@pages/startUp';
 import Union from '@pages/union';
 import UnionDetail from '@pages/union/detail';
+import ActivityMember from '@pages/union/activityMemberList';
 import Unit from '@pages/unit';
 import User from '@pages/user';
 import Vip from '@pages/vip';
@@ -39,6 +40,7 @@ class Index extends Component {
                 <PrivateRoute exact path="/startUp" component={StartUp} />
                 <PrivateRoute exact path="/union" component={Union} />
                 <PrivateRoute exact path="/union/detail" component={UnionDetail} />
+                <PrivateRoute exact path="/union/detail/activity/member" component={ActivityMember} />
                 <PrivateRoute exact path="/user" component={User} />
                 <PrivateRoute exact path="/vip" component={Vip} />
                 <PrivateRoute exact path="/role" component={Role} />
