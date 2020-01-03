@@ -251,14 +251,16 @@ class Organize extends React.Component {
       <div className="page-union">
         <PageHeader
           title="协会管理"
-          extra={[
-            <Button key="1" type="info" onClick={this.onExport}>
-              导出
-            </Button>,
-            <Button key="2" type="primary" onClick={this.showModal}>
-              新增
-            </Button>
-          ]}
+          extra={
+            this.isAdmin && [
+              <Button key="1" type="info" onClick={this.onExport}>
+                导出
+              </Button>,
+              <Button key="2" type="primary" onClick={this.showModal}>
+                新增
+              </Button>
+            ]
+          }
         />
         <div className="warpper">
           <Row gutter={30} className="search-condition">
@@ -290,6 +292,9 @@ class Organize extends React.Component {
             }}
             onChange={this.changePagination}
             rowKey={record => record.id}
+            rowClassName={record =>
+              record.approved === "applied" ? "bg-tr" : ""
+            }
           />
         </div>
         {visible && (
