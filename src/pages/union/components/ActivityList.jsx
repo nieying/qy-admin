@@ -53,6 +53,23 @@ class ActivityList extends React.Component {
         )
       },
       {
+        title: "参与人员",
+        dataIndex: "userCount",
+        key: "userCount",
+        render: (text, record) => (
+          <Button
+            type="link"
+            onClick={() => {
+              this.props.history.push(
+                `/union/detail/activity/member?organizeId=${record.organizeId}&activityId=${record.id}&type=${record.type}`
+              );
+            }}
+          >
+            {record.userCount}
+          </Button>
+        )
+      },
+      {
         title: "开始时间",
         dataIndex: "startTime",
         key: "startTime",
@@ -72,7 +89,7 @@ class ActivityList extends React.Component {
         title: "活动状态",
         key: "approved",
         render: (text, record) =>
-          // 待审批：applied,审批通过：aip 拒绝rejected
+          // 待审批：applied,审批通过：aip 拒绝：rejected
           record.approved === "applied" ? "待审核" : "已审核"
       },
       {
@@ -81,24 +98,14 @@ class ActivityList extends React.Component {
         render: (text, record) => (
           <span>
             {record.approved === "applied" && this.isAdmin && (
-              <Button
-                type="link"
-                onClick={() => {
-                  this.approve(record);
-                }}
-              >
-                审核
-              </Button>
-            )}
-            {record.approved !== "applied" && (
               <span>
                 <Button
                   type="link"
                   onClick={() => {
-                    this.props.history.push(`/union/detail/activity/member?organizeId=${record.organizeId}&activityId=${record.id}&type=${record.type}`)
+                    this.approve(record);
                   }}
                 >
-                  参与人员
+                  审核
                 </Button>
                 <Divider type="vertical" />
               </span>

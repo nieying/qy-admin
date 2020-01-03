@@ -133,7 +133,7 @@ class AddUnionMember extends React.Component {
           rowSelection={rowSelection}
           columns={this.columns}
           dataSource={dataObj.list}
-          rowKey={record => record.id}
+          rowKey={record => record.userId}
           pagination={{
             size: "small",
             total: dataObj.total,

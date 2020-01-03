@@ -179,6 +179,12 @@ export const getActivityMember = params => {
 export const addActivityMember = data => {
   return axios.post("/activity/member", data);
 };
+export const removeActivityMember = data => {
+  return axios.post("/activity/member/remove", data);
+};
+export const approveActivityMember = data => {
+  return axios.post("/activity/member/approve", data);
+};
 /** 反馈管理*/
 export const getFeedback = params => {
   return axios.get("/feedback/list", { params });

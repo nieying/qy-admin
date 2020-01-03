@@ -1,7 +1,11 @@
 import React from "react";
 import { PageHeader, Button, Table, Divider, Modal, message } from "antd";
 import AddActMember from "./components/AddActMember";
-import { getActivityMember, deleteOrganize } from "@api/index";
+import {
+  getActivityMember,
+  approveActivityMember,
+  removeActivityMember
+} from "@api/index";
 import "./index.scss";
 class Organize extends React.Component {
   constructor(props) {
@@ -42,31 +46,38 @@ class Organize extends React.Component {
         key: "nickname",
         render: (text, record, index) => record.nickname || record.userName
       },
-
+      {
+        title: "状态",
+        dataIndex: "approved",
+        key: "approved",
+        render: (text, record) =>
+          // 待审批：applied,审批通过：aip 拒绝：rejected
+          record.approved === "applied" ? "待审核" : "已审核"
+      },
       {
         title: "操作",
         key: "action",
         render: (text, record) => (
           <span>
-            {false && (
+            {record.approved === "applied" && this.isAdmin && (
               <span>
                 <Button
                   type="link"
                   onClick={() => {
-                    this.showModal(record);
+                    this.pass(record, "aip");
                   }}
                 >
-                  通过
+                  审核
                 </Button>
                 <Divider type="vertical" />
               </span>
             )}
-            {false && (
+            {record.approved === "applied" && this.isAdmin && (
               <span>
                 <Button
                   type="link"
                   onClick={() => {
-                    this.showModal(record);
+                    this.pass(record, "rejected");
                   }}
                 >
                   拒绝
@@ -74,7 +85,7 @@ class Organize extends React.Component {
                 <Divider type="vertical" />
               </span>
             )}
-            {false && (
+            {
               <Button
                 type="link"
                 onClick={() => {
@@ -83,7 +94,7 @@ class Organize extends React.Component {
               >
                 删除
               </Button>
-            )}
+            }
           </span>
         )
       }
@@ -161,15 +172,29 @@ class Organize extends React.Component {
   // 删除
   del = record => {
     Modal.confirm({
-      content: `确定删除${record.name}吗？`,
+      content: `确定删除${record.nickname}吗？`,
       okText: "确认",
       cancelText: "取消",
       onOk: () => {
-        deleteOrganize({ id: record.id }).then(res => {
+        removeActivityMember({
+          activityId: this.state.activityId,
+          userIds: [record.userId]
+        }).then(res => {
           message.success("删除成功！");
           this.getData();
         });
       }
+    });
+  };
+  // 审核 && 拒绝
+  pass = (record, approved) => {
+    approveActivityMember({
+      activityId: this.state.activityId,
+      userId: record.userId,
+      approved: approved
+    }).then(res => {
+      message.success(approved === "aip" ? "审核成功！" : "拒绝成功！");
+      this.getData();
     });
   };
   render() {
@@ -215,6 +240,9 @@ class Organize extends React.Component {
             }}
             onChange={this.changePagination}
             rowKey={record => record.userId || record.id}
+            rowClassName={record =>
+              record.approved === "applied" ? "bg-tr" : ""
+            }
           />
         </div>
         {visible && (
