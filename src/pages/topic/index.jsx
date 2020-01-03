@@ -187,7 +187,7 @@ class Subject extends React.Component {
   };
   //   重置
   reset = () => {
-    this.setState({ name: "", unitId: "" }, () => {
+    this.setState({ name: "", unitId: "", languageId: "", type: "" }, () => {
       this.getData();
     });
   };
@@ -311,7 +311,7 @@ class Subject extends React.Component {
           <Row gutter={30} className="search-condition">
             <Col span={5}>
               <label>题目类型：</label>
-              <SelectTopicType value={type} setValue={this.handleSelectTopic} />
+              <SelectTopicType value={type} setValue={(value)=> {this.handleSelectTopic(value)}} />
             </Col>
             <Col span={5}>
               <label>题目名称：</label>

@@ -25,14 +25,16 @@ class AddUnionMember extends React.Component {
       },
       {
         title: "用户名称",
-        dataIndex: "userName",
-        key: "userName"
+        key: "userName",
+        render: (text, record) => (
+          <span>{record.userName || record.username}</span>
+        )
       }
     ];
   }
 
   componentDidMount() {
-    if (this.state.type === "official") {
+    if (this.props.type === "official") {
       this.getData();
     } else {
       this.getOrganMembers();
@@ -101,7 +103,7 @@ class AddUnionMember extends React.Component {
       if (res) {
         message.success("添加成功");
         this.props.handleCancel();
-        this.props.getData()
+        this.props.getData();
       }
     });
   };

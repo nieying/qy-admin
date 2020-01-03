@@ -50,9 +50,14 @@ class Organize extends React.Component {
         title: "状态",
         dataIndex: "approved",
         key: "approved",
-        render: (text, record) =>
+        render: (text, record) => (
           // 待审批：applied,审批通过：aip 拒绝：rejected
-          record.approved === "applied" ? "待审核" : "已审核"
+          <div>
+            {record.approved === "applied" && <span>待审核</span>}
+            {record.approved === "aip" && <span>已审核</span>}
+            {record.approved === "rejected" && <span>已拒绝</span>}
+          </div>
+        )
       },
       {
         title: "操作",

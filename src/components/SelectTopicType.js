@@ -18,7 +18,7 @@ class SelectTopicType extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.value) {
+    if(nextProps.value !== this.state.defaultValue) {
       this.setState({
         defaultValue: nextProps.value
       })
@@ -26,7 +26,7 @@ class SelectTopicType extends React.Component {
   }
 
   onChange = value => {
-    this.props.setValue(value);
+    this.props.setValue(value || '');
   };
 
   render() {

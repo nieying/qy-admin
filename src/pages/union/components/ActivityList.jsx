@@ -88,15 +88,30 @@ class ActivityList extends React.Component {
       {
         title: "活动状态",
         key: "approved",
-        render: (text, record) =>
-          // 待审批：applied,审批通过：aip 拒绝：rejected
-          record.approved === "applied" ? "待审核" : "已审核"
+        render: (text, record) => (
+          <div>
+            {record.approved === "applied" && <span>待审核</span>}
+            {record.approved === "aip" && <span>已审核</span>}
+            {record.approved === "rejected" && <span>已拒绝</span>}
+          </div>
+        )
       },
       {
         title: "操作",
         key: "action",
         render: (text, record) => (
           <span>
+            <Button
+              type="link"
+              onClick={() => {
+                this.props.history.push(
+                  `/union/detail/activity/member?organizeId=${record.organizeId}&activityId=${record.id}&type=${record.type}`
+                );
+              }}
+            >
+              参与人员
+            </Button>
+            <Divider type="vertical" />
             {record.approved === "applied" && this.isAdmin && (
               <span>
                 <Button
