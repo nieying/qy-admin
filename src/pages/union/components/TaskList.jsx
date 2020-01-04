@@ -62,7 +62,7 @@ class TaskList extends React.Component {
         key: "action",
         render: (text, record) => (
           <span>
-            {record.taskProgress !== 100 && record.approved !== "applied" && (
+            {record.taskProgress !== 100 && record.approved !== "applied" && this.isAdmin && (
               <span>
                 <Button
                   type="link"
