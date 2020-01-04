@@ -82,19 +82,22 @@ class ActivityList extends React.Component {
         dataIndex: "endTime",
         key: "endTime",
         render: (text, record) => (
-          <span>{moment(record.endTime).format("YYYY-MM-DD")}</span>
+          <span>{moment(record.endTime).format("YYYY-MM-DD")} </span>
         )
       },
       {
         title: "活动状态",
         key: "approved",
-        render: (text, record) => (
-          <div>
-            {record.approved === "applied" && <span>待审核</span>}
-            {record.approved === "aip" && <span>已审核</span>}
-            {record.approved === "rejected" && <span>已拒绝</span>}
-          </div>
-        )
+        render: (text, record) =>
+          Date.parse(new Date()) > Date.parse(new Date(record.endTime)) ? (
+            "已过期"
+          ) : (
+            <div>
+              {record.approved === "applied" && <span>待审核</span>}
+              {record.approved === "aip" && <span>已审核</span>}
+              {record.approved === "rejected" && <span>已拒绝</span>}
+            </div>
+          )
       },
       {
         title: "操作",

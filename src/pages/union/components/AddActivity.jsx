@@ -53,8 +53,8 @@ class Add extends React.Component {
       values.organizeId = this.props.organizeId;
       values.actDate = moment(values.startTime).format("YYYY-MM-DD");
       // values.link = "https://jeff.cn/qyAdmin";
-      values.startTime = moment(values.startTime).format("YYYY-MM-DD HH:mm:ss");
-      values.endTime = moment(values.endTime).format("YYYY-MM-DD HH:mm:ss");
+      values.startTime = moment(values.startTime).format("YYYY-MM-DD") + ' 00:00:00';
+      values.endTime = moment(values.endTime).format("YYYY-MM-DD")+ ' 23:59:59';
       if (!err) {
         this.setState({ loading: true });
         editItem && editItem.id ? this.update(values) : this.add(values);

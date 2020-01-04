@@ -248,7 +248,7 @@ class Organize extends React.Component {
       isShowAddMemberModal
     } = this.state;
     return (
-      <div className="page-union">
+      <div className="page-detail">
         <PageHeader
           title="协会管理"
           extra={
@@ -292,9 +292,7 @@ class Organize extends React.Component {
             }}
             onChange={this.changePagination}
             rowKey={record => record.id}
-            rowClassName={record =>
-              record.approved === "applied" ? "bg-tr" : ""
-            }
+            rowClassName={record => (record.top === true ? "bg-tr" : "")}
           />
         </div>
         {visible && (
