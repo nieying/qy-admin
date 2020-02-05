@@ -1,8 +1,8 @@
 import React from "react";
 import moment from "moment";
-import { Button, Table } from "antd";
+import { Button, Table, Switch, message } from "antd";
 import EditConfig from "./EditConfig";
-import { getConfigList } from "@api/index";
+import { getConfigList, updateConfig } from "@api/index";
 
 class Startup extends React.Component {
   constructor(props) {
@@ -10,6 +10,7 @@ class Startup extends React.Component {
     this.state = {
       loading: false,
       visible: false,
+      payObj: null,
       dataObj: {
         total: 0,
         list: []
@@ -33,7 +34,7 @@ class Startup extends React.Component {
         key: "remark"
       },
       {
-        title: "协会名称",
+        title: "金额",
         dataIndex: "keyValue",
         key: "keyValue",
         render: (text, record) => (
@@ -84,13 +85,22 @@ class Startup extends React.Component {
       limit: pagination.pageSize
     };
     this.setState({ loading: true });
+
     getConfigList(params).then(res => {
       if (res) {
         this.setState({
           loading: false,
+          payObj: res.list.filter(item => {
+            return item.keyName === "talkinn_switch_pay";
+          })[0],
           dataObj: {
             total: res.total,
-            list: res.list.slice(1)
+            list: res.list.filter(item => {
+              return (
+                item.keyName === "talkinn_price_join_organize" ||
+                item.keyName === "talkinn_price_join_activity"
+              );
+            }),
           }
         });
       }
@@ -110,10 +120,28 @@ class Startup extends React.Component {
     });
   };
 
+  onChangeSwitch = val => {
+    updateConfig({ id: this.state.payObj.id, value: val ? 1 : 0 }).then(res => {
+      message.success("编辑成功");
+    });
+  };
+
   render() {
-    const { loading, visible, dataObj, editItem } = this.state;
+    const { loading, visible, dataObj, editItem, payObj } = this.state;
+    if (!payObj) {
+      return null;
+    }
     return (
       <div className="warpper">
+        <div style={{ marginBottom: 20 }}>
+          是否打开支付：
+          <Switch
+            checkedChildren="开"
+            unCheckedChildren="关"
+            onChange={this.onChangeSwitch}
+            defaultChecked={parseInt(payObj.keyValue) === 0 ? false : true}
+          />
+        </div>
         <Table
           loading={loading}
           columns={this.columns}
